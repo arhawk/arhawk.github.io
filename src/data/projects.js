@@ -1,5 +1,5 @@
 export const portfolio = {
-  name: 'Your Name',
+  name: 'Zehao Liu',
   title: 'Data / AI Graduate',
   location: 'Sydney, Australia',
   email: 'you@example.com',
