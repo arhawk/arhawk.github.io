@@ -248,15 +248,26 @@ function ProjectDetailPage() {
 
           <h2>Demo / Dashboard</h2>
           <div className="stack-links">
-            <a href={project.demoUrl} target="_blank" rel="noreferrer">
-              Open demo
-            </a>
-            <a href={project.reportUrl} target="_blank" rel="noreferrer">
-              Read report
-            </a>
-            <a href={project.githubUrl} target="_blank" rel="noreferrer">
-              View GitHub
-            </a>
+            {project.demoUrl ? (
+              <a href={project.demoUrl} target="_blank" rel="noreferrer">
+                Open demo
+              </a>
+            ) : null}
+            {project.backendHealthUrl ? (
+              <a href={project.backendHealthUrl} target="_blank" rel="noreferrer">
+                Backend health
+              </a>
+            ) : null}
+            {project.reportUrl ? (
+              <a href={project.reportUrl} target="_blank" rel="noreferrer">
+                Read report
+              </a>
+            ) : null}
+            {project.githubUrl ? (
+              <a href={project.githubUrl} target="_blank" rel="noreferrer">
+                View GitHub
+              </a>
+            ) : null}
           </div>
 
           <h2>Status</h2>

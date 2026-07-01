@@ -121,7 +121,39 @@ export const projectData = [
       'Test transformer-based models, add active learning, and monitor drift after deployment.',
     reproducibility:
       'The repository includes preprocessing code, model training scripts, and evaluation notes.'
+  },
+  {
+    slug: 'infinite-canvas-studio',
+    title: 'Infinite Canvas Studio',
+    category: 'Software Engineering',
+    summary:
+      'A collaborative infinite canvas mind-map application built with Vite, vanilla JavaScript, Konva.js, and a WebSocket relay server.',
+    techStack: ['Vite', 'Vanilla JavaScript', 'Konva.js', 'WebSocket relay', 'Render', 'Vercel'],
+    demoUrl: 'https://infinite-canvas-studio.vercel.app',
+    githubUrl: 'https://github.com/arhawk/CS61-3-USYD2026',
+    backendHealthUrl: 'https://infinite-canvas-studio.onrender.com/health',
+    status: 'Complete',
+    problem:
+      'The project needed a lightweight collaborative canvas where users could sketch ideas, structure concepts, and share state without a heavy client framework.',
+    whatBuilt:
+      'I built an infinite canvas interface with Konva.js, added a WebSocket relay for real-time collaboration, and deployed the frontend and backend separately for quick access.',
+    dataMethods:
+      'The app keeps collaboration state ephemeral, routes messages through a relay server, and avoids persisting user data for the demo deployment.',
+    results:
+      'Users can open the canvas, collaborate in real time, and verify backend availability through the health endpoint.',
+    limitations:
+      'The current demo is ephemeral and does not persist canvas state between sessions.',
+    nextSteps:
+      'Add durable storage, improve presence indicators, and extend collaboration tools for richer diagram editing.',
+    reproducibility:
+      'The repository documents the frontend, relay setup, and deployment split between Vercel and Render.'
   }
 ];
 
-export const projectCategories = ['All', 'Data Analytics', 'Data Engineering', 'AI / ML'];
+export const projectCategories = [
+  'All',
+  'Data Analytics',
+  'Data Engineering',
+  'AI / ML',
+  'Software Engineering'
+];
