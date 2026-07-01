@@ -54,8 +54,8 @@ function HomePage() {
     <>
       <section className="hero">
         <div>
-          <p className="eyebrow">Data / AI Graduate Portfolio</p>
-          <h1>Clean, practical work that turns data into useful decisions.</h1>
+          <p className="eyebrow">English Resume Portfolio</p>
+          <h1>Engineering-first, product-aware, and practical with data and AI.</h1>
           <p className="lead">{portfolio.summary}</p>
           <div className="actions">
             <Link className="button primary" to="/projects">
@@ -74,12 +74,12 @@ function HomePage() {
               <strong>{portfolio.location}</strong>
             </li>
             <li>
-              <span>Focus</span>
-              <strong>Analytics, engineering, ML</strong>
+              <span>Education</span>
+              <strong>{portfolio.education[0].title}</strong>
             </li>
             <li>
-              <span>Style</span>
-              <strong>Minimal, reproducible, recruiter-friendly</strong>
+              <span>Strengths</span>
+              <strong>Fast learning, structured analysis, reliable execution</strong>
             </li>
           </ul>
         </aside>
@@ -96,6 +96,31 @@ function HomePage() {
           ))}
         </div>
       </section>
+
+      <section className="two-col">
+        <div className="panel">
+          <h2>Education Snapshot</h2>
+          <ul className="list">
+            {portfolio.education.map((item) => (
+              <li key={`${item.org}-${item.period}`}>
+                <strong>{item.title}</strong>
+                <div>
+                  {item.org} | {item.period}
+                </div>
+                <small>{item.notes}</small>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="panel">
+          <h2>Core Strengths</h2>
+          <ul className="list">
+            {portfolio.uniqueStrengths.slice(0, 3).map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
     </>
   );
 }
@@ -107,19 +132,19 @@ function AboutPage() {
       <p className="lead">{portfolio.about}</p>
       <div className="two-col">
         <div className="panel">
-          <h2>What I bring</h2>
+          <h2>Snapshot</h2>
           <ul className="list">
-            <li>Strong data fundamentals and clear metric thinking</li>
-            <li>Ability to move from analysis to a working prototype</li>
-            <li>Comfort with stakeholder-friendly communication</li>
+            <li>Based in Sydney and focused on data, AI, and software work.</li>
+            <li>I like building practical systems that are easy to understand and maintain.</li>
+            <li>I care about both implementation quality and the user experience around it.</li>
           </ul>
         </div>
         <div className="panel">
-          <h2>How I work</h2>
+          <h2>Current Focus</h2>
           <ul className="list">
-            <li>Start with the problem, not the tool</li>
-            <li>Keep pipelines and assumptions documented</li>
-            <li>Prefer simple, maintainable solutions that can ship</li>
+            <li>Strengthening data science, AI, and software engineering skills.</li>
+            <li>Building portfolio projects that show real technical execution.</li>
+            <li>Preparing for graduate roles and junior opportunities in applied tech.</li>
           </ul>
         </div>
       </div>
@@ -132,22 +157,23 @@ function ResumePage() {
     <section className="page">
       <h1>Resume</h1>
       <p className="lead">
-        Use this page as a polished online resume summary. You can replace the placeholder
-        content with your exact education and experience.
+        Education, skills, self-evaluation, unique strengths, and a concise professional summary.
       </p>
 
       <div className="timeline">
         <div className="panel">
-          <h2>Summary</h2>
-          <p>
-            Data / AI graduate focused on analytics, engineering fundamentals, and applied machine
-            learning. Comfortable with SQL, Python, dashboarding, and lightweight web delivery.
-          </p>
+          <h2>Professional Summary</h2>
+          <p>{portfolio.summary}</p>
+          <ul className="list">
+            {portfolio.summaryPoints.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
         <div className="panel">
           <h2>Education</h2>
           {portfolio.education.map((item) => (
-            <article key={item.org} className="resume-item">
+            <article key={`${item.org}-${item.period}`} className="resume-item">
               <span>{item.period}</span>
               <h3>{item.title}</h3>
               <p>{item.org}</p>
@@ -156,15 +182,37 @@ function ResumePage() {
           ))}
         </div>
         <div className="panel">
-          <h2>Experience</h2>
-          {portfolio.experience.map((item) => (
-            <article key={item.org} className="resume-item">
-              <span>{item.period}</span>
-              <h3>{item.title}</h3>
-              <p>{item.org}</p>
-              <small>{item.notes}</small>
-            </article>
-          ))}
+          <h2>Skills</h2>
+          <div className="skill-groups">
+            {portfolio.skills.map((group) => (
+              <section key={group.group} className="skill-group">
+                <h3>{group.group}</h3>
+                <div className="tags">
+                  {group.items.map((item) => (
+                    <span key={item} className="tag">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
+        <div className="panel">
+          <h2>Self-Evaluation</h2>
+          <ul className="list">
+            {portfolio.selfEvaluation.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="panel">
+          <h2>Unique Strengths</h2>
+          <ul className="list">
+            {portfolio.uniqueStrengths.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
@@ -288,11 +336,24 @@ function ProjectDetailPage() {
 function SkillsPage() {
   return (
     <section className="page">
-      <h1>Capabilities &amp; Technologies</h1>
-      <p className="lead">A quick scan of the capabilities, tools, and platforms shown across the portfolio.</p>
+      <h1>Skills &amp; Tools</h1>
+      <p className="lead">
+        Resume skills first, with project evidence underneath for a broader portfolio view.
+      </p>
       <div className="skill-grid">
-        <SkillSection title="Capabilities" groups={capabilities} />
-        <SkillSection title="Technologies & Tools" groups={technologies} />
+        <SkillSection title="Resume Skills" groups={portfolio.skills} />
+        <SkillSection title="Project Capabilities" groups={capabilities} />
+      </div>
+      <div className="two-col">
+        <SkillSection title="Technologies &amp; Tools" groups={technologies} />
+        <div className="panel">
+          <h2>Profile Notes</h2>
+          <ul className="list">
+            {portfolio.summaryPoints.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
@@ -303,7 +364,7 @@ function ContactPage() {
     <section className="page">
       <h1>Contact</h1>
       <p className="lead">
-        Best for graduate roles, internships, analytics work, and AI/data engineering projects.
+        Best for graduate roles, internships, and opportunities in AI, data science, software, or cybersecurity.
       </p>
       <div className="two-col">
         <div className="panel">
@@ -321,9 +382,10 @@ function ContactPage() {
           </ul>
         </div>
         <div className="panel">
-          <h2>Opportunities I’m Open To</h2>
+          <h2>Open To</h2>
           <ul className="list">
-            <li>I’m open to graduate roles, internships, and junior software/data/AI opportunities. Feel free to contact me about role opportunities, project collaborations, or technical discussions.</li>
+            <li>Graduate roles, internships, and junior software, data, or AI opportunities.</li>
+            <li>Project collaborations, technical discussions, and role referrals.</li>
           </ul>
         </div>
       </div>

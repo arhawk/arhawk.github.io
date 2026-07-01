@@ -207,6 +207,11 @@ button {
   gap: 14px;
 }
 
+.list li {
+  display: grid;
+  gap: 4px;
+}
+
 .facts li {
   display: grid;
   gap: 4px;

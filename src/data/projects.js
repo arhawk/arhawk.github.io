@@ -6,24 +6,69 @@ export const portfolio = {
   github: 'https://github.com/arhawk',
   linkedin: 'https://www.linkedin.com/in/zehao-liu-4428a7273/',
   summary:
-    'I build clean, reliable data products and AI prototypes that help teams move from raw data to decisions.',
+    'An early-career technical professional combining engineering execution with product awareness, currently strengthening data and AI capabilities while building reliable, user-focused systems.',
   about:
-    'I am a data and AI graduate focused on analytics, engineering fundamentals, and practical machine learning. I like projects that combine clear problem framing, tidy data pipelines, and simple interfaces people can actually use.',
+    'I learn new tools quickly, turn them into repeatable workflows, and pay attention to usability, delivery pace, and long-term maintainability.',
   education: [
     {
-      period: '2021 - 2025',
-      org: 'Bachelor / Graduate Study',
-      title: 'Data, Analytics, or AI major',
-      notes: 'Tailor this section to your actual degree, institution, and graduation date.'
+      period: 'Feb 2025 - Present',
+      org: 'The University of Sydney',
+      title: 'Master of Computer Science',
+      notes: 'Data Science and AI stream, Sydney, Australia'
+    },
+    {
+      period: 'Sep 2019 - Jun 2024',
+      org: 'Wilfrid Laurier University',
+      title: 'Honours Bachelor of Computer Science and Mathematics',
+      notes: 'Waterloo, Canada'
     }
   ],
-  experience: [
+  skills: [
     {
-      period: 'Internship / Project Work',
-      org: 'Team or Organisation Name',
-      title: 'Data / AI Projects',
-      notes: 'Add your internships, capstones, or relevant part-time work here.'
+      group: 'Languages & Scripting',
+      items: ['C', 'Java', 'Python', 'PHP', 'JavaScript', 'Shell', 'SQL', 'R', 'MATLAB']
+    },
+    {
+      group: 'Data & AI',
+      items: [
+        'Data Pipelines',
+        'Web Scraping',
+        'Pandas',
+        'Matplotlib',
+        'ggplot2',
+        'Scikit-learn',
+        'Keras',
+        'PyTorch',
+        'caret'
+      ]
+    },
+    {
+      group: 'Platforms & Tools',
+      items: ['Linux', 'Git', 'MySQL', 'MongoDB', 'Apache', 'Anaconda']
+    },
+    {
+      group: 'Supporting UI & Hardware',
+      items: ['jQuery', 'Bootstrap', 'Arduino']
     }
+  ],
+  selfEvaluation: [
+    'Strong technical learning ability with a track record of quickly picking up new tools and turning them into reusable workflows.',
+    'Product-minded approach that values not only implementation, but also usability, delivery pace, and maintainability.',
+    'Able to structure complex problems around goals, constraints, priorities, and risk, then turn that plan into execution.',
+    'Habitual in execution and review: I use data and feedback to keep improving implementation details and collaboration habits.',
+    'Ongoing growth area: improving cross-cultural communication and influence so I can build consensus more effectively in multi-role teams.'
+  ],
+  uniqueStrengths: [
+    'I combine engineering and product perspectives, which helps me connect implementation work to business goals and user experience.',
+    'I can break down complex tasks quickly and use prioritization plus risk control to improve delivery certainty and quality.',
+    'I use AI-assisted coding, research, documentation, and debugging effectively while still validating outputs and keeping them explainable.',
+    'I have cross-functional collaboration experience and can support Jira management, documentation, reporting, and client communication.',
+    'I stay steady under fast-paced or high-pressure conditions, balancing detail quality with response speed to keep key work on track.'
+  ],
+  summaryPoints: [
+    'Positioned as an early-career technical professional with both engineering execution and product awareness.',
+    'Continuously strengthening data and AI capability while expanding cross-team collaboration skills.',
+    'Target roles include AI applications, data science, software development, and cybersecurity, with a focus on creating measurable value in real business contexts.'
   ]
 };
 
