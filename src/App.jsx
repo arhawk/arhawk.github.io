@@ -234,9 +234,16 @@ function ProjectDetailPage() {
 
       <div className="detail-grid">
         <article className="panel detail-main">
+          {project.projectType ? <DetailSection title="Project Type" content={project.projectType} /> : null}
+          {project.myContribution ? (
+            <DetailSection title="My Contribution" content={project.myContribution} />
+          ) : null}
           <DetailSection title="Problem" content={project.problem} />
           <DetailSection title="What I Built" content={project.whatBuilt} />
           <DetailSection title="Data & Methods" content={project.dataMethods} />
+          {project.engineeringHighlights ? (
+            <DetailSection title="Engineering Highlights" content={project.engineeringHighlights} />
+          ) : null}
           <DetailSection title="Results" content={project.results} />
           <DetailSection title="Limitations & Next Steps" content={`${project.limitations} ${project.nextSteps}`} />
           <DetailSection title="GitHub Repo / Reproducibility" content={project.reproducibility} />
@@ -314,11 +321,9 @@ function ContactPage() {
           </ul>
         </div>
         <div className="panel">
-          <h2>What to include in an enquiry</h2>
+          <h2>Opportunities I’m Open To</h2>
           <ul className="list">
-            <li>Role title and team</li>
-            <li>Project type or hiring timeline</li>
-            <li>Relevant stack, data sources, or domain context</li>
+            <li>I’m open to graduate roles, internships, and junior software/data/AI opportunities. Feel free to contact me about role opportunities, project collaborations, or technical discussions.</li>
           </ul>
         </div>
       </div>

@@ -2,9 +2,9 @@ export const portfolio = {
   name: 'Zehao Liu',
   title: 'Data / AI Graduate',
   location: 'Sydney, Australia',
-  email: 'you@example.com',
-  github: 'https://github.com/your-handle',
-  linkedin: 'https://www.linkedin.com/in/your-handle/',
+  email: 'zliu5660@gmail.com',
+  github: 'https://github.com/arhawk',
+  linkedin: 'https://www.linkedin.com/in/zehao-liu-4428a7273/',
   summary:
     'I build clean, reliable data products and AI prototypes that help teams move from raw data to decisions.',
   about:
@@ -84,6 +84,7 @@ export const capabilityTaxonomy = [
       { label: 'WebSocket', aliases: ['WebSocket relay'] },
       { label: 'REST APIs' },
       { label: 'Konva.js' },
+      { label: 'Testing' },
       { label: 'Streamlit' },
       { label: 'Responsive UI' },
       { label: 'Software Architecture' }
@@ -138,6 +139,7 @@ export const technologyTaxonomy = [
       { label: 'Scikit-learn' },
       { label: 'TensorFlow / Keras', aliases: ['TensorFlow', 'Keras'] },
       { label: 'Konva.js' },
+      { label: 'Playwright' },
       { label: 'Streamlit' }
     ]
   },
@@ -216,6 +218,47 @@ const collectGroupedValues = (projects, sourceKey, taxonomy, lookup) => {
 };
 
 export const projectData = [
+  {
+    slug: 'infinite-canvas-studio',
+    title: 'Infinite Canvas Studio',
+    category: 'Software Engineering',
+    summary:
+      'A browser-based teaching and presentation platform for authoring non-linear lesson boards on an infinite canvas with live collaboration.',
+    technologies: ['Vite', 'Vanilla JavaScript', 'Konva.js', 'Node.js', 'WebSocket relay', 'Render', 'Vercel'],
+    capabilities: [
+      'Responsive UI',
+      'Real-time Collaboration',
+      'Software Architecture',
+      'Testing',
+      'Deployment',
+      'Documentation',
+      'Project Scoping',
+      'Pull Requests'
+    ],
+    demoUrl: 'https://infinite-canvas-studio.vercel.app',
+    githubUrl: 'https://github.com/arhawk/CS61-3-USYD2026',
+    backendHealthUrl: 'https://infinite-canvas-studio.onrender.com/health',
+    status: 'Complete',
+    problem:
+      'Teachers and presenters needed a browser-native workspace for building non-linear lesson boards that could mix text, media, embeds, and interactions without the friction of a full slide deck editor.',
+    whatBuilt:
+      'I built a collaborative authoring system for teaching and presentation use, with editable pages, styled text, sticky notes, images, shapes, iframes, local videos, JavaScript code runners, ranking activities, attachments, connections, and Edit / Present modes.',
+    dataMethods:
+      'The frontend uses a class-based architecture with App, ModeManager, and StageController plus plugin, tool, command, and component base classes. Save / load, undo / redo, room sharing, and export flows are handled through explicit document state and message passing.',
+    results:
+      'The app supports temporary online rooms for collaboration, separate frontend and relay deployments, and export paths for JSON, single-file HTML, and PROJ folder formats.',
+    limitations:
+      'The hosted demo is intentionally ephemeral and does not keep long-term cloud state.',
+    nextSteps:
+      'Add durable storage, richer presence indicators, and more collaborative editing controls for larger teaching sessions.',
+    reproducibility:
+      'The repository documents the frontend, the Node.js WebSocket relay, the deployment split between Vercel and Render, and the core testing approach with unit and Playwright E2E coverage.',
+    projectType: 'Collaborative course project',
+    myContribution:
+      'I contributed across product scoping, frontend implementation, collaboration workflow, documentation, and deployment.',
+    engineeringHighlights:
+      'Key engineering work included canvas pan and zoom interactions, component-based editing, mode switching between Edit and Present views, local JSON / HTML / PROJ export workflows, WebSocket room sharing, and a testable architecture for future maintainers.'
+  },
   {
     slug: 'sales-performance-dashboard',
     title: 'Sales Performance Dashboard',
@@ -312,40 +355,6 @@ export const projectData = [
       'Test transformer-based models, add active learning, and monitor drift after deployment.',
     reproducibility:
       'The repository includes preprocessing code, model training scripts, and evaluation notes.'
-  },
-  {
-    slug: 'infinite-canvas-studio',
-    title: 'Infinite Canvas Studio',
-    category: 'Software Engineering',
-    summary:
-      'A collaborative infinite canvas mind-map application built with Vite, vanilla JavaScript, Konva.js, and a WebSocket relay server.',
-    technologies: ['Vite', 'Vanilla JavaScript', 'Konva.js', 'WebSocket relay', 'Render', 'Vercel'],
-    capabilities: [
-      'Responsive UI',
-      'Real-time Collaboration',
-      'Deployment',
-      'Documentation',
-      'Project Scoping',
-      'Pull Requests'
-    ],
-    demoUrl: 'https://infinite-canvas-studio.vercel.app',
-    githubUrl: 'https://github.com/arhawk/CS61-3-USYD2026',
-    backendHealthUrl: 'https://infinite-canvas-studio.onrender.com/health',
-    status: 'Complete',
-    problem:
-      'The project needed a lightweight collaborative canvas where users could sketch ideas, structure concepts, and share state without a heavy client framework.',
-    whatBuilt:
-      'I built an infinite canvas interface with Konva.js, added a WebSocket relay for real-time collaboration, and deployed the frontend and backend separately for quick access.',
-    dataMethods:
-      'The app keeps collaboration state ephemeral, routes messages through a relay server, and avoids persisting user data for the demo deployment.',
-    results:
-      'Users can open the canvas, collaborate in real time, and verify backend availability through the health endpoint.',
-    limitations:
-      'The current demo is ephemeral and does not persist canvas state between sessions.',
-    nextSteps:
-      'Add durable storage, improve presence indicators, and extend collaboration tools for richer diagram editing.',
-    reproducibility:
-      'The repository documents the frontend, relay setup, and deployment split between Vercel and Render.'
   }
 ];
 
