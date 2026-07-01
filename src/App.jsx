@@ -2,6 +2,7 @@ import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import {
   capabilities,
+  foundations,
   portfolio,
   projectCategories,
   projectData,
@@ -157,7 +158,7 @@ function ResumePage() {
     <section className="page">
       <h1>Resume</h1>
       <p className="lead">
-        Education, skills, self-evaluation, unique strengths, and a concise professional summary.
+        Education, self-evaluation, unique strengths, and a concise professional summary.
       </p>
 
       <div className="timeline">
@@ -180,23 +181,6 @@ function ResumePage() {
               <small>{item.notes}</small>
             </article>
           ))}
-        </div>
-        <div className="panel">
-          <h2>Skills</h2>
-          <div className="skill-groups">
-            {portfolio.skills.map((group) => (
-              <section key={group.group} className="skill-group">
-                <h3>{group.group}</h3>
-                <div className="tags">
-                  {group.items.map((item) => (
-                    <span key={item} className="tag">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </section>
-            ))}
-          </div>
         </div>
         <div className="panel">
           <h2>Self-Evaluation</h2>
@@ -300,6 +284,7 @@ function ProjectDetailPage() {
         <aside className="panel detail-side">
           <TagSection title="Technologies Used" items={project.technologies} />
           <TagSection title="Capabilities Demonstrated" items={project.capabilities} />
+          <TagSection title="Foundations" items={project.foundations} />
 
           <h2>Demo / Dashboard</h2>
           <div className="stack-links">
@@ -336,24 +321,15 @@ function ProjectDetailPage() {
 function SkillsPage() {
   return (
     <section className="page">
-      <h1>Skills &amp; Tools</h1>
+      <h1>Skills</h1>
       <p className="lead">
-        Resume skills first, with project evidence underneath for a broader portfolio view.
+        Project evidence first, with supporting technologies and broader foundations grouped
+        underneath for a cleaner portfolio view.
       </p>
       <div className="skill-grid">
-        <SkillSection title="Resume Skills" groups={portfolio.skills} />
         <SkillSection title="Project Capabilities" groups={capabilities} />
-      </div>
-      <div className="two-col">
-        <SkillSection title="Technologies &amp; Tools" groups={technologies} />
-        <div className="panel">
-          <h2>Profile Notes</h2>
-          <ul className="list">
-            {portfolio.summaryPoints.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
+        <SkillSection title="Project Technologies" groups={technologies} />
+        <SkillSection title="Broader Skills &amp; Foundations" groups={foundations} />
       </div>
     </section>
   );

@@ -23,34 +23,6 @@ export const portfolio = {
       notes: 'Waterloo, Canada'
     }
   ],
-  skills: [
-    {
-      group: 'Languages & Scripting',
-      items: ['C', 'Java', 'Python', 'PHP', 'JavaScript', 'Shell', 'SQL', 'R', 'MATLAB']
-    },
-    {
-      group: 'Data & AI',
-      items: [
-        'Data Pipelines',
-        'Web Scraping',
-        'Pandas',
-        'Matplotlib',
-        'ggplot2',
-        'Scikit-learn',
-        'Keras',
-        'PyTorch',
-        'caret'
-      ]
-    },
-    {
-      group: 'Platforms & Tools',
-      items: ['Linux', 'Git', 'MySQL', 'MongoDB', 'Apache', 'Anaconda']
-    },
-    {
-      group: 'Supporting UI & Hardware',
-      items: ['jQuery', 'Bootstrap', 'Arduino']
-    }
-  ],
   selfEvaluation: [
     'Strong technical learning ability with a track record of quickly picking up new tools and turning them into reusable workflows.',
     'Product-minded approach that values not only implementation, but also usability, delivery pace, and maintainability.',
@@ -71,152 +43,127 @@ export const portfolio = {
     'Target roles include AI applications, data science, software development, and cybersecurity, with a focus on creating measurable value in real business contexts.'
   ]
 };
-
-// Add project-specific technologies to `technologies` and broader capabilities to `capabilities`.
-// The Skills page is generated automatically from project data.
+// Keep project-backed tags separate by intent so the Skills page can read as evidence first,
+// then tools/platforms, then broader foundations underneath.
 
 export const capabilityTaxonomy = [
   {
-    group: 'Data Analysis & BI',
+    group: 'Data Analysis & Reporting',
     capabilities: [
-      { label: 'SQL' },
-      { label: 'Excel' },
-      { label: 'Power BI' },
-      { label: 'Tableau' },
       { label: 'Data Cleaning' },
-      { label: 'Exploratory Data Analysis', aliases: ['EDA'] },
+      { label: 'Dashboard Design' },
       { label: 'KPI Reporting' },
-      { label: 'Data Visualization' },
-      { label: 'Dashboard Design' }
-    ]
-  },
-  {
-    group: 'Data Engineering',
-    capabilities: [
-      { label: 'Python' },
-      { label: 'Pandas' },
-      { label: 'ETL / ELT Pipelines', aliases: ['ETL Pipelines', 'ELT Pipelines'] },
-      { label: 'APIs' },
-      { label: 'PostgreSQL' },
-      { label: 'Data Quality Checks' },
-      { label: 'Data Modeling' },
-      { label: 'Workflow Automation' }
+      { label: 'Data Visualization' }
     ]
   },
   {
     group: 'Machine Learning & AI',
     capabilities: [
-      { label: 'Scikit-learn' },
-      { label: 'TensorFlow / Keras', aliases: ['TensorFlow', 'Keras'] },
-      { label: 'TF-IDF', aliases: ['TF-IDF'] },
       { label: 'Model Evaluation' },
       { label: 'Feature Engineering' },
-      { label: 'Classification' },
-      { label: 'Regression' },
-      { label: 'Computer Vision' },
-      { label: 'NLP / Text2SQL', aliases: ['NLP', 'Text2SQL'] },
       { label: 'Prompt Engineering' }
     ]
   },
   {
-    group: 'Software & Web Development',
+    group: 'Data Engineering & Automation',
     capabilities: [
-      { label: 'JavaScript', aliases: ['Vanilla JavaScript'] },
-      { label: 'React' },
-      { label: 'Vite' },
-      { label: 'HTML / CSS', aliases: ['HTML', 'CSS'] },
-      { label: 'Node.js' },
-      { label: 'WebSocket', aliases: ['WebSocket relay'] },
-      { label: 'REST APIs' },
-      { label: 'Konva.js' },
-      { label: 'Testing' },
-      { label: 'Streamlit' },
-      { label: 'Responsive UI' },
-      { label: 'Software Architecture' }
+      { label: 'ETL Pipelines', aliases: ['ETL / ELT Pipelines', 'ELT Pipelines'] },
+      { label: 'Workflow Automation' }
     ]
   },
   {
-    group: 'Cloud, Deployment & DevOps',
+    group: 'Software Delivery',
     capabilities: [
-      { label: 'Git' },
-      { label: 'GitHub' },
-      { label: 'GitHub Actions' },
-      { label: 'Vercel' },
-      { label: 'Render' },
-      { label: 'Docker' },
-      { label: 'Linux' },
-      { label: 'Environment Variables' },
+      { label: 'Testing' },
+      { label: 'Responsive UI' },
+      { label: 'Real-time Collaboration', aliases: ['Collaboration'] },
+      { label: 'Software Architecture' },
       { label: 'Deployment' }
     ]
   },
   {
-    group: 'Collaboration & Product Workflow',
+    group: 'Collaboration & Communication',
     capabilities: [
-      { label: 'Agile / Scrum', aliases: ['Agile', 'Scrum'] },
-      { label: 'Jira' },
-      { label: 'Sprint Planning' },
-      { label: 'Pull Requests' },
-      { label: 'Code Review' },
       { label: 'Documentation' },
       { label: 'Project Scoping' },
-      { label: 'Stakeholder Communication' },
-      { label: 'Real-time Collaboration', aliases: ['Collaboration'] }
+      { label: 'Pull Requests' },
+      { label: 'Code Review' },
+      { label: 'Stakeholder Communication' }
     ]
   }
 ];
 
 export const technologyTaxonomy = [
   {
-    group: 'Languages & Markup',
-    technologies: [
-      { label: 'SQL' },
-      { label: 'Python' },
-      { label: 'JavaScript', aliases: ['Vanilla JavaScript'] },
-      { label: 'HTML / CSS', aliases: ['HTML', 'CSS'] }
-    ]
-  },
-  {
-    group: 'Frameworks & Libraries',
+    group: 'App Runtime & Frameworks',
     technologies: [
       { label: 'React' },
       { label: 'Vite' },
+      { label: 'Python' },
+      { label: 'JavaScript', aliases: ['Vanilla JavaScript'] },
+      { label: 'HTML / CSS', aliases: ['HTML', 'CSS'] },
+      { label: 'Node.js' },
+      { label: 'WebSocket', aliases: ['WebSocket relay'] },
       { label: 'Pandas' },
       { label: 'Scikit-learn' },
-      { label: 'TensorFlow / Keras', aliases: ['TensorFlow', 'Keras'] },
-      { label: 'Konva.js' },
-      { label: 'Playwright' },
       { label: 'Streamlit' }
     ]
   },
   {
-    group: 'Data & Databases',
+    group: 'Data & BI Tools',
     technologies: [
-      { label: 'PostgreSQL' },
+      { label: 'SQL' },
       { label: 'Excel' },
       { label: 'Power BI' },
-      { label: 'Tableau' },
+      { label: 'PostgreSQL' },
       { label: 'TF-IDF' }
     ]
   },
   {
-    group: 'APIs & Runtime',
-    technologies: [
-      { label: 'APIs' },
-      { label: 'REST APIs' },
-      { label: 'Node.js' },
-      { label: 'WebSocket', aliases: ['WebSocket relay'] }
-    ]
-  },
-  {
-    group: 'Cloud & Delivery',
+    group: 'Delivery & Automation',
     technologies: [
       { label: 'Docker' },
       { label: 'GitHub Actions' },
       { label: 'Render' },
       { label: 'Vercel' },
-      { label: 'GitHub' },
-      { label: 'Git' },
-      { label: 'Linux' }
+      { label: 'Playwright' }
+    ]
+  },
+  {
+    group: 'Visualization & Interfaces',
+    technologies: [
+      { label: 'Konva.js' },
+      { label: 'Matplotlib' },
+      { label: 'ggplot2' }
+    ]
+  }
+];
+
+export const foundationsTaxonomy = [
+  {
+    group: 'Software Foundations',
+    foundations: [
+      { label: 'Web Fundamentals' },
+      { label: 'Event-Driven Systems' },
+      { label: 'Version Control' },
+      { label: 'Object-Oriented Programming', aliases: ['OOP'] }
+    ]
+  },
+  {
+    group: 'Data Foundations',
+    foundations: [
+      { label: 'Statistics' },
+      { label: 'Data Modeling' },
+      { label: 'Business Intelligence' },
+      { label: 'ETL Fundamentals' }
+    ]
+  },
+  {
+    group: 'AI Foundations',
+    foundations: [
+      { label: 'Machine Learning Fundamentals' },
+      { label: 'NLP Fundamentals', aliases: ['Natural Language Processing', 'NLP'] },
+      { label: 'Text Representation' }
     ]
   }
 ];
@@ -280,6 +227,12 @@ export const projectData = [
       'Project Scoping',
       'Pull Requests'
     ],
+    foundations: [
+      'Web Fundamentals',
+      'Event-Driven Systems',
+      'Object-Oriented Programming',
+      'Version Control'
+    ],
     demoUrl: 'https://infinite-canvas-studio.vercel.app',
     githubUrl: 'https://github.com/arhawk/CS61-3-USYD2026',
     backendHealthUrl: 'https://infinite-canvas-studio.onrender.com/health',
@@ -317,6 +270,7 @@ export const projectData = [
       'Data Visualization',
       'Stakeholder Communication'
     ],
+    foundations: ['Statistics', 'Data Modeling', 'Business Intelligence'],
     demoUrl: 'https://example.com/demo',
     githubUrl: 'https://github.com/your-handle/sales-dashboard',
     reportUrl: 'https://example.com/report',
@@ -350,6 +304,7 @@ export const projectData = [
       'Workflow Automation',
       'Code Review'
     ],
+    foundations: ['ETL Fundamentals', 'Data Modeling', 'Machine Learning Fundamentals', 'Version Control'],
     demoUrl: 'https://example.com/demo',
     githubUrl: 'https://github.com/your-handle/churn-pipeline',
     reportUrl: 'https://example.com/report',
@@ -382,6 +337,7 @@ export const projectData = [
       'Documentation',
       'Stakeholder Communication'
     ],
+    foundations: ['Machine Learning Fundamentals', 'NLP Fundamentals', 'Text Representation'],
     demoUrl: 'https://example.com/demo',
     githubUrl: 'https://github.com/your-handle/ticket-classifier',
     reportUrl: 'https://example.com/report',
@@ -413,6 +369,7 @@ export const projectCategories = [
 
 const capabilityLookup = buildLookup(capabilityTaxonomy, 'capabilities');
 const technologyLookup = buildLookup(technologyTaxonomy, 'technologies');
+const foundationLookup = buildLookup(foundationsTaxonomy, 'foundations');
 
 export const capabilities = collectGroupedValues(
   projectData,
@@ -426,4 +383,11 @@ export const technologies = collectGroupedValues(
   'technologies',
   technologyTaxonomy,
   technologyLookup
+);
+
+export const foundations = collectGroupedValues(
+  projectData,
+  'foundations',
+  foundationsTaxonomy,
+  foundationLookup
 );
