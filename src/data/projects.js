@@ -27,24 +27,193 @@ export const portfolio = {
   ]
 };
 
-export const skills = [
+// Add project-specific technologies to `technologies` and broader capabilities to `capabilities`.
+// The Skills page is generated automatically from project data.
+
+export const capabilityTaxonomy = [
   {
-    group: 'Data Analytics',
-    items: ['Excel', 'SQL', 'Tableau', 'Power BI', 'Exploratory analysis', 'KPI reporting']
+    group: 'Data Analysis & BI',
+    capabilities: [
+      { label: 'SQL' },
+      { label: 'Excel' },
+      { label: 'Power BI' },
+      { label: 'Tableau' },
+      { label: 'Data Cleaning' },
+      { label: 'Exploratory Data Analysis', aliases: ['EDA'] },
+      { label: 'KPI Reporting' },
+      { label: 'Data Visualization' },
+      { label: 'Dashboard Design' }
+    ]
   },
   {
     group: 'Data Engineering',
-    items: ['Python', 'Pandas', 'ETL pipelines', 'APIs', 'Data quality checks', 'PostgreSQL']
+    capabilities: [
+      { label: 'Python' },
+      { label: 'Pandas' },
+      { label: 'ETL / ELT Pipelines', aliases: ['ETL Pipelines', 'ELT Pipelines'] },
+      { label: 'APIs' },
+      { label: 'PostgreSQL' },
+      { label: 'Data Quality Checks' },
+      { label: 'Data Modeling' },
+      { label: 'Workflow Automation' }
+    ]
   },
   {
-    group: 'AI / ML',
-    items: ['Scikit-learn', 'Model evaluation', 'Feature engineering', 'Prompting', 'Experiment tracking']
+    group: 'Machine Learning & AI',
+    capabilities: [
+      { label: 'Scikit-learn' },
+      { label: 'TensorFlow / Keras', aliases: ['TensorFlow', 'Keras'] },
+      { label: 'TF-IDF', aliases: ['TF-IDF'] },
+      { label: 'Model Evaluation' },
+      { label: 'Feature Engineering' },
+      { label: 'Classification' },
+      { label: 'Regression' },
+      { label: 'Computer Vision' },
+      { label: 'NLP / Text2SQL', aliases: ['NLP', 'Text2SQL'] },
+      { label: 'Prompt Engineering' }
+    ]
   },
   {
-    group: 'Tools',
-    items: ['Git', 'GitHub', 'Vite', 'React', 'Docker', 'Linux']
+    group: 'Software & Web Development',
+    capabilities: [
+      { label: 'JavaScript', aliases: ['Vanilla JavaScript'] },
+      { label: 'React' },
+      { label: 'Vite' },
+      { label: 'HTML / CSS', aliases: ['HTML', 'CSS'] },
+      { label: 'Node.js' },
+      { label: 'WebSocket', aliases: ['WebSocket relay'] },
+      { label: 'REST APIs' },
+      { label: 'Konva.js' },
+      { label: 'Streamlit' },
+      { label: 'Responsive UI' },
+      { label: 'Software Architecture' }
+    ]
+  },
+  {
+    group: 'Cloud, Deployment & DevOps',
+    capabilities: [
+      { label: 'Git' },
+      { label: 'GitHub' },
+      { label: 'GitHub Actions' },
+      { label: 'Vercel' },
+      { label: 'Render' },
+      { label: 'Docker' },
+      { label: 'Linux' },
+      { label: 'Environment Variables' },
+      { label: 'Deployment' }
+    ]
+  },
+  {
+    group: 'Collaboration & Product Workflow',
+    capabilities: [
+      { label: 'Agile / Scrum', aliases: ['Agile', 'Scrum'] },
+      { label: 'Jira' },
+      { label: 'Sprint Planning' },
+      { label: 'Pull Requests' },
+      { label: 'Code Review' },
+      { label: 'Documentation' },
+      { label: 'Project Scoping' },
+      { label: 'Stakeholder Communication' },
+      { label: 'Real-time Collaboration', aliases: ['Collaboration'] }
+    ]
   }
 ];
+
+export const technologyTaxonomy = [
+  {
+    group: 'Languages & Markup',
+    technologies: [
+      { label: 'SQL' },
+      { label: 'Python' },
+      { label: 'JavaScript', aliases: ['Vanilla JavaScript'] },
+      { label: 'HTML / CSS', aliases: ['HTML', 'CSS'] }
+    ]
+  },
+  {
+    group: 'Frameworks & Libraries',
+    technologies: [
+      { label: 'React' },
+      { label: 'Vite' },
+      { label: 'Pandas' },
+      { label: 'Scikit-learn' },
+      { label: 'TensorFlow / Keras', aliases: ['TensorFlow', 'Keras'] },
+      { label: 'Konva.js' },
+      { label: 'Streamlit' }
+    ]
+  },
+  {
+    group: 'Data & Databases',
+    technologies: [
+      { label: 'PostgreSQL' },
+      { label: 'Excel' },
+      { label: 'Power BI' },
+      { label: 'Tableau' },
+      { label: 'TF-IDF' }
+    ]
+  },
+  {
+    group: 'APIs & Runtime',
+    technologies: [
+      { label: 'APIs' },
+      { label: 'REST APIs' },
+      { label: 'Node.js' },
+      { label: 'WebSocket', aliases: ['WebSocket relay'] }
+    ]
+  },
+  {
+    group: 'Cloud & Delivery',
+    technologies: [
+      { label: 'Docker' },
+      { label: 'GitHub Actions' },
+      { label: 'Render' },
+      { label: 'Vercel' },
+      { label: 'GitHub' },
+      { label: 'Git' },
+      { label: 'Linux' }
+    ]
+  }
+];
+
+const normalizeValue = (value) => value.trim().toLowerCase().replace(/\s+/g, ' ');
+
+const buildLookup = (taxonomy, fieldName) => {
+  const lookup = new Map();
+
+  for (const group of taxonomy) {
+    for (const item of group[fieldName]) {
+      const aliases = [item.label, ...(item.aliases ?? [])];
+      for (const alias of aliases) {
+        lookup.set(normalizeValue(alias), { group: group.group, label: item.label });
+      }
+    }
+  }
+
+  return lookup;
+};
+
+const collectGroupedValues = (projects, sourceKey, taxonomy, lookup) => {
+  const grouped = new Map(taxonomy.map((group) => [group.group, new Set()]));
+
+  for (const project of projects) {
+    const projectValues = project[sourceKey] ?? [];
+
+    for (const value of projectValues) {
+      const normalized = normalizeValue(value);
+      const match = lookup.get(normalized);
+
+      if (match) {
+        grouped.get(match.group).add(match.label);
+      }
+    }
+  }
+
+  return taxonomy
+    .map((group) => ({
+      group: group.group,
+      items: [...grouped.get(group.group)]
+    }))
+    .filter((group) => group.items.length > 0);
+};
 
 export const projectData = [
   {
@@ -52,7 +221,14 @@ export const projectData = [
     title: 'Sales Performance Dashboard',
     category: 'Data Analytics',
     summary: 'A stakeholder-friendly dashboard that tracks revenue, margin, and regional performance.',
-    techStack: ['SQL', 'Power BI', 'Excel', 'Data modeling'],
+    technologies: ['SQL', 'Power BI', 'Excel'],
+    capabilities: [
+      'Data Cleaning',
+      'Dashboard Design',
+      'KPI Reporting',
+      'Data Visualization',
+      'Stakeholder Communication'
+    ],
     demoUrl: 'https://example.com/demo',
     githubUrl: 'https://github.com/your-handle/sales-dashboard',
     reportUrl: 'https://example.com/report',
@@ -77,7 +253,15 @@ export const projectData = [
     title: 'Customer Churn Pipeline',
     category: 'Data Engineering',
     summary: 'An automated pipeline that prepares customer data and scores churn risk on a schedule.',
-    techStack: ['Python', 'Pandas', 'PostgreSQL', 'Docker', 'GitHub Actions'],
+    technologies: ['Python', 'Pandas', 'PostgreSQL', 'Docker', 'GitHub Actions'],
+    capabilities: [
+      'ETL Pipelines',
+      'Data Cleaning',
+      'Feature Engineering',
+      'Model Evaluation',
+      'Workflow Automation',
+      'Code Review'
+    ],
     demoUrl: 'https://example.com/demo',
     githubUrl: 'https://github.com/your-handle/churn-pipeline',
     reportUrl: 'https://example.com/report',
@@ -102,7 +286,14 @@ export const projectData = [
     title: 'Support Ticket Classifier',
     category: 'AI / ML',
     summary: 'A lightweight text classifier that routes support requests into priority categories.',
-    techStack: ['Python', 'Scikit-learn', 'TF-IDF', 'Streamlit'],
+    technologies: ['Python', 'Scikit-learn', 'TF-IDF', 'Streamlit'],
+    capabilities: [
+      'Model Evaluation',
+      'Feature Engineering',
+      'Prompt Engineering',
+      'Documentation',
+      'Stakeholder Communication'
+    ],
     demoUrl: 'https://example.com/demo',
     githubUrl: 'https://github.com/your-handle/ticket-classifier',
     reportUrl: 'https://example.com/report',
@@ -128,7 +319,15 @@ export const projectData = [
     category: 'Software Engineering',
     summary:
       'A collaborative infinite canvas mind-map application built with Vite, vanilla JavaScript, Konva.js, and a WebSocket relay server.',
-    techStack: ['Vite', 'Vanilla JavaScript', 'Konva.js', 'WebSocket relay', 'Render', 'Vercel'],
+    technologies: ['Vite', 'Vanilla JavaScript', 'Konva.js', 'WebSocket relay', 'Render', 'Vercel'],
+    capabilities: [
+      'Responsive UI',
+      'Real-time Collaboration',
+      'Deployment',
+      'Documentation',
+      'Project Scoping',
+      'Pull Requests'
+    ],
     demoUrl: 'https://infinite-canvas-studio.vercel.app',
     githubUrl: 'https://github.com/arhawk/CS61-3-USYD2026',
     backendHealthUrl: 'https://infinite-canvas-studio.onrender.com/health',
@@ -157,3 +356,20 @@ export const projectCategories = [
   'AI / ML',
   'Software Engineering'
 ];
+
+const capabilityLookup = buildLookup(capabilityTaxonomy, 'capabilities');
+const technologyLookup = buildLookup(technologyTaxonomy, 'technologies');
+
+export const capabilities = collectGroupedValues(
+  projectData,
+  'capabilities',
+  capabilityTaxonomy,
+  capabilityLookup
+);
+
+export const technologies = collectGroupedValues(
+  projectData,
+  'technologies',
+  technologyTaxonomy,
+  technologyLookup
+);

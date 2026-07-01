@@ -1,6 +1,12 @@
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { portfolio, projectCategories, projectData, skills } from './data/projects';
+import {
+  capabilities,
+  portfolio,
+  projectCategories,
+  projectData,
+  technologies
+} from './data/projects';
 
 function App() {
   return (
@@ -237,14 +243,8 @@ function ProjectDetailPage() {
         </article>
 
         <aside className="panel detail-side">
-          <h2>Tech Stack</h2>
-          <div className="tags">
-            {project.techStack.map((tech) => (
-              <span key={tech} className="tag">
-                {tech}
-              </span>
-            ))}
-          </div>
+          <TagSection title="Technologies Used" items={project.technologies} />
+          <TagSection title="Capabilities Demonstrated" items={project.capabilities} />
 
           <h2>Demo / Dashboard</h2>
           <div className="stack-links">
@@ -281,21 +281,11 @@ function ProjectDetailPage() {
 function SkillsPage() {
   return (
     <section className="page">
-      <h1>Skills</h1>
-      <p className="lead">A quick scan of the tools and methods I use most often.</p>
+      <h1>Capabilities &amp; Technologies</h1>
+      <p className="lead">A quick scan of the capabilities, tools, and platforms shown across the portfolio.</p>
       <div className="skill-grid">
-        {skills.map((group) => (
-          <article key={group.group} className="panel">
-            <h2>{group.group}</h2>
-            <div className="tags">
-              {group.items.map((item) => (
-                <span key={item} className="tag">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </article>
-        ))}
+        <SkillSection title="Capabilities" groups={capabilities} />
+        <SkillSection title="Technologies & Tools" groups={technologies} />
       </div>
     </section>
   );
@@ -357,20 +347,12 @@ function ProjectCard({ project }) {
       </div>
       <h3>{project.title}</h3>
       <p>{project.summary}</p>
-      <div className="tags">
-        {project.techStack.slice(0, 4).map((tech) => (
-          <span key={tech} className="tag">
-            {tech}
-          </span>
-        ))}
-      </div>
+      <TagSection title="Technologies Used" items={project.technologies.slice(0, 4)} compact />
+      <TagSection title="Capabilities Demonstrated" items={project.capabilities.slice(0, 4)} compact />
       <div className="card-actions">
         <Link className="text-link" to={`/projects/${project.slug}`}>
           View details
         </Link>
-        <a href={project.githubUrl} target="_blank" rel="noreferrer">
-          GitHub
-        </a>
       </div>
     </article>
   );
@@ -382,6 +364,51 @@ function DetailSection({ title, content }) {
       <h2>{title}</h2>
       <p>{content}</p>
     </section>
+  );
+}
+
+function TagSection({ title, items, compact = false }) {
+  if (!items || items.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className={compact ? 'mini-section' : 'detail-section'}>
+      <h2>{title}</h2>
+      <div className="tags">
+        {items.map((item) => (
+          <span key={item} className="tag">
+            {item}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function SkillSection({ title, groups }) {
+  if (!groups.length) {
+    return null;
+  }
+
+  return (
+    <article className="panel">
+      <h2>{title}</h2>
+      <div className="skill-groups">
+        {groups.map((group) => (
+          <section key={group.group} className="skill-group">
+            <h3>{group.group}</h3>
+            <div className="tags">
+              {group.items.map((item) => (
+                <span key={item} className="tag">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </article>
   );
 }
 
