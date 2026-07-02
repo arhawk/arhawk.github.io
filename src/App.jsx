@@ -1,16 +1,58 @@
-import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom';
 import {
   capabilities,
   capabilityProjectMatches,
   foundations,
   foundationProjectMatches,
+  getProjectTagLabels,
   portfolio,
-  projectCategories,
   projectData,
+  tagSectionTitles,
   technologies,
   technologyProjectMatches
 } from './data/projects';
+
+const featuredProject = projectData[0];
+const projectTagMatches = {
+  capabilities: capabilityProjectMatches,
+  technologies: technologyProjectMatches,
+  foundations: foundationProjectMatches
+};
+
+function useTagMatchesModal() {
+  const [activeTag, setActiveTag] = useState(null);
+
+  useEffect(() => {
+    if (!activeTag) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [activeTag]);
+
+  const handleTagClick = (sectionKey, label) => {
+    setActiveTag((current) =>
+      current?.sectionKey === sectionKey && current?.label === label ? null : { sectionKey, label }
+    );
+  };
+
+  const activeProjects = activeTag
+    ? projectTagMatches[activeTag.sectionKey]?.get(activeTag.label) ?? []
+    : [];
+
+  return {
+    activeTag,
+    activeProjects,
+    handleTagClick,
+    closeTag: () => setActiveTag(null)
+  };
+}
 
 function App() {
   return (
@@ -52,25 +94,24 @@ function App() {
 }
 
 function HomePage() {
-  const featured = projectData.slice(0, 3);
-
   return (
     <>
       <section className="hero">
-        <div>
-          <p className="eyebrow">English Resume Portfolio</p>
-          <h1>Engineering-first, product-aware, and practical with data and AI.</h1>
+        <div className="hero-copy">
+          <p className="eyebrow">Portfolio</p>
+          <h1>Practical data and software work, built with evidence and clarity.</h1>
           <p className="lead">{portfolio.summary}</p>
           <div className="actions">
             <Link className="button primary" to="/projects">
-              View Projects
+              View Featured Project
             </Link>
             <Link className="button" to="/contact">
               Contact
             </Link>
           </div>
         </div>
-        <aside className="panel">
+
+        <aside className="panel profile-card">
           <h2>Quick Profile</h2>
           <ul className="facts">
             <li>
@@ -78,12 +119,12 @@ function HomePage() {
               <strong>{portfolio.location}</strong>
             </li>
             <li>
-              <span>Education</span>
-              <strong>{portfolio.education[0].title}</strong>
+              <span>Current Focus</span>
+              <strong>Applied data, AI, and software delivery</strong>
             </li>
             <li>
-              <span>Strengths</span>
-              <strong>Fast learning, structured analysis, reliable execution</strong>
+              <span>Working Style</span>
+              <strong>Structured, responsive, and maintainable</strong>
             </li>
           </ul>
         </aside>
@@ -91,19 +132,28 @@ function HomePage() {
 
       <section className="section">
         <div className="section-head">
-          <h2>Featured Projects</h2>
-          <Link to="/projects">All projects</Link>
+          <div>
+            <p className="eyebrow">Selected work</p>
+            <h2>One public project, presented cleanly.</h2>
+          </div>
+          <Link to="/projects">Open project detail</Link>
         </div>
         <div className="grid">
-          {featured.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
+          <ProjectCard project={featuredProject} />
         </div>
       </section>
 
       <section className="two-col">
         <div className="panel">
-          <h2>Education Snapshot</h2>
+          <h2>What this portfolio emphasizes</h2>
+          <ul className="list">
+            <li>Clear problem framing before implementation.</li>
+            <li>Visible project evidence instead of filler content.</li>
+            <li>Route pages with distinct roles so each page adds information.</li>
+          </ul>
+        </div>
+        <div className="panel">
+          <h2>Education</h2>
           <ul className="list">
             {portfolio.education.map((item) => (
               <li key={`${item.org}-${item.period}`}>
@@ -116,14 +166,6 @@ function HomePage() {
             ))}
           </ul>
         </div>
-        <div className="panel">
-          <h2>Core Strengths</h2>
-          <ul className="list">
-            {portfolio.uniqueStrengths.slice(0, 3).map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
       </section>
     </>
   );
@@ -132,23 +174,45 @@ function HomePage() {
 function AboutPage() {
   return (
     <section className="page">
-      <h1>About</h1>
-      <p className="lead">{portfolio.about}</p>
-      <div className="two-col">
+      <p className="eyebrow">About</p>
+      <h1>Identity, working style, and the kind of problems I like to solve.</h1>
+      <p className="lead">
+        {portfolio.about}
+      </p>
+
+      <div className="resume-stack">
         <div className="panel">
-          <h2>Snapshot</h2>
+          <h2>Identity</h2>
           <ul className="list">
-            <li>Based in Sydney and focused on data, AI, and software work.</li>
-            <li>I like building practical systems that are easy to understand and maintain.</li>
-            <li>I care about both implementation quality and the user experience around it.</li>
+            <li>Early-career technical professional focused on data, AI, and software delivery.</li>
+            <li>Comfortable moving between implementation details and product framing.</li>
+            <li>Interested in practical work that is useful to users, not just technically complete.</li>
           </ul>
         </div>
+        <div className="two-col">
+          <div className="panel">
+            <h2>Working Style</h2>
+            <ul className="list">
+              <li>I turn ambiguity into a concrete plan, then execute against it.</li>
+              <li>I value maintainability, testing, and clear documentation.</li>
+              <li>I prefer small, understandable systems that can be reviewed easily.</li>
+            </ul>
+          </div>
+          <div className="panel">
+            <h2>Current Focus</h2>
+            <ul className="list">
+              <li>Deepening applied data and AI capability.</li>
+              <li>Building a stronger evidence trail across projects and resumes.</li>
+              <li>Improving collaboration habits across technical and non-technical contexts.</li>
+            </ul>
+          </div>
+        </div>
         <div className="panel">
-          <h2>Current Focus</h2>
+          <h2>What differentiates me</h2>
           <ul className="list">
-            <li>Strengthening data science, AI, and software engineering skills.</li>
-            <li>Building portfolio projects that show real technical execution.</li>
-            <li>Preparing for graduate roles and junior opportunities in applied tech.</li>
+            <li>I connect engineering work to business and user outcomes.</li>
+            <li>I can move quickly without losing the structure needed for reliable delivery.</li>
+            <li>I use AI-assisted tools, but I still validate the output and keep the result explainable.</li>
           </ul>
         </div>
       </div>
@@ -159,12 +223,13 @@ function AboutPage() {
 function ResumePage() {
   return (
     <section className="page">
-      <h1>Resume</h1>
+      <p className="eyebrow">Resume</p>
+      <h1>Structured summary for recruiter review.</h1>
       <p className="lead">
-        Education, self-evaluation, unique strengths, and a concise professional summary.
+        The sections below keep the content compact while preserving the main evidence points.
       </p>
 
-      <div className="timeline">
+      <div className="resume-stack">
         <div className="panel">
           <h2>Professional Summary</h2>
           <p>{portfolio.summary}</p>
@@ -174,32 +239,50 @@ function ResumePage() {
             ))}
           </ul>
         </div>
-        <div className="panel">
-          <h2>Education</h2>
-          {portfolio.education.map((item) => (
-            <article key={`${item.org}-${item.period}`} className="resume-item">
-              <span>{item.period}</span>
-              <h3>{item.title}</h3>
-              <p>{item.org}</p>
-              <small>{item.notes}</small>
-            </article>
-          ))}
-        </div>
-        <div className="panel">
-          <h2>Self-Evaluation</h2>
-          <ul className="list">
-            {portfolio.selfEvaluation.map((item) => (
-              <li key={item}>{item}</li>
+
+        <div className="two-col">
+          <div className="panel">
+            <h2>Education</h2>
+            {portfolio.education.map((item) => (
+              <article key={`${item.org}-${item.period}`} className="resume-item">
+                <span>{item.period}</span>
+                <h3>{item.title}</h3>
+                <p>{item.org}</p>
+                <small>{item.notes}</small>
+              </article>
             ))}
-          </ul>
-        </div>
-        <div className="panel">
-          <h2>Unique Strengths</h2>
-          <ul className="list">
-            {portfolio.uniqueStrengths.map((item) => (
-              <li key={item}>{item}</li>
+          </div>
+
+          <div className="panel">
+            <h2>Project Experience</h2>
+            {projectData.map((project) => (
+              <article key={project.slug} className="resume-item">
+                <span>{project.category}</span>
+                <h3>{project.title}</h3>
+                <p>{project.projectType}</p>
+                <small>{project.myContribution}</small>
+              </article>
             ))}
-          </ul>
+          </div>
+        </div>
+
+        <div className="two-col">
+          <div className="panel">
+            <h2>Technical Focus</h2>
+            <ul className="list">
+              <li>Data analysis, dashboarding, and reporting.</li>
+              <li>Applied AI and machine learning workflows.</li>
+              <li>Web application architecture and collaborative interfaces.</li>
+            </ul>
+          </div>
+          <div className="panel">
+            <h2>Professional Strengths</h2>
+            <ul className="list">
+              {portfolio.uniqueStrengths.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -207,37 +290,21 @@ function ResumePage() {
 }
 
 function ProjectsPage() {
-  const [activeCategory, setActiveCategory] = useState('All');
-  const visibleProjects =
-    activeCategory === 'All'
-      ? projectData
-      : projectData.filter((project) => project.category === activeCategory);
-
   return (
     <section className="page">
       <div className="section-head">
         <div>
-          <h1>Projects</h1>
-          <p className="lead">Simple cards first, with detail pages for deeper review.</p>
+          <p className="eyebrow">Projects</p>
+          <h1>Public project evidence.</h1>
+          <p className="lead">
+            The site now presents the one public project directly, rather than padding the page
+            with template examples.
+          </p>
         </div>
       </div>
 
-      <div className="chips" aria-label="Project categories">
-        {projectCategories.map((category) => (
-          <button
-            key={category}
-            type="button"
-            className={`chip chip-button ${activeCategory === category ? 'active' : ''}`}
-            onClick={() => setActiveCategory(category)}
-            aria-pressed={activeCategory === category}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-
       <div className="grid">
-        {visibleProjects.map((project) => (
+        {projectData.map((project) => (
           <ProjectCard key={project.slug} project={project} />
         ))}
       </div>
@@ -248,6 +315,7 @@ function ProjectsPage() {
 function ProjectDetailPage() {
   const { slug } = useParams();
   const project = projectData.find((item) => item.slug === slug);
+  const { activeTag, activeProjects, handleTagClick, closeTag } = useTagMatchesModal();
 
   if (!project) {
     return (
@@ -261,6 +329,12 @@ function ProjectDetailPage() {
     );
   }
 
+  const links = [
+    { href: project.githubUrl, label: 'GitHub repo' },
+    { href: project.demoUrl, label: 'Live demo' },
+    { href: project.backendHealthUrl, label: 'Backend health' }
+  ].filter((link) => Boolean(link.href));
+
   return (
     <section className="page">
       <p className="eyebrow">{project.category}</p>
@@ -269,116 +343,134 @@ function ProjectDetailPage() {
 
       <div className="detail-grid">
         <article className="panel detail-main">
-          {project.projectType ? <DetailSection title="Project Type" content={project.projectType} /> : null}
-          {project.myContribution ? (
-            <DetailSection title="My Contribution" content={project.myContribution} />
-          ) : null}
+          <DetailSection title="Project Type" content={project.projectType} />
+          <DetailSection title="My Contribution" content={project.myContribution} />
           <DetailSection title="Problem" content={project.problem} />
           <DetailSection title="What I Built" content={project.whatBuilt} />
           <DetailSection title="Data & Methods" content={project.dataMethods} />
-          {project.engineeringHighlights ? (
-            <DetailSection title="Engineering Highlights" content={project.engineeringHighlights} />
-          ) : null}
+          <DetailSection title="Engineering Highlights" content={project.engineeringHighlights} />
           <DetailSection title="Results" content={project.results} />
-          <DetailSection title="Limitations & Next Steps" content={`${project.limitations} ${project.nextSteps}`} />
-          <DetailSection title="GitHub Repo / Reproducibility" content={project.reproducibility} />
+          <DetailSection title="Limitations" content={project.limitations} />
+          <DetailSection title="Next Steps" content={project.nextSteps} />
+          <DetailSection title="Reproducibility" content={project.reproducibility} />
         </article>
 
         <aside className="panel detail-side">
-          <TagSection title="Technologies Used" items={project.technologies} />
-          <TagSection title="Capabilities Demonstrated" items={project.capabilities} />
-          <TagSection title="Foundations" items={project.foundations} />
+          <TagSection
+            title="Capabilities"
+            sectionKey="capabilities"
+            items={getProjectTagLabels(project, 'capabilities')}
+            onTagClick={handleTagClick}
+            activeTag={activeTag}
+          />
+          <TagSection
+            title="Technologies"
+            sectionKey="technologies"
+            items={getProjectTagLabels(project, 'technologies')}
+            onTagClick={handleTagClick}
+            activeTag={activeTag}
+          />
+          <TagSection
+            title="Foundations"
+            sectionKey="foundations"
+            items={getProjectTagLabels(project, 'foundations')}
+            onTagClick={handleTagClick}
+            activeTag={activeTag}
+          />
 
-          <h2>Demo / Dashboard</h2>
+          <h2>Links</h2>
           <div className="stack-links">
-            {[
-              project.demoUrl && { href: project.demoUrl, label: 'Open demo' },
-              project.githubUrl && { href: project.githubUrl, label: 'View GitHub' },
-              project.reportUrl && { href: project.reportUrl, label: 'Report' }
-            ]
-              .filter(Boolean)
-              .map((link) => (
-                <a key={link.label} href={link.href} target="_blank" rel="noreferrer">
-                  {link.label}
-                </a>
-              ))}
+            {links.map((link) => (
+              <a key={link.label} href={link.href} target="_blank" rel="noreferrer">
+                {link.label}
+              </a>
+            ))}
           </div>
 
           <h2>Status</h2>
           <p>{project.status}</p>
         </aside>
       </div>
+
+      {activeTag ? (
+        <TagProjectsModal
+          tag={activeTag.label}
+          sectionTitle={tagSectionTitles[activeTag.sectionKey]}
+          projects={activeProjects}
+          onClose={closeTag}
+        />
+      ) : null}
     </section>
   );
 }
 
 function SkillsPage() {
-  const [activeTag, setActiveTag] = useState(null);
-  const skillProjectMatches = {
-    capabilities: capabilityProjectMatches,
-    technologies: technologyProjectMatches,
-    foundations: foundationProjectMatches
-  };
-  const sectionTitles = {
-    capabilities: 'Project Capabilities',
-    technologies: 'Project Technologies',
-    foundations: 'Broader Skills & Foundations'
-  };
-
-  useEffect(() => {
-    if (!activeTag) {
-      return undefined;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [activeTag]);
-
-  const handleTagClick = (sectionKey, label) => {
-    setActiveTag((current) =>
-      current?.sectionKey === sectionKey && current?.label === label ? null : { sectionKey, label }
-    );
-  };
-
-  const activeProjects = activeTag ? skillProjectMatches[activeTag.sectionKey].get(activeTag.label) ?? [] : [];
+  const { activeTag, activeProjects, handleTagClick, closeTag } = useTagMatchesModal();
 
   return (
     <section className="page">
-      <h1>Skills</h1>
+      <p className="eyebrow">Skills</p>
+      <h1>Evidence-led skills, grouped by how they show up in the public project.</h1>
       <p className="lead">
-        Project evidence first. Click any tag to see the projects that use it, with supporting
-        technologies and broader foundations grouped underneath for a cleaner portfolio view.
+        Click any tag to see the project that demonstrates it. The lists below are derived only
+        from visible project data.
       </p>
+
       <div className="skill-grid">
         <SkillSection
-          title="Project Capabilities"
+          title="Capabilities"
           groups={capabilities}
           sectionKey="capabilities"
           onTagClick={handleTagClick}
+          activeTag={activeTag}
         />
         <SkillSection
-          title="Project Technologies"
+          title="Technologies"
           groups={technologies}
           sectionKey="technologies"
           onTagClick={handleTagClick}
+          activeTag={activeTag}
         />
         <SkillSection
-          title="Broader Skills &amp; Foundations"
+          title="Foundations"
           groups={foundations}
           sectionKey="foundations"
           onTagClick={handleTagClick}
+          activeTag={activeTag}
         />
       </div>
+
+      <div className="two-col">
+        <div className="panel">
+          <h2>Additional Academic Background</h2>
+          <ul className="list">
+            {portfolio.education.map((item) => (
+              <li key={`${item.org}-${item.period}`}>
+                <strong>{item.title}</strong>
+                <div>
+                  {item.org} | {item.period}
+                </div>
+                <small>{item.notes}</small>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="panel">
+          <h2>How to read this page</h2>
+          <ul className="list">
+            <li>Capabilities show what the project evidence supports.</li>
+            <li>Technologies show the tools used in the project.</li>
+            <li>Foundations show the underlying concepts demonstrated by the work.</li>
+          </ul>
+        </div>
+      </div>
+
       {activeTag ? (
         <TagProjectsModal
           tag={activeTag.label}
-          sectionTitle={sectionTitles[activeTag.sectionKey]}
+          sectionTitle={tagSectionTitles[activeTag.sectionKey]}
           projects={activeProjects}
-          onClose={() => setActiveTag(null)}
+          onClose={closeTag}
         />
       ) : null}
     </section>
@@ -388,10 +480,13 @@ function SkillsPage() {
 function ContactPage() {
   return (
     <section className="page">
-      <h1>Contact</h1>
+      <p className="eyebrow">Contact</p>
+      <h1>Recruiter-friendly contact details.</h1>
       <p className="lead">
-        Best for graduate roles, internships, and opportunities in AI, data science, software, or cybersecurity.
+        Best for graduate roles, internships, and junior opportunities in AI, data science, and
+        software.
       </p>
+
       <div className="two-col">
         <div className="panel">
           <h2>Reach me at</h2>
@@ -408,10 +503,11 @@ function ContactPage() {
           </ul>
         </div>
         <div className="panel">
-          <h2>Open To</h2>
+          <h2>What I am open to</h2>
           <ul className="list">
-            <li>Graduate roles, internships, and junior software, data, or AI opportunities.</li>
-            <li>Project collaborations, technical discussions, and role referrals.</li>
+            <li>Graduate and junior roles in software, data, and applied AI.</li>
+            <li>Project work with clear scope, feedback loops, and delivery expectations.</li>
+            <li>Technical conversations with hiring teams and recruiters.</li>
           </ul>
         </div>
       </div>
@@ -432,6 +528,8 @@ function NotFoundPage() {
 }
 
 function ProjectCard({ project }) {
+  const { activeTag, activeProjects, handleTagClick, closeTag } = useTagMatchesModal();
+
   return (
     <article className="card">
       <div className="card-head">
@@ -440,18 +538,44 @@ function ProjectCard({ project }) {
       </div>
       <h3>{project.title}</h3>
       <p>{project.summary}</p>
-      <TagSection title="Technologies Used" items={project.technologies.slice(0, 4)} compact />
-      <TagSection title="Capabilities Demonstrated" items={project.capabilities.slice(0, 4)} compact />
+      <TagSection
+        title="Technologies"
+        sectionKey="technologies"
+        items={getProjectTagLabels(project, 'technologies').slice(0, 4)}
+        compact
+        onTagClick={handleTagClick}
+        activeTag={activeTag}
+      />
+      <TagSection
+        title="Capabilities"
+        sectionKey="capabilities"
+        items={getProjectTagLabels(project, 'capabilities').slice(0, 4)}
+        compact
+        onTagClick={handleTagClick}
+        activeTag={activeTag}
+      />
       <div className="card-actions">
         <Link className="text-link" to={`/projects/${project.slug}`}>
           View details
         </Link>
       </div>
+      {activeTag ? (
+        <TagProjectsModal
+          tag={activeTag.label}
+          sectionTitle={tagSectionTitles[activeTag.sectionKey]}
+          projects={activeProjects}
+          onClose={closeTag}
+        />
+      ) : null}
     </article>
   );
 }
 
 function DetailSection({ title, content }) {
+  if (!content) {
+    return null;
+  }
+
   return (
     <section className="detail-section">
       <h2>{title}</h2>
@@ -460,7 +584,46 @@ function DetailSection({ title, content }) {
   );
 }
 
-function TagSection({ title, items, compact = false }) {
+function TagCloud({ items, sectionKey, onTagClick, activeTag }) {
+  return (
+    <div className="tags">
+      {items.map((item) => {
+        if (!onTagClick) {
+          return (
+            <span key={item} className="tag">
+              {item}
+            </span>
+          );
+        }
+
+        const isActive = activeTag?.sectionKey === sectionKey && activeTag?.label === item;
+
+        return (
+          <button
+            key={item}
+            type="button"
+            className={`tag tag-button${isActive ? ' active' : ''}`}
+            onClick={() => onTagClick(sectionKey, item)}
+            aria-haspopup="dialog"
+            aria-pressed={isActive}
+            aria-label={`Show projects with ${item}`}
+          >
+            {item}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function TagSection({
+  title,
+  sectionKey,
+  items,
+  compact = false,
+  onTagClick,
+  activeTag
+}) {
   if (!items || items.length === 0) {
     return null;
   }
@@ -468,13 +631,12 @@ function TagSection({ title, items, compact = false }) {
   return (
     <section className={compact ? 'mini-section' : 'detail-section'}>
       <h2>{title}</h2>
-      <div className="tags">
-        {items.map((item) => (
-          <span key={item} className="tag">
-            {item}
-          </span>
-        ))}
-      </div>
+      <TagCloud
+        items={items}
+        sectionKey={sectionKey}
+        onTagClick={onTagClick}
+        activeTag={activeTag}
+      />
     </section>
   );
 }
@@ -526,7 +688,7 @@ function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
       >
         <div className="modal-header">
           <div>
-            <p className="eyebrow">Skill matches</p>
+            <p className="eyebrow">Tag matches</p>
             <h2 id="tag-projects-title">{tag}</h2>
             <p id="tag-projects-summary" className="modal-summary">
               {sectionTitle} · {projects.length} project{projects.length === 1 ? '' : 's'}
@@ -559,7 +721,7 @@ function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
   );
 }
 
-function SkillSection({ title, groups, sectionKey, onTagClick }) {
+function SkillSection({ title, groups, sectionKey, onTagClick, activeTag }) {
   if (!groups.length) {
     return null;
   }
@@ -571,20 +733,12 @@ function SkillSection({ title, groups, sectionKey, onTagClick }) {
         {groups.map((group) => (
           <section key={group.group} className="skill-group">
             <h3>{group.group}</h3>
-            <div className="tags">
-              {group.items.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  className="tag tag-button"
-                  onClick={() => onTagClick(sectionKey, item)}
-                  aria-haspopup="dialog"
-                  aria-label={`Show projects with ${item}`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
+            <TagCloud
+              items={group.items}
+              sectionKey={sectionKey}
+              onTagClick={onTagClick}
+              activeTag={activeTag}
+            />
           </section>
         ))}
       </div>

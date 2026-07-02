@@ -131,6 +131,16 @@ button:focus-visible {
   align-items: stretch;
 }
 
+.hero-copy {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.profile-card {
+  align-self: stretch;
+}
+
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -254,13 +264,14 @@ button {
 .skill-grid,
 .two-col,
 .detail-grid,
-.timeline {
+.timeline,
+.resume-stack {
   display: grid;
   gap: 18px;
 }
 
 .grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .two-col {
@@ -276,6 +287,10 @@ button {
 }
 
 .timeline {
+  grid-template-columns: 1fr;
+}
+
+.resume-stack {
   grid-template-columns: 1fr;
 }
 
@@ -329,6 +344,12 @@ button {
   border-color: var(--accent);
 }
 
+.tag-button.active {
+  background: var(--text);
+  color: #fff;
+  border-color: var(--text);
+}
+
 .chip-button {
   border: 1px solid var(--border);
 }
@@ -379,6 +400,11 @@ button {
   display: grid;
   gap: 18px;
   align-content: start;
+}
+
+.detail-main {
+  display: grid;
+  gap: 0;
 }
 
 .modal-backdrop {
