@@ -180,6 +180,10 @@ button {
   font-weight: 600;
 }
 
+.stack-links {
+  align-items: flex-start;
+}
+
 .button.primary {
   background: var(--text);
   color: #fff;

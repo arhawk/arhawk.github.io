@@ -288,26 +288,17 @@ function ProjectDetailPage() {
 
           <h2>Demo / Dashboard</h2>
           <div className="stack-links">
-            {project.demoUrl ? (
-              <a href={project.demoUrl} target="_blank" rel="noreferrer">
-                Open demo
-              </a>
-            ) : null}
-            {project.backendHealthUrl ? (
-              <a href={project.backendHealthUrl} target="_blank" rel="noreferrer">
-                Backend health
-              </a>
-            ) : null}
-            {project.reportUrl ? (
-              <a href={project.reportUrl} target="_blank" rel="noreferrer">
-                Read report
-              </a>
-            ) : null}
-            {project.githubUrl ? (
-              <a href={project.githubUrl} target="_blank" rel="noreferrer">
-                View GitHub
-              </a>
-            ) : null}
+            {[
+              project.demoUrl && { href: project.demoUrl, label: 'Open demo' },
+              project.githubUrl && { href: project.githubUrl, label: 'View GitHub' },
+              project.reportUrl && { href: project.reportUrl, label: 'Report' }
+            ]
+              .filter(Boolean)
+              .map((link) => (
+                <a key={link.label} href={link.href} target="_blank" rel="noreferrer">
+                  {link.label}
+                </a>
+              ))}
           </div>
 
           <h2>Status</h2>
