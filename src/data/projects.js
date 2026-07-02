@@ -209,6 +209,34 @@ const collectGroupedValues = (projects, sourceKey, taxonomy, lookup) => {
     .filter((group) => group.items.length > 0);
 };
 
+const collectProjectMatches = (projects, sourceKey, taxonomy, lookup) => {
+  const grouped = new Map();
+
+  for (const project of projects) {
+    const projectValues = project[sourceKey] ?? [];
+    const matchedLabels = new Set();
+
+    for (const value of projectValues) {
+      const normalized = normalizeValue(value);
+      const match = lookup.get(normalized);
+
+      if (match) {
+        matchedLabels.add(match.label);
+      }
+    }
+
+    for (const label of matchedLabels) {
+      if (!grouped.has(label)) {
+        grouped.set(label, []);
+      }
+
+      grouped.get(label).push(project);
+    }
+  }
+
+  return grouped;
+};
+
 export const projectData = [
   {
     slug: 'infinite-canvas-studio',
@@ -386,6 +414,27 @@ export const technologies = collectGroupedValues(
 );
 
 export const foundations = collectGroupedValues(
+  projectData,
+  'foundations',
+  foundationsTaxonomy,
+  foundationLookup
+);
+
+export const capabilityProjectMatches = collectProjectMatches(
+  projectData,
+  'capabilities',
+  capabilityTaxonomy,
+  capabilityLookup
+);
+
+export const technologyProjectMatches = collectProjectMatches(
+  projectData,
+  'technologies',
+  technologyTaxonomy,
+  technologyLookup
+);
+
+export const foundationProjectMatches = collectProjectMatches(
   projectData,
   'foundations',
   foundationsTaxonomy,

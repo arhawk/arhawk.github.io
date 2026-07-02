@@ -1,12 +1,15 @@
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   capabilities,
+  capabilityProjectMatches,
   foundations,
+  foundationProjectMatches,
   portfolio,
   projectCategories,
   projectData,
-  technologies
+  technologies,
+  technologyProjectMatches
 } from './data/projects';
 
 function App() {
@@ -310,18 +313,74 @@ function ProjectDetailPage() {
 }
 
 function SkillsPage() {
+  const [activeTag, setActiveTag] = useState(null);
+  const skillProjectMatches = {
+    capabilities: capabilityProjectMatches,
+    technologies: technologyProjectMatches,
+    foundations: foundationProjectMatches
+  };
+  const sectionTitles = {
+    capabilities: 'Project Capabilities',
+    technologies: 'Project Technologies',
+    foundations: 'Broader Skills & Foundations'
+  };
+
+  useEffect(() => {
+    if (!activeTag) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [activeTag]);
+
+  const handleTagClick = (sectionKey, label) => {
+    setActiveTag((current) =>
+      current?.sectionKey === sectionKey && current?.label === label ? null : { sectionKey, label }
+    );
+  };
+
+  const activeProjects = activeTag ? skillProjectMatches[activeTag.sectionKey].get(activeTag.label) ?? [] : [];
+
   return (
     <section className="page">
       <h1>Skills</h1>
       <p className="lead">
-        Project evidence first, with supporting technologies and broader foundations grouped
-        underneath for a cleaner portfolio view.
+        Project evidence first. Click any tag to see the projects that use it, with supporting
+        technologies and broader foundations grouped underneath for a cleaner portfolio view.
       </p>
       <div className="skill-grid">
-        <SkillSection title="Project Capabilities" groups={capabilities} />
-        <SkillSection title="Project Technologies" groups={technologies} />
-        <SkillSection title="Broader Skills &amp; Foundations" groups={foundations} />
+        <SkillSection
+          title="Project Capabilities"
+          groups={capabilities}
+          sectionKey="capabilities"
+          onTagClick={handleTagClick}
+        />
+        <SkillSection
+          title="Project Technologies"
+          groups={technologies}
+          sectionKey="technologies"
+          onTagClick={handleTagClick}
+        />
+        <SkillSection
+          title="Broader Skills &amp; Foundations"
+          groups={foundations}
+          sectionKey="foundations"
+          onTagClick={handleTagClick}
+        />
       </div>
+      {activeTag ? (
+        <TagProjectsModal
+          tag={activeTag.label}
+          sectionTitle={sectionTitles[activeTag.sectionKey]}
+          projects={activeProjects}
+          onClose={() => setActiveTag(null)}
+        />
+      ) : null}
     </section>
   );
 }
@@ -420,7 +479,87 @@ function TagSection({ title, items, compact = false }) {
   );
 }
 
-function SkillSection({ title, groups }) {
+function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
+  const closeButtonRef = useRef(null);
+  const lastFocusedElementRef = useRef(null);
+
+  useEffect(() => {
+    lastFocusedElementRef.current = document.activeElement;
+    closeButtonRef.current?.focus();
+
+    return () => {
+      if (lastFocusedElementRef.current instanceof HTMLElement) {
+        lastFocusedElementRef.current.focus();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
+  const handleBackdropClick = (event) => {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  };
+
+  return (
+    <div className="modal-backdrop" onClick={handleBackdropClick}>
+      <div
+        className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tag-projects-title"
+        aria-describedby="tag-projects-summary"
+      >
+        <div className="modal-header">
+          <div>
+            <p className="eyebrow">Skill matches</p>
+            <h2 id="tag-projects-title">{tag}</h2>
+            <p id="tag-projects-summary" className="modal-summary">
+              {sectionTitle} · {projects.length} project{projects.length === 1 ? '' : 's'}
+            </p>
+          </div>
+          <button ref={closeButtonRef} type="button" className="modal-close" onClick={onClose}>
+            Close
+          </button>
+        </div>
+
+        {projects.length ? (
+          <ul className="modal-list">
+            {projects.map((project) => (
+              <li key={project.slug} className="modal-item">
+                <div>
+                  <h3>{project.title}</h3>
+                  <p>{project.category}</p>
+                </div>
+                <Link className="text-link modal-link" to={`/projects/${project.slug}`}>
+                  View project
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="modal-empty">No projects matched this tag.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SkillSection({ title, groups, sectionKey, onTagClick }) {
   if (!groups.length) {
     return null;
   }
@@ -434,9 +573,16 @@ function SkillSection({ title, groups }) {
             <h3>{group.group}</h3>
             <div className="tags">
               {group.items.map((item) => (
-                <span key={item} className="tag">
+                <button
+                  key={item}
+                  type="button"
+                  className="tag tag-button"
+                  onClick={() => onTagClick(sectionKey, item)}
+                  aria-haspopup="dialog"
+                  aria-label={`Show projects with ${item}`}
+                >
                   {item}
-                </span>
+                </button>
               ))}
             </div>
           </section>
