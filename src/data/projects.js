@@ -103,6 +103,7 @@ export const technologyTaxonomy = [
       { label: 'JavaScript', aliases: ['Vanilla JavaScript'] },
       { label: 'HTML / CSS', aliases: ['HTML', 'CSS'] },
       { label: 'Node.js' },
+      { label: 'MQTT' },
       { label: 'WebSocket', aliases: ['WebSocket relay'] },
       { label: 'Pandas' },
       { label: 'Scikit-learn' },
@@ -244,6 +245,52 @@ const sectionLookups = {
 };
 
 export const projectData = [
+  {
+    slug: 'nem-monitoring-dashboard',
+    title: 'NEM Monitoring Dashboard',
+    category: 'Data Engineering',
+    summary:
+      'A near-real-time electricity monitoring dashboard that prepares CSV data, publishes updates over MQTT, and renders live facility metrics in Streamlit.',
+    technologies: ['Python', 'Pandas', 'MQTT', 'Streamlit', 'Docker', 'GitHub Actions', 'Render'],
+    capabilities: [
+      'Data Cleaning',
+      'Dashboard Design',
+      'Data Visualization',
+      'Workflow Automation',
+      'Deployment',
+      'Documentation',
+      'Testing',
+      'Stakeholder Communication'
+    ],
+    foundations: [
+      'ETL Fundamentals',
+      'Event-Driven Systems',
+      'Data Modeling',
+      'Version Control'
+    ],
+    demoUrl: 'https://nem-monitoring-dashboard.onrender.com/',
+    githubUrl: 'https://github.com/arhawk/NEM-Monitoring-Dashboard',
+    status: 'Complete',
+    problem:
+      'The project needed a reliable way to take raw NEM electricity data, clean it, publish it as a live stream, and keep the dashboard responsive without depending on a durable database.',
+    whatBuilt:
+      'I built a full local-to-cloud pipeline with CSV preparation, MQTT publishing, an in-memory dashboard cache, and a Streamlit interface for summary cards, trend lines, maps, and tables.',
+    dataMethods:
+      'The pipeline fetches and normalizes facility and market data, preserves missing optional values as missing, and separates data preparation from live dashboard rendering so each stage stays testable.',
+    results:
+      'The dashboard presents live facility updates with stable local and Render deployment paths, plus a fallback replay mode when the stream is stale or unavailable.',
+    limitations:
+      'The live cache is in-memory rather than persistent, so it is designed for monitoring and demo use instead of long-term historical storage.',
+    nextSteps:
+      'Add durable storage, richer alerting, and stronger operational monitoring for longer-running deployments.',
+    reproducibility:
+      'The repository includes the publisher, dashboard, broker configuration, deployment notes, and the data-processing documentation needed to reproduce the flow.',
+    projectType: 'Applied data systems project',
+    myContribution:
+      'I designed and implemented the ingestion, publishing, and dashboard layers, then documented the deployment and fallback behavior.',
+    engineeringHighlights:
+      'Key engineering work included MQTT topic design, bounded in-memory caching, conditional fallback replay, Streamlit rendering, and a separation between local broker mode and the Render deployment path.'
+  },
   {
     slug: 'infinite-canvas-studio',
     title: 'Infinite Canvas Studio',

@@ -13,7 +13,6 @@ import {
   technologyProjectMatches
 } from './data/projects';
 
-const featuredProject = projectData[0];
 const projectTagMatches = {
   capabilities: capabilityProjectMatches,
   technologies: technologyProjectMatches,
@@ -94,6 +93,8 @@ function App() {
 }
 
 function HomePage() {
+  const featuredProjects = projectData.slice(0, 2);
+
   return (
     <>
       <section className="hero">
@@ -134,12 +135,15 @@ function HomePage() {
         <div className="section-head">
           <div>
             <p className="eyebrow">Selected work</p>
-            <h2>One public project, presented cleanly.</h2>
+            <h2>Featured work, presented cleanly.</h2>
           </div>
-          <Link to="/projects">Open project detail</Link>
+          <Link to="/projects">Browse projects</Link>
         </div>
-        <div className="grid">
-          <ProjectCard project={featuredProject} />
+        <div className="featured-grid">
+          {featuredProjects.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
+          <MoreProjectsCard />
         </div>
       </section>
 
@@ -297,8 +301,7 @@ function ProjectsPage() {
           <p className="eyebrow">Projects</p>
           <h1>Public project evidence.</h1>
           <p className="lead">
-            The site now presents the one public project directly, rather than padding the page
-            with template examples.
+            The site presents the featured project first, with supporting project evidence below.
           </p>
         </div>
       </div>
@@ -567,6 +570,27 @@ function ProjectCard({ project }) {
           onClose={closeTag}
         />
       ) : null}
+    </article>
+  );
+}
+
+function MoreProjectsCard() {
+  return (
+    <article className="card card-placeholder">
+      <div className="card-head">
+        <span className="chip">More work</span>
+        <span className="status">Reserved</span>
+      </div>
+      <h3>Third project slot</h3>
+      <p>
+        This space is ready for the next project, so the home page can stay balanced with three
+        columns instead of leaving a blank gap.
+      </p>
+      <div className="card-actions">
+        <Link className="text-link" to="/projects">
+          Browse all projects
+        </Link>
+      </div>
     </article>
   );
 }
