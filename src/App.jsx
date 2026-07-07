@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom';
+import { createPortal } from 'react-dom';
+import { Link, NavLink, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import {
   about,
   capabilities,
@@ -75,10 +76,10 @@ function App() {
           <NavLink to="/" end>
             Home
           </NavLink>
+          <NavLink to="/about">About</NavLink>
           <NavLink to="/projects">Projects</NavLink>
           <NavLink to="/resume">Resume</NavLink>
           <NavLink to="/skills">Skills</NavLink>
-          <NavLink to="/about">About</NavLink>
           <NavLink to="/contact">Contact</NavLink>
         </nav>
       </header>
@@ -100,7 +101,9 @@ function App() {
 }
 
 function HomePage() {
-  const featuredProjects = projectData.slice(0, 2);
+  const featuredProjects = about.home.selectedWork.featuredSlugs
+    .map((slug) => projectData.find((project) => project.slug === slug))
+    .filter(Boolean);
 
   return (
     <>
@@ -131,7 +134,7 @@ function HomePage() {
             </li>
             <li>
               <span>Target roles</span>
-              <strong>{about.targetRoles.join(' / ')}</strong>
+              <strong>{about.targetRoles.join(' · ')}</strong>
             </li>
             <li>
               <span>Current Focus</span>
@@ -178,7 +181,6 @@ function HomePage() {
           {featuredProjects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
-          {hasItems(about.academicHighlights) ? <AcademicFoundationCard /> : null}
         </div>
       </section>
     </>
@@ -245,9 +247,9 @@ function AboutPage() {
 }
 
 function ResumePage() {
-  const showEducationProjectsRow = hasItems(about.education) || hasItems(projectData);
-  const showFocusStrengthsRow =
-    hasItems(about.technicalFocus) || hasItems(about.uniqueStrengths);
+  const showProfileProjectsRow =
+    hasItems(about.education) || hasItems(about.technicalFocus) || hasItems(projectData);
+  const showSummaryStrengthsRow = about.summary || hasItems(about.uniqueStrengths);
 
   return (
     <section className="page">
@@ -265,49 +267,67 @@ function ResumePage() {
       <p className="resume-note">Compile the downloaded .tex file with pdfLaTeX or XeLaTeX.</p>
 
       <div className="resume-stack">
-        {about.summary ? (
-          <div className="panel">
-            <h2>Professional Summary</h2>
-            <p>{about.summary}</p>
-            {hasItems(about.summaryPoints) ? (
-              <ul className="list">
-                {about.summaryPoints.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-        ) : null}
-
-        {hasItems(about.academicHighlights) ? (
-          <div className="panel">
-            <h2>Academic Highlights</h2>
-            <ul className="list">
-              {about.academicHighlights.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
-
-        {showEducationProjectsRow ? (
-          <div className="two-col">
-            {hasItems(about.education) ? (
-              <div className="panel">
-                <h2>Education</h2>
-                {about.education.map((item) => (
-                  <article key={`${item.org}-${item.period}`} className="resume-item">
-                    <span>{item.period}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.org}</p>
-                    <small>{item.notes}</small>
-                  </article>
-                ))}
+        {showSummaryStrengthsRow ? (
+          <div className="resume-summary-grid">
+            {about.summary ? (
+              <div className="panel resume-paired-panel">
+                <h2>Professional Summary</h2>
+                <p>{about.summary}</p>
+                {hasItems(about.summaryPoints) ? (
+                  <ul className="list">
+                    {about.summaryPoints.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
             ) : null}
 
+            {hasItems(about.uniqueStrengths) ? (
+              <div className="panel resume-paired-panel">
+                <h2>Professional Strengths</h2>
+                <ul className="list">
+                  {about.uniqueStrengths.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        {showProfileProjectsRow ? (
+          <div className="resume-profile-grid">
+            <div className="resume-sidebar resume-paired-column">
+              {hasItems(about.education) ? (
+                <div className="panel resume-sidebar-panel">
+                  <h2>Education</h2>
+                  {about.education.map((item) => (
+                    <article key={`${item.org}-${item.period}`} className="resume-item">
+                      <span>{item.period}</span>
+                      <h3>{item.title}</h3>
+                      <p>{item.org}</p>
+                      <small>{item.notes}</small>
+                      {item.highlights ? <p className="education-highlight">{item.highlights}</p> : null}
+                    </article>
+                  ))}
+                </div>
+              ) : null}
+
+              {hasItems(about.technicalFocus) ? (
+                <div className="panel resume-sidebar-panel">
+                  <h2>Technical Focus</h2>
+                  <ul className="list">
+                    {about.technicalFocus.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+
             {hasItems(projectData) ? (
-              <div className="panel">
+              <div className="panel resume-paired-panel resume-projects-panel">
                 <h2>Project Experience</h2>
                 {projectData.map((project) => (
                   <article key={project.slug} className="resume-item">
@@ -340,31 +360,6 @@ function ResumePage() {
                 ) : null}
               </article>
             ))}
-          </div>
-        ) : null}
-
-        {showFocusStrengthsRow ? (
-          <div className="two-col">
-            {hasItems(about.technicalFocus) ? (
-              <div className="panel">
-                <h2>Technical Focus</h2>
-                <ul className="list">
-                  {about.technicalFocus.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-            {hasItems(about.uniqueStrengths) ? (
-              <div className="panel">
-                <h2>Professional Strengths</h2>
-                <ul className="list">
-                  {about.uniqueStrengths.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
           </div>
         ) : null}
 
@@ -585,11 +580,24 @@ function SkillsPage() {
 
       <div className="one-col">
         <div className="panel">
-          <h2>How to read this page</h2>
-          <ul className="list">
-            <li>Capabilities show what the project evidence supports.</li>
-            <li>Technologies show the tools used in the project.</li>
-            <li>Foundations show the underlying concepts demonstrated by the work.</li>
+          <h2>Skill taxonomy</h2>
+          <ul className="list skill-taxonomy-list">
+            <li>
+              <span className="skill-taxonomy-term">Capabilities</span>
+              <span className="skill-taxonomy-desc">
+                competencies supported by project evidence.
+              </span>
+            </li>
+            <li>
+              <span className="skill-taxonomy-term">Technologies</span>
+              <span className="skill-taxonomy-desc">tools and platforms used in delivery.</span>
+            </li>
+            <li>
+              <span className="skill-taxonomy-term">Foundations</span>
+              <span className="skill-taxonomy-desc">
+                core concepts and theory demonstrated in the work.
+              </span>
+            </li>
           </ul>
         </div>
       </div>
@@ -662,10 +670,27 @@ function NotFoundPage() {
 }
 
 function ProjectCard({ project }) {
+  const navigate = useNavigate();
   const { activeTag, activeProjects, handleTagClick, closeTag } = useTagMatchesModal();
 
+  const openProject = () => {
+    navigate(`/projects/${project.slug}`);
+  };
+
   return (
-    <article className="card">
+    <article
+      className="card card-clickable"
+      role="link"
+      tabIndex={0}
+      onClick={openProject}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openProject();
+        }
+      }}
+      aria-label={`Open ${project.title} project details`}
+    >
       <div className="card-head">
         <span className="chip">{project.category}</span>
         <span className="status">{project.status}</span>
@@ -679,6 +704,7 @@ function ProjectCard({ project }) {
         compact
         onTagClick={handleTagClick}
         activeTag={activeTag}
+        stopEventPropagation
       />
       <TagSection
         title="Capabilities"
@@ -687,12 +713,8 @@ function ProjectCard({ project }) {
         compact
         onTagClick={handleTagClick}
         activeTag={activeTag}
+        stopEventPropagation
       />
-      <div className="card-actions">
-        <Link className="text-link" to={`/projects/${project.slug}`}>
-          View details
-        </Link>
-      </div>
       {activeTag ? (
         <TagProjectsModal
           tag={activeTag.label}
@@ -701,26 +723,6 @@ function ProjectCard({ project }) {
           onClose={closeTag}
         />
       ) : null}
-    </article>
-  );
-}
-
-function AcademicFoundationCard() {
-  return (
-    <article className="card card-placeholder">
-      <div className="card-head">
-        <span className="chip">Academic foundation</span>
-        <span className="status">Support signal</span>
-      </div>
-      <h3>CS, Math, databases, AI, and security</h3>
-      {about.academicHighlights.map((item) => (
-        <p key={item}>{item}</p>
-      ))}
-      <div className="card-actions">
-        <Link className="text-link" to="/about">
-          Read the full story
-        </Link>
-      </div>
     </article>
   );
 }
@@ -738,7 +740,7 @@ function DetailSection({ title, content }) {
   );
 }
 
-function TagCloud({ items, sectionKey, onTagClick, activeTag }) {
+function TagCloud({ items, sectionKey, onTagClick, activeTag, stopEventPropagation = false }) {
   return (
     <div className="tags">
       {items.map((item) => {
@@ -757,7 +759,12 @@ function TagCloud({ items, sectionKey, onTagClick, activeTag }) {
             key={item}
             type="button"
             className={`tag tag-button${isActive ? ' active' : ''}`}
-            onClick={() => onTagClick(sectionKey, item)}
+            onClick={(event) => {
+              if (stopEventPropagation) {
+                event.stopPropagation();
+              }
+              onTagClick(sectionKey, item);
+            }}
             aria-haspopup="dialog"
             aria-pressed={isActive}
             aria-label={`Show projects with ${item}`}
@@ -776,7 +783,8 @@ function TagSection({
   items,
   compact = false,
   onTagClick,
-  activeTag
+  activeTag,
+  stopEventPropagation = false
 }) {
   if (!items || items.length === 0) {
     return null;
@@ -790,6 +798,7 @@ function TagSection({
         sectionKey={sectionKey}
         onTagClick={onTagClick}
         activeTag={activeTag}
+        stopEventPropagation={stopEventPropagation}
       />
     </section>
   );
@@ -831,7 +840,7 @@ function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
     }
   };
 
-  return (
+  return createPortal(
     <div className="modal-backdrop" onClick={handleBackdropClick}>
       <div
         className="modal"
@@ -871,7 +880,8 @@ function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
           <p className="modal-empty">No projects matched this tag.</p>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

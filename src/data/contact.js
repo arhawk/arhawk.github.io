@@ -5,11 +5,11 @@ export const contact = {
   page: {
     title: 'Recruiter-friendly contact details.',
     lead:
-      'Best for graduate roles, internships, and junior opportunities in data engineering, analytics, and adjacent AI / software work.'
+      'Open to graduate and junior opportunities as a Data Engineer, Machine Learning Engineer, Artificial Intelligence Engineer, Data Scientist, or Data Analyst in Sydney and remote-friendly teams.'
   },
   openTo: [
-    'Graduate and junior roles in data engineering and data analysis.',
-    'Analytics engineering, BI, and applied AI work where data quality matters.',
-    'Project work with clear scope, feedback loops, and delivery expectations.'
+    'Data Engineer and Data Analyst roles focused on pipelines, SQL, dashboards, KPI reporting, and stakeholder-ready analysis.',
+    'Machine Learning Engineer and Artificial Intelligence Engineer roles focused on model training, evaluation, deployment, and reproducible ML systems.',
+    'Data Scientist roles combining exploratory analysis, modeling, experimentation, and clear communication of data-driven insights.'
   ]
 };

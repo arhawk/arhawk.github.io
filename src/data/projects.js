@@ -63,7 +63,14 @@ export const technologyTaxonomy = [
       { label: 'WebSocket', aliases: ['WebSocket relay'] },
       { label: 'Pandas' },
       { label: 'Scikit-learn' },
-      { label: 'Streamlit' }
+      { label: 'Streamlit' },
+      { label: 'TensorFlow / Keras', aliases: ['TensorFlow', 'Keras'] },
+      { label: 'NumPy' },
+      { label: 'R' },
+      { label: 'XGBoost' },
+      { label: 'LightGBM' },
+      { label: 'CatBoost' },
+      { label: 'caret' }
     ]
   },
   {
@@ -120,7 +127,8 @@ export const foundationsTaxonomy = [
     foundations: [
       { label: 'Machine Learning Fundamentals' },
       { label: 'NLP Fundamentals', aliases: ['Natural Language Processing', 'NLP'] },
-      { label: 'Text Representation' }
+      { label: 'Text Representation' },
+      { label: 'Computer Vision' }
     ]
   }
 ];
@@ -272,7 +280,6 @@ export const projectData = [
     ],
     demoUrl: 'https://infinite-canvas-studio.vercel.app',
     githubUrl: 'https://github.com/arhawk/CS61-3-USYD2026',
-    backendHealthUrl: 'https://infinite-canvas-studio.onrender.com/health',
     status: 'Complete',
     problem:
       'Teachers and presenters needed a browser-native workspace for building non-linear lesson boards that could mix text, media, embeds, and interactions without the friction of a full slide deck editor.',
@@ -288,11 +295,96 @@ export const projectData = [
       'Add durable storage, richer presence indicators, and more collaborative editing controls for larger teaching sessions.',
     reproducibility:
       'The repository documents the frontend, the Node.js WebSocket relay, the deployment split between Vercel and Render, and the core testing approach with unit and Playwright E2E coverage.',
-    projectType: 'Collaborative course project',
+    projectType: 'Collaborative software engineering project',
     myContribution:
       'I contributed across product scoping, frontend implementation, collaboration workflow, documentation, and deployment.',
     engineeringHighlights:
       'Key engineering work included canvas pan and zoom interactions, component-based editing, mode switching between Edit and Present views, local JSON / HTML / PROJ export workflows, WebSocket room sharing, and a testable architecture for future maintainers.'
+  },
+  {
+    slug: 'medical-image-ml-algorithm',
+    title: 'Medical Image ML Algorithm',
+    category: 'AI / ML',
+    summary:
+      'A histopathology image classification case study comparing Random Forest, MLP, and CNN on a 9-class medical imaging dataset, with Grad-CAM interpretability and structured error analysis.',
+    technologies: [
+      'Python',
+      'NumPy',
+      'Pandas',
+      'Scikit-learn',
+      'TensorFlow / Keras',
+      'Matplotlib'
+    ],
+    capabilities: [
+      'Model Evaluation',
+      'Feature Engineering',
+      'Documentation',
+      'Testing',
+      'Stakeholder Communication'
+    ],
+    foundations: [
+      'Machine Learning Fundamentals',
+      'Statistics',
+      'Computer Vision'
+    ],
+    githubUrl: 'https://github.com/arhawk/Medical-image-ML-algorithm',
+    status: 'Complete',
+    problem:
+      'Automated tissue classification from histopathology tiles supports computer-aided diagnosis, but it was unclear which model family would generalize best on identical data and evaluation criteria.',
+    whatBuilt:
+      'I rebuilt the analysis workflow as a reproducible Python package with CLI entry points, cached RF GridSearch, CNN training with Apple Silicon GPU support, Grad-CAM visualizations, and cross-model error analysis.',
+    dataMethods:
+      'The pipeline loads 28×28 RGB NumPy arrays (32,000 train / 8,000 test), normalizes pixels to [0, 1], applies PCA for RF and MLP baselines, and trains a hand-crafted CNN on raw tensors with L2, BatchNorm, dropout, and early stopping.',
+    results:
+      'The CNN reached 90.1% test accuracy, outperforming PCA + Random Forest (65.7%) and PCA + MLP (69.3%). Grad-CAM and confusion-matrix analysis highlighted where spatial features helped and which tissue classes were most often confused.',
+    limitations:
+      'Images are small 28×28 tiles rather than full-resolution pathology slides, and the MLP baseline is sensitive to GPU mixed-precision settings on Apple Silicon.',
+    nextSteps:
+      'Extend to higher-resolution inputs, compare against transfer-learning baselines, and add calibration and threshold tuning for clinical review workflows.',
+    reproducibility:
+      'The repository includes a pyproject.toml package, setup scripts, `medimg-train` CLI, cached tuning artifacts, and a portfolio write-up in docs/SHOWCASE.md.',
+    projectType: 'End-to-end ML engineering project',
+    myContribution:
+      'I designed the end-to-end pipeline, implemented the CLI and model training code, added Grad-CAM and error analysis, and documented reproducible setup for local and Apple Silicon runs.',
+    engineeringHighlights:
+      'Key engineering work included packaging the notebook into `src/medical_image_ml`, caching RF GridSearch results, runtime tuning for TensorFlow Metal, and automated figure export for portfolio presentation.'
+  },
+  {
+    slug: 'eduattain-prediction',
+    title: 'EduAttain Prediction',
+    category: 'Data Analytics',
+    summary:
+      'A predictive analytics pipeline that estimates highest educational attainment (ISCED 2011) from ABS microdata using EDA, feature cleaning, and ensemble classifiers in R and Python.',
+    technologies: ['R', 'Python', 'Pandas', 'Scikit-learn', 'XGBoost', 'LightGBM', 'CatBoost', 'caret', 'ggplot2'],
+    capabilities: [
+      'Data Cleaning',
+      'Model Evaluation',
+      'Feature Engineering',
+      'Documentation',
+      'Stakeholder Communication'
+    ],
+    foundations: ['Statistics', 'Data Modeling', 'Machine Learning Fundamentals'],
+    githubUrl: 'https://github.com/arhawk/eduAttain-prediction',
+    status: 'Complete',
+    problem:
+      'Policy and workforce planning need clearer insight into how demographic, socioeconomic, geographic, and apprenticeship-related factors relate to individuals’ highest educational attainment in Australia.',
+    whatBuilt:
+      'The team built an end-to-end analysis of ABS Microdata TableBuilder records, cleaned and encoded 146 survey variables, explored class imbalance and missingness, and compared classical and gradient-boosting classifiers for 10-way ISCED prediction.',
+    dataMethods:
+      'We ingested 40,976 records, cross-checked ABS metadata against 146 coded fields, removed unmatched and weight-only columns, treated unknown codes as missing, and used stratified train/test splits with macro-F1 and accuracy for multi-class evaluation.',
+    results:
+      'The workflow produced a cleaned modeling dataset, exploratory reports, and tuned XGBoost, LightGBM, and CatBoost pipelines alongside R baselines such as Random Forest and SVM for highest-attainment classification.',
+    limitations:
+      'The survey data is heavily categorical with high-cardinality fields, so feature selection and interpretability remain challenging without stronger regularization or domain-driven grouping.',
+    nextSteps:
+      'Add feature-importance reporting for policy audiences, test grouped encodings for sparse categories, and evaluate cost-sensitive metrics for minority attainment classes.',
+    reproducibility:
+      'The repository includes staged R Markdown notebooks, a cleaned CSV export, metadata crosswalk scripts, and a Python pipeline with RandomizedSearchCV for reproducible boosting-model tuning.',
+    projectType: 'Collaborative predictive analytics project',
+    myContribution:
+      'I contributed to data ingestion and cleaning against ABS metadata, exploratory analysis, model benchmarking, and the Python automation for XGBoost, LightGBM, and CatBoost tuning.',
+    engineeringHighlights:
+      'Key engineering work included parsing semi-structured ABS metadata, reconciling encoding mismatches across 146 variables, and building a reusable Python script with auto-detected target columns and stratified cross-validation.'
   }
 ];
 
