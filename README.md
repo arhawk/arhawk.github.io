@@ -39,12 +39,13 @@ npm run preview
 
 ## Deployment
 
-1. Push the repository to GitHub.
-2. In the repository settings, enable GitHub Pages.
-3. Set the source to GitHub Actions.
-4. Push to `main` to trigger the deploy workflow in `.github/workflows/deploy.yml`.
+GitHub Pages is configured to serve the repository root on `main`. The deploy workflow builds the Vite app and commits the production `index.html` and `assets/` folder to `main`.
 
-The site uses Vite's relative asset base so it can deploy cleanly to GitHub Pages.
+1. Push source changes to `main`.
+2. The workflow in `.github/workflows/deploy.yml` runs `npm run build` and commits the built files.
+3. GitHub Pages serves those built files at `https://arhawk.github.io`.
+
+Local development uses `index.template.html` so the committed production `index.html` does not affect `npm run dev`.
 
 ## Content Updates
 
