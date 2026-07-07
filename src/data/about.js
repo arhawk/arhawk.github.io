@@ -1,12 +1,18 @@
 export const about = {
   name: 'Zehao Liu',
-  title: 'Data Engineering / AI Graduate',
+  title: 'Data Engineer · Machine Learning Engineer · AI Engineer',
   location: 'Sydney, Australia',
   summary:
-    'An early-career technical professional with a computer science and mathematics foundation, currently focused on data engineering and data analysis roles while continuing to build practical AI and delivery skills.',
+    'An early-career technical professional with a computer science and mathematics foundation, targeting data engineering, machine learning, AI, and analytics roles with evidence from pipelines, modeling, and delivery work.',
   about:
     'I combine computer science and mathematics training with graduate study in data science and AI. My strongest interests are in data pipelines, analysis workflows, dashboards, and systems that turn raw data into something useful and explainable.',
-  targetRoles: ['Data Engineer', 'Applied AI Engineer', 'Software Engineer', 'full stack developer'],
+  targetRoles: [
+    'Data Engineer',
+    'Machine Learning Engineer',
+    'Artificial Intelligence Engineer',
+    'Data Scientist',
+    'Data Analyst'
+  ],
   education: [
     {
       period: 'Feb 2025 - Present',
@@ -40,17 +46,17 @@ export const about = {
     'I stay steady under fast-paced or high-pressure conditions, balancing detail quality with response speed to keep key work on track.'
   ],
   summaryPoints: [
-    'Positioned as an early-career candidate for data engineering and data analyst roles, with a computer science and mathematics foundation.',
-    'Continuously strengthening data pipeline, analytics, and applied AI capability through graduate study and public projects.',
-    'Target roles center on turning raw data into reliable pipelines, useful analysis, and clear reporting in real business contexts.'
+    'Target roles: Data Engineer, Machine Learning Engineer, Artificial Intelligence Engineer, Data Scientist, and Data Analyst.',
+    'Continuously strengthening data pipeline, ML, and analytics capability through graduate study and public projects.',
+    'Project evidence centers on reliable data delivery, model evaluation, and clear communication of results.'
   ],
   technicalFocus: [
     'Data engineering, SQL, databases, ETL, and reproducible pipelines.',
-    'Data analysis, dashboarding, reporting, and model evaluation.',
-    'Applied AI, NLP, and software delivery when they support the data story.'
+    'Machine learning, model evaluation, deployment, and reproducible ML workflows.',
+    'Data analysis, dashboarding, reporting, and stakeholder-ready insight.'
   ],
   home: {
-    headline: 'Data engineering and analytics work, grounded in CS and math.',
+    headline: 'Data, ML, and AI work grounded in CS and math.',
     quickProfile: {
       currentFocus: 'Data pipelines, analysis, and reproducible delivery',
       workingStyle: 'Structured, evidence-driven, and maintainable'
@@ -88,11 +94,11 @@ export const about = {
     }
   },
   aboutPage: {
-    title: 'CS + Math background, now focused on data engineering and analytics.',
+    title: 'CS + Math background, now focused on data, ML, and AI roles.',
     path: [
       'Undergrad: Computer Science and Mathematics, with a broad base in algorithms, proofs, statistics, databases, AI, and security.',
       'Graduate: Computer Science with Data Science and AI focus, including data pipelines, data engineering, NLP, machine learning, and data analysis / modeling.',
-      'Direction: junior roles where I can build data systems, analyze outcomes, and turn findings into something practical.'
+      'Direction: junior Data Engineer, Machine Learning Engineer, Artificial Intelligence Engineer, Data Scientist, or Data Analyst roles where I can build systems, models, and useful analysis.'
     ],
     goodAt: [
       'Turning ambiguous tasks into a concrete plan, then executing against it.',

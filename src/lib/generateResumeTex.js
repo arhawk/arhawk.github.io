@@ -94,6 +94,7 @@ const buildHeading = () => {
   return `%---------- HEADING ----------
 \\begin{center}
     \\textbf{\\Huge ${escapeLatex(about.name)}} \\\\ \\vspace{3pt}
+    \\small ${about.targetRoles.map((role) => escapeLatex(role)).join(' \\textbullet{} ')} \\\\ \\vspace{3pt}
     \\small ${links.join(' $|$ ')}
 \\end{center}
 `;

@@ -5,12 +5,11 @@ export const contact = {
   page: {
     title: 'Recruiter-friendly contact details.',
     lead:
-      'Open to graduate and junior opportunities across data engineering, analytics engineering, software development, BI, and technical analysis in Sydney and remote-friendly teams.'
+      'Open to graduate and junior opportunities as a Data Engineer, Machine Learning Engineer, Artificial Intelligence Engineer, Data Scientist, or Data Analyst in Sydney and remote-friendly teams.'
   },
   openTo: [
-    'Data Engineer and Analytics Engineer roles focused on pipelines, data modeling, and reliable analytics delivery.',
-    'Software Engineer, Developer Programmer, and First Step Developer opportunities in maintainable backend, platform, or data-adjacent product work.',
-    'BI Developer roles building dashboards, KPI reporting, and business-facing data products.',
-    'Technical Data Analyst positions combining SQL, exploratory analysis, and clear stakeholder communication.'
+    'Data Engineer and Data Analyst roles focused on pipelines, SQL, dashboards, KPI reporting, and stakeholder-ready analysis.',
+    'Machine Learning Engineer and Artificial Intelligence Engineer roles focused on model training, evaluation, deployment, and reproducible ML systems.',
+    'Data Scientist roles combining exploratory analysis, modeling, experimentation, and clear communication of data-driven insights.'
   ]
 };

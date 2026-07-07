@@ -134,7 +134,7 @@ function HomePage() {
             </li>
             <li>
               <span>Target roles</span>
-              <strong>{about.targetRoles.join(' / ')}</strong>
+              <strong>{about.targetRoles.join(' · ')}</strong>
             </li>
             <li>
               <span>Current Focus</span>
