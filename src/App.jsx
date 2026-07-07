@@ -104,7 +104,7 @@ function HomePage() {
           <p className="lead">{portfolio.summary}</p>
           <div className="actions">
             <Link className="button primary" to="/projects">
-              View Featured Project
+              View Project
             </Link>
             <Link className="button" to="/contact">
               Contact
@@ -144,31 +144,6 @@ function HomePage() {
             <ProjectCard key={project.slug} project={project} />
           ))}
           <MoreProjectsCard />
-        </div>
-      </section>
-
-      <section className="two-col">
-        <div className="panel">
-          <h2>What this portfolio emphasizes</h2>
-          <ul className="list">
-            <li>Clear problem framing before implementation.</li>
-            <li>Visible project evidence instead of filler content.</li>
-            <li>Route pages with distinct roles so each page adds information.</li>
-          </ul>
-        </div>
-        <div className="panel">
-          <h2>Education</h2>
-          <ul className="list">
-            {portfolio.education.map((item) => (
-              <li key={`${item.org}-${item.period}`}>
-                <strong>{item.title}</strong>
-                <div>
-                  {item.org} | {item.period}
-                </div>
-                <small>{item.notes}</small>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
     </>
@@ -732,7 +707,7 @@ function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
                   <p>{project.category}</p>
                 </div>
                 <Link className="text-link modal-link" to={`/projects/${project.slug}`}>
-                  View project
+                  View projects
                 </Link>
               </li>
             ))}
