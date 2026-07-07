@@ -360,6 +360,15 @@ button {
   border-color: rgba(13, 110, 110, 0.14);
 }
 
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-clickable:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .facts,
 .list {
   list-style: none;
@@ -474,6 +483,41 @@ button {
 
 .resume-stack {
   grid-template-columns: 1fr;
+}
+
+.resume-profile-grid,
+.resume-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(min-content, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+.resume-paired-panel,
+.resume-paired-column {
+  height: 100%;
+  min-width: 0;
+}
+
+.resume-paired-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.resume-sidebar {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+  grid-template-rows: auto auto;
+}
+
+.resume-sidebar-panel {
+  width: 100%;
+  min-width: 0;
+}
+
+.resume-projects-panel {
+  min-height: 100%;
 }
 
 .card {
@@ -757,6 +801,34 @@ button {
   margin-bottom: 4px;
 }
 
+.education-highlight {
+  margin: 8px 0 0;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.skill-taxonomy-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.skill-taxonomy-term {
+  font-weight: 700;
+  color: var(--text-soft);
+}
+
+.skill-taxonomy-term::after {
+  content: ':';
+  margin-left: 0.1rem;
+}
+
+.skill-taxonomy-desc {
+  color: var(--muted);
+}
+
 .section,
 .page {
   display: grid;
@@ -799,7 +871,9 @@ button {
   .grid,
   .featured-grid,
   .two-col,
-  .skill-grid {
+  .skill-grid,
+  .resume-profile-grid,
+  .resume-summary-grid {
     grid-template-columns: 1fr;
   }
 

@@ -124,11 +124,20 @@ const buildEducation = () => {
   }
 
   const entries = about.education
-    .map(
-      (item) => `    \\resumeSubheading
+    .map((item) => {
+      const subheading = `    \\resumeSubheading
       {${escapeLatex(item.org)}}{${escapeLatex(item.notes ?? '')}}
-      {${escapeLatex(item.title)}}{${escapeLatex(item.period)}}`
-    )
+      {${escapeLatex(item.title)}}{${escapeLatex(item.period)}}`;
+
+      if (!item.highlights) {
+        return subheading;
+      }
+
+      return `${subheading}
+    \\resumeItemListStart
+      \\resumeItem{${escapeLatex(item.highlights)}}
+    \\resumeItemListEnd`;
+    })
     .join('\n\n');
 
   return `%----------- EDUCATION -----------

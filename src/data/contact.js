@@ -5,11 +5,12 @@ export const contact = {
   page: {
     title: 'Recruiter-friendly contact details.',
     lead:
-      'Best for graduate roles, internships, and junior opportunities in data engineering, analytics, and adjacent AI / software work.'
+      'Open to graduate and junior opportunities across data engineering, analytics engineering, software development, BI, and technical analysis in Sydney and remote-friendly teams.'
   },
   openTo: [
-    'Graduate and junior roles in data engineering and data analysis.',
-    'Analytics engineering, BI, and applied AI work where data quality matters.',
-    'Project work with clear scope, feedback loops, and delivery expectations.'
+    'Data Engineer and Analytics Engineer roles focused on pipelines, data modeling, and reliable analytics delivery.',
+    'Software Engineer, Developer Programmer, and First Step Developer opportunities in maintainable backend, platform, or data-adjacent product work.',
+    'BI Developer roles building dashboards, KPI reporting, and business-facing data products.',
+    'Technical Data Analyst positions combining SQL, exploratory analysis, and clear stakeholder communication.'
   ]
 };

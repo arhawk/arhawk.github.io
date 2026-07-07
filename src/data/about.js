@@ -1,28 +1,28 @@
 export const about = {
   name: 'Zehao Liu',
-  title: 'Data Engineering / Analytics Graduate',
+  title: 'Data Engineering / AI Graduate',
   location: 'Sydney, Australia',
   summary:
     'An early-career technical professional with a computer science and mathematics foundation, currently focused on data engineering and data analysis roles while continuing to build practical AI and delivery skills.',
   about:
     'I combine computer science and mathematics training with graduate study in data science and AI. My strongest interests are in data pipelines, analysis workflows, dashboards, and systems that turn raw data into something useful and explainable.',
   targetRoles: ['Data Engineer', 'Applied AI Engineer', 'Software Engineer', 'full stack developer'],
-  academicHighlights: [
-    'Undergraduate training in Computer Science and Mathematics, with exposure to algorithms, proofs, statistics, databases, AI, and network security.',
-    'Graduate study in Computer Science with a Data Science and AI focus, including data pipelines, data engineering, NLP, machine learning, and data analysis / modeling.'
-  ],
   education: [
     {
       period: 'Feb 2025 - Present',
       org: 'The University of Sydney',
       title: 'Master of Computer Science',
-      notes: 'Data Science and AI stream, Sydney, Australia'
+      notes: 'Data Science and AI stream, Sydney, Australia',
+      highlights:
+        'Data pipelines, data engineering, NLP, machine learning, and data analysis / modeling.'
     },
     {
       period: 'Sep 2019 - Jun 2024',
       org: 'Wilfrid Laurier University',
       title: 'Honours Bachelor of Computer Science and Mathematics',
-      notes: 'Waterloo, Canada'
+      notes: 'Waterloo, Canada',
+      highlights:
+        'Algorithms, proofs, statistics, databases, AI, and network security.'
     }
   ],
   selfEvaluation: [
@@ -79,7 +79,12 @@ export const about = {
       ]
     },
     selectedWork: {
-      title: 'Featured work and academic evidence.'
+      title: 'Featured work and academic evidence.',
+      featuredSlugs: [
+        'nem-monitoring-dashboard',
+        'infinite-canvas-studio',
+        'medical-image-ml-algorithm'
+      ]
     }
   },
   aboutPage: {
