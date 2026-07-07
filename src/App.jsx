@@ -1,17 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom';
 import {
+  about,
   capabilities,
   capabilityProjectMatches,
+  certificates,
+  competitions,
+  contact,
+  experience,
   foundations,
   foundationProjectMatches,
   getProjectTagLabels,
-  portfolio,
   projectData,
+  publications,
   tagSectionTitles,
   technologies,
   technologyProjectMatches
-} from './data/projects';
+} from './data';
+import { downloadResumeTex } from './lib/generateResumeTex';
+import { hasItems } from './lib/hasItems';
 
 const projectTagMatches = {
   capabilities: capabilityProjectMatches,
@@ -60,18 +67,18 @@ function App() {
         <Link to="/" className="brand">
           <span className="brand-mark" />
           <span>
-            <strong>{portfolio.name}</strong>
-            <small>{portfolio.title}</small>
+            <strong>{about.name}</strong>
+            <small>{about.title}</small>
           </span>
         </Link>
         <nav className="nav">
           <NavLink to="/" end>
             Home
           </NavLink>
-          <NavLink to="/about">About</NavLink>
-          <NavLink to="/resume">Resume</NavLink>
           <NavLink to="/projects">Projects</NavLink>
+          <NavLink to="/resume">Resume</NavLink>
           <NavLink to="/skills">Skills</NavLink>
+          <NavLink to="/about">About</NavLink>
           <NavLink to="/contact">Contact</NavLink>
         </nav>
       </header>
@@ -100,11 +107,14 @@ function HomePage() {
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow">Portfolio</p>
-          <h1>Practical data and software work, built with evidence and clarity.</h1>
-          <p className="lead">{portfolio.summary}</p>
+          <h1>{about.home.headline}</h1>
+          <p className="lead">{about.summary}</p>
           <div className="actions">
             <Link className="button primary" to="/projects">
-              View Project
+              View Projects
+            </Link>
+            <Link className="button" to="/resume">
+              Resume
             </Link>
             <Link className="button" to="/contact">
               Contact
@@ -117,15 +127,19 @@ function HomePage() {
           <ul className="facts">
             <li>
               <span>Location</span>
-              <strong>{portfolio.location}</strong>
+              <strong>{about.location}</strong>
+            </li>
+            <li>
+              <span>Target roles</span>
+              <strong>{about.targetRoles.join(' / ')}</strong>
             </li>
             <li>
               <span>Current Focus</span>
-              <strong>Applied data, AI, and software delivery</strong>
+              <strong>{about.home.quickProfile.currentFocus}</strong>
             </li>
             <li>
               <span>Working Style</span>
-              <strong>Structured, responsive, and maintainable</strong>
+              <strong>{about.home.quickProfile.workingStyle}</strong>
             </li>
           </ul>
         </aside>
@@ -134,8 +148,29 @@ function HomePage() {
       <section className="section">
         <div className="section-head">
           <div>
+            <p className="eyebrow">Why me</p>
+            <h2>{about.home.whyMe.title}</h2>
+          </div>
+        </div>
+        <div className="featured-grid">
+          {about.home.whyMe.cards.map((card) => (
+            <article key={card.title} className="card">
+              <div className="card-head">
+                <span className="chip">{card.chip}</span>
+                <span className="status">{card.status}</span>
+              </div>
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="section-head">
+          <div>
             <p className="eyebrow">Selected work</p>
-            <h2>Featured work, presented cleanly.</h2>
+            <h2>{about.home.selectedWork.title}</h2>
           </div>
           <Link to="/projects">Browse projects</Link>
         </div>
@@ -143,7 +178,7 @@ function HomePage() {
           {featuredProjects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
-          <MoreProjectsCard />
+          {hasItems(about.academicHighlights) ? <AcademicFoundationCard /> : null}
         </div>
       </section>
     </>
@@ -154,115 +189,247 @@ function AboutPage() {
   return (
     <section className="page">
       <p className="eyebrow">About</p>
-      <h1>Identity, working style, and the kind of problems I like to solve.</h1>
-      <p className="lead">
-        {portfolio.about}
-      </p>
+      <h1>{about.aboutPage.title}</h1>
+      <p className="lead">{about.about}</p>
 
       <div className="resume-stack">
-        <div className="panel">
-          <h2>Identity</h2>
-          <ul className="list">
-            <li>Early-career technical professional focused on data, AI, and software delivery.</li>
-            <li>Comfortable moving between implementation details and product framing.</li>
-            <li>Interested in practical work that is useful to users, not just technically complete.</li>
-          </ul>
-        </div>
-        <div className="two-col">
+        {hasItems(about.aboutPage.path) ? (
           <div className="panel">
-            <h2>Working Style</h2>
+            <h2>My path</h2>
             <ul className="list">
-              <li>I turn ambiguity into a concrete plan, then execute against it.</li>
-              <li>I value maintainability, testing, and clear documentation.</li>
-              <li>I prefer small, understandable systems that can be reviewed easily.</li>
+              {about.aboutPage.path.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
           </div>
+        ) : null}
+
+        {hasItems(about.aboutPage.goodAt) || hasItems(about.aboutPage.buildingToward) ? (
+          <div className="two-col">
+            {hasItems(about.aboutPage.goodAt) ? (
+              <div className="panel">
+                <h2>What I am good at</h2>
+                <ul className="list">
+                  {about.aboutPage.goodAt.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            {hasItems(about.aboutPage.buildingToward) ? (
+              <div className="panel">
+                <h2>What I am building toward</h2>
+                <ul className="list">
+                  {about.aboutPage.buildingToward.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        {hasItems(about.aboutPage.differentiators) ? (
           <div className="panel">
-            <h2>Current Focus</h2>
+            <h2>What differentiates me</h2>
             <ul className="list">
-              <li>Deepening applied data and AI capability.</li>
-              <li>Building a stronger evidence trail across projects and resumes.</li>
-              <li>Improving collaboration habits across technical and non-technical contexts.</li>
+              {about.aboutPage.differentiators.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
           </div>
-        </div>
-        <div className="panel">
-          <h2>What differentiates me</h2>
-          <ul className="list">
-            <li>I connect engineering work to business and user outcomes.</li>
-            <li>I can move quickly without losing the structure needed for reliable delivery.</li>
-            <li>I use AI-assisted tools, but I still validate the output and keep the result explainable.</li>
-          </ul>
-        </div>
+        ) : null}
       </div>
     </section>
   );
 }
 
 function ResumePage() {
+  const showEducationProjectsRow = hasItems(about.education) || hasItems(projectData);
+  const showFocusStrengthsRow =
+    hasItems(about.technicalFocus) || hasItems(about.uniqueStrengths);
+
   return (
     <section className="page">
-      <p className="eyebrow">Resume</p>
-      <h1>Structured summary for recruiter review.</h1>
-      <p className="lead">
-        The sections below keep the content compact while preserving the main evidence points.
-      </p>
+      <div className="section-head">
+        <div>
+          <p className="eyebrow">Resume</p>
+          <h1>{about.resumePage.title}</h1>
+          <p className="lead">{about.resumePage.lead}</p>
+        </div>
+        <button type="button" className="button primary" onClick={downloadResumeTex}>
+          Download LaTeX
+        </button>
+      </div>
+
+      <p className="resume-note">Compile the downloaded .tex file with pdfLaTeX or XeLaTeX.</p>
 
       <div className="resume-stack">
-        <div className="panel">
-          <h2>Professional Summary</h2>
-          <p>{portfolio.summary}</p>
-          <ul className="list">
-            {portfolio.summaryPoints.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="two-col">
+        {about.summary ? (
           <div className="panel">
-            <h2>Education</h2>
-            {portfolio.education.map((item) => (
-              <article key={`${item.org}-${item.period}`} className="resume-item">
-                <span>{item.period}</span>
-                <h3>{item.title}</h3>
-                <p>{item.org}</p>
-                <small>{item.notes}</small>
-              </article>
-            ))}
+            <h2>Professional Summary</h2>
+            <p>{about.summary}</p>
+            {hasItems(about.summaryPoints) ? (
+              <ul className="list">
+                {about.summaryPoints.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
           </div>
+        ) : null}
 
+        {hasItems(about.academicHighlights) ? (
           <div className="panel">
-            <h2>Project Experience</h2>
-            {projectData.map((project) => (
-              <article key={project.slug} className="resume-item">
-                <span>{project.category}</span>
-                <h3>{project.title}</h3>
-                <p>{project.projectType}</p>
-                <small>{project.myContribution}</small>
-              </article>
-            ))}
-          </div>
-        </div>
-
-        <div className="two-col">
-          <div className="panel">
-            <h2>Technical Focus</h2>
+            <h2>Academic Highlights</h2>
             <ul className="list">
-              <li>Data analysis, dashboarding, and reporting.</li>
-              <li>Applied AI and machine learning workflows.</li>
-              <li>Web application architecture and collaborative interfaces.</li>
-            </ul>
-          </div>
-          <div className="panel">
-            <h2>Professional Strengths</h2>
-            <ul className="list">
-              {portfolio.uniqueStrengths.map((item) => (
+              {about.academicHighlights.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
           </div>
-        </div>
+        ) : null}
+
+        {showEducationProjectsRow ? (
+          <div className="two-col">
+            {hasItems(about.education) ? (
+              <div className="panel">
+                <h2>Education</h2>
+                {about.education.map((item) => (
+                  <article key={`${item.org}-${item.period}`} className="resume-item">
+                    <span>{item.period}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.org}</p>
+                    <small>{item.notes}</small>
+                  </article>
+                ))}
+              </div>
+            ) : null}
+
+            {hasItems(projectData) ? (
+              <div className="panel">
+                <h2>Project Experience</h2>
+                {projectData.map((project) => (
+                  <article key={project.slug} className="resume-item">
+                    <span>{project.category}</span>
+                    <h3>{project.title}</h3>
+                    <p>{project.projectType}</p>
+                    <small>{project.myContribution}</small>
+                  </article>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        {hasItems(experience) ? (
+          <div className="panel">
+            <h2>Experience</h2>
+            {experience.map((item) => (
+              <article key={`${item.company}-${item.period}`} className="resume-item">
+                <span>{item.period}</span>
+                <h3>{item.role}</h3>
+                <p>{item.company}</p>
+                {item.location ? <small>{item.location}</small> : null}
+                {hasItems(item.bullets) ? (
+                  <ul className="list">
+                    {item.bullets.map((bullet) => (
+                      <li key={bullet}>{bullet}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        ) : null}
+
+        {showFocusStrengthsRow ? (
+          <div className="two-col">
+            {hasItems(about.technicalFocus) ? (
+              <div className="panel">
+                <h2>Technical Focus</h2>
+                <ul className="list">
+                  {about.technicalFocus.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            {hasItems(about.uniqueStrengths) ? (
+              <div className="panel">
+                <h2>Professional Strengths</h2>
+                <ul className="list">
+                  {about.uniqueStrengths.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        {hasItems(certificates) ? (
+          <div className="panel">
+            <h2>Certificates</h2>
+            <ul className="list">
+              {certificates.map((item) => (
+                <li key={`${item.name}-${item.date}`}>
+                  {item.name} — {item.issuer} ({item.date})
+                  {item.url ? (
+                    <>
+                      {' '}
+                      <a href={item.url} target="_blank" rel="noreferrer">
+                        Link
+                      </a>
+                    </>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        {hasItems(publications) ? (
+          <div className="panel">
+            <h2>Publications</h2>
+            <ul className="list">
+              {publications.map((item) => (
+                <li key={`${item.title}-${item.date}`}>
+                  {item.title} — {item.venue} ({item.date})
+                  {item.url ? (
+                    <>
+                      {' '}
+                      <a href={item.url} target="_blank" rel="noreferrer">
+                        Link
+                      </a>
+                    </>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        {hasItems(competitions) ? (
+          <div className="panel">
+            <h2>Competitions</h2>
+            <ul className="list">
+              {competitions.map((item) => (
+                <li key={`${item.name}-${item.date}`}>
+                  {item.name} — {item.result} ({item.date})
+                  {item.url ? (
+                    <>
+                      {' '}
+                      <a href={item.url} target="_blank" rel="noreferrer">
+                        Link
+                      </a>
+                    </>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -274,10 +441,8 @@ function ProjectsPage() {
       <div className="section-head">
         <div>
           <p className="eyebrow">Projects</p>
-          <h1>Public project evidence.</h1>
-          <p className="lead">
-            The site presents the featured project first, with supporting project evidence below.
-          </p>
+          <h1>{about.projectsPage.title}</h1>
+          <p className="lead">{about.projectsPage.lead}</p>
         </div>
       </div>
 
@@ -418,21 +583,7 @@ function SkillsPage() {
         />
       </div>
 
-      <div className="two-col">
-        <div className="panel">
-          <h2>Additional Academic Background</h2>
-          <ul className="list">
-            {portfolio.education.map((item) => (
-              <li key={`${item.org}-${item.period}`}>
-                <strong>{item.title}</strong>
-                <div>
-                  {item.org} | {item.period}
-                </div>
-                <small>{item.notes}</small>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className="one-col">
         <div className="panel">
           <h2>How to read this page</h2>
           <ul className="list">
@@ -459,35 +610,40 @@ function ContactPage() {
   return (
     <section className="page">
       <p className="eyebrow">Contact</p>
-      <h1>Recruiter-friendly contact details.</h1>
-      <p className="lead">
-        Best for graduate roles, internships, and junior opportunities in AI, data science, and
-        software.
-      </p>
+      <h1>{contact.page.title}</h1>
+      <p className="lead">{contact.page.lead}</p>
 
       <div className="two-col">
         <div className="panel">
           <h2>Reach me at</h2>
           <ul className="list">
-            <li>
-              Email: <a href={`mailto:${portfolio.email}`}>{portfolio.email}</a>
-            </li>
-            <li>
-              GitHub: <a href={portfolio.github}>{portfolio.github}</a>
-            </li>
-            <li>
-              LinkedIn: <a href={portfolio.linkedin}>{portfolio.linkedin}</a>
-            </li>
+            {contact.email ? (
+              <li>
+                Email: <a href={`mailto:${contact.email}`}>{contact.email}</a>
+              </li>
+            ) : null}
+            {contact.github ? (
+              <li>
+                GitHub: <a href={contact.github}>{contact.github}</a>
+              </li>
+            ) : null}
+            {contact.linkedin ? (
+              <li>
+                LinkedIn: <a href={contact.linkedin}>{contact.linkedin}</a>
+              </li>
+            ) : null}
           </ul>
         </div>
-        <div className="panel">
-          <h2>What I am open to</h2>
-          <ul className="list">
-            <li>Graduate and junior roles in software, data, and applied AI.</li>
-            <li>Project work with clear scope, feedback loops, and delivery expectations.</li>
-            <li>Technical conversations with hiring teams and recruiters.</li>
-          </ul>
-        </div>
+        {hasItems(contact.openTo) ? (
+          <div className="panel">
+            <h2>What I am open to</h2>
+            <ul className="list">
+              {contact.openTo.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -549,21 +705,20 @@ function ProjectCard({ project }) {
   );
 }
 
-function MoreProjectsCard() {
+function AcademicFoundationCard() {
   return (
     <article className="card card-placeholder">
       <div className="card-head">
-        <span className="chip">More work</span>
-        <span className="status">Reserved</span>
+        <span className="chip">Academic foundation</span>
+        <span className="status">Support signal</span>
       </div>
-      <h3>Third project slot</h3>
-      <p>
-        This space is ready for the next project, so the home page can stay balanced with three
-        columns instead of leaving a blank gap.
-      </p>
+      <h3>CS, Math, databases, AI, and security</h3>
+      {about.academicHighlights.map((item) => (
+        <p key={item}>{item}</p>
+      ))}
       <div className="card-actions">
-        <Link className="text-link" to="/projects">
-          Browse all projects
+        <Link className="text-link" to="/about">
+          Read the full story
         </Link>
       </div>
     </article>

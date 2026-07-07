@@ -1,12 +1,15 @@
-# Data / AI Portfolio
+# Data Engineering / Analytics Portfolio
 
 Minimal recruiter-friendly portfolio built with React, Vite, and GitHub Pages.
 
 ## Features
 
-- Home, About, Resume, Projects, Skills, and Contact pages
+- Home, Projects, Resume, Skills, About, and Contact pages
 - Project cards and detail pages
-- Single source of truth for project data
+- Resume page assembled from shared content data
+- LaTeX resume download generated from the same source
+- Skills derived from project tags
+- Empty resume sections hidden until data is added
 - Responsive layout for mobile and desktop
 - GitHub Pages deployment via GitHub Actions
 
@@ -45,6 +48,17 @@ The site uses Vite's relative asset base so it can deploy cleanly to GitHub Page
 
 ## Content Updates
 
-- Edit project data in `src/data/projects.js`.
-- Update personal details in the page components inside `src/App.jsx`.
-- Replace placeholder contact details with your own information before publishing.
+Maintain three content files:
+
+- `src/data/projects.js` — project evidence, tags, and taxonomies
+- `src/data/about.js` — profile, narrative, education, and page copy for Home / About / Resume
+- `src/data/contact.js` — email, links, and contact-page copy
+
+Optional extension arrays (empty sections stay hidden on the site and in LaTeX export):
+
+- `src/data/experience.js` — internships and relevant professional roles
+- `src/data/credentials.js` — certificates, publications, and competitions
+
+The Resume page and **Download LaTeX** button both read from this shared data. Compile the downloaded `.tex` file with pdfLaTeX or XeLaTeX.
+
+Layout and routing live in `src/App.jsx`. LaTeX generation lives in `src/lib/generateResumeTex.js`.
