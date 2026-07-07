@@ -6,7 +6,7 @@ export const about = {
     'An early-career technical professional with a computer science and mathematics foundation, currently focused on data engineering and data analysis roles while continuing to build practical AI and delivery skills.',
   about:
     'I combine computer science and mathematics training with graduate study in data science and AI. My strongest interests are in data pipelines, analysis workflows, dashboards, and systems that turn raw data into something useful and explainable.',
-  targetRoles: ['Data Engineer', 'Data Analyst', 'Applied AI Engineer'],
+  targetRoles: ['Data Engineer', 'Applied AI Engineer', 'Software Engineer', 'full stack developer'],
   academicHighlights: [
     'Undergraduate training in Computer Science and Mathematics, with exposure to algorithms, proofs, statistics, databases, AI, and network security.',
     'Graduate study in Computer Science with a Data Science and AI focus, including data pipelines, data engineering, NLP, machine learning, and data analysis / modeling.'
