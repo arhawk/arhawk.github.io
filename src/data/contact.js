@@ -5,7 +5,7 @@ export const contact = {
   page: {
     title: 'Recruiter-friendly contact details.',
     lead:
-      'Open to graduate and junior opportunities as a Data Engineer, Machine Learning Engineer, Artificial Intelligence Engineer, Data Scientist, or Data Analyst in Sydney and remote-friendly teams.'
+      'Primarily open to graduate and junior Data Engineer opportunities in Sydney and remote-friendly teams; also considering Machine Learning Engineer, Artificial Intelligence Engineer, Data Scientist, and Data Analyst roles.'
   },
   openTo: [
     'Data Engineer and Data Analyst roles focused on pipelines, SQL, dashboards, KPI reporting, and stakeholder-ready analysis.',
