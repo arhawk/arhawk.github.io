@@ -1,18 +1,12 @@
 export const about = {
   name: 'Zehao Liu',
-  title: 'Data science and AI graduate',
+  title: 'Data and ML engineering graduate',
   location: 'Sydney, Australia',
   summary:
-    'Early-career technical professional with a CS and mathematics foundation, primarily targeting Data Engineer roles and also open to ML, AI, and analytics positions. I combine fast learning, structured decomposition, and a product-aware delivery mindset to build reliable pipelines and analysis workflows.',
+    'Early-career engineer with a CS and mathematics foundation, focused on Data Engineer and Machine Learning Engineer work. I build reproducible pipelines and ML workflows through structured execution, fast learning, and product-aware delivery.',
   about:
     'I am most alive when a messy problem meets clear structure. Adaptability, imagination, and stamina matter to me as much as any stack. I want systems that are correct, explainable, and worth maintaining long after the first demo.',
-  targetRoles: [
-    'Data Engineer',
-    'Machine Learning Engineer',
-    'Artificial Intelligence Engineer',
-    'Data Scientist',
-    'Data Analyst'
-  ],
+  targetRoles: ['Data Engineer', 'Machine Learning Engineer'],
   education: [
     {
       period: 'Feb 2025 - Aug 2026',
@@ -39,9 +33,9 @@ export const about = {
     'Stay steady under pressure while balancing detail quality and response speed.'
   ],
   summaryPoints: [
-    'Target roles: Data Engineer (primary); also open to ML Engineer, AI Engineer, Data Scientist, and Data Analyst.',
+    'Core work: ETL and live data systems alongside model training, evaluation, and deployment.',
     'Working pattern: learn quickly, structure the work, ship, and review with data and feedback.',
-    'Portfolio evidence: pipelines, model evaluation, dashboards, and reproducible delivery.'
+    'Recent delivery: MQTT-backed dashboards, packaged ML pipelines, and reproducible analysis workflows.'
   ],
   technicalFocus: [
     'Data engineering, SQL, databases, ETL, and reproducible pipelines.',
@@ -50,31 +44,31 @@ export const about = {
     'AI-assisted development workflows with verification, documentation, and explainability guardrails.'
   ],
   home: {
-    headline: 'Data engineering and delivery work grounded in CS and math.',
+    headline: 'Data and ML engineering grounded in CS and math.',
     lead:
-      'Open to Data Engineer roles in Sydney, with supporting work in ML, AI, and analytics. Start with projects for evidence.',
+      'Based in Sydney, building pipelines and ML systems you can reproduce, evaluate, and maintain.',
     quickProfile: {
-      currentFocus: 'Sydney-based, seeking junior Data Engineer roles',
+      currentFocus: 'Sydney · junior Data Engineer and ML Engineer roles',
       workingStyle: 'Structured, product-aware, and evidence-driven'
     },
     whyMe: {
-      title: 'What this portfolio shows.',
+      title: 'What I build',
       cards: [
         {
           chip: 'Delivery',
-          status: 'Primary thread',
+          status: 'Data engineering',
           title: 'From raw inputs to usable outputs',
           body: 'Projects trace data through cleaning, transformation, storage, and refreshable paths that stakeholders can actually use.'
         },
         {
           chip: 'ML and AI',
-          status: 'Supporting thread',
+          status: 'Machine learning',
           title: 'Models with a delivery mindset',
-          body: 'When a role needs both, I extend the same discipline into training, evaluation, deployment, and reproducible ML workflows.'
+          body: 'I train, evaluate, and deploy models with the same discipline as pipeline work—reproducible workflows, clear metrics, and maintainable code.'
         },
         {
           chip: 'Foundation',
-          status: 'Under the hood',
+          status: 'Core training',
           title: 'CS, math, and applied data study',
           body: 'Algorithms, proofs, statistics, databases, and applied AI coursework give the depth behind the public work.'
         }

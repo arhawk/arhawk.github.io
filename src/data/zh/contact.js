@@ -3,8 +3,7 @@
 
 export const contactZh = {
   openTo: [
-    'Data Engineer、Data Analyst：数据管道、SQL、仪表盘、KPI 报告，以及能直接给业务方用的分析交付。',
-    'Machine Learning Engineer、Artificial Intelligence Engineer：模型训练、评估、部署，以及可复现的 ML 系统。',
-    'Data Scientist：探索性分析、建模、实验设计，加上清晰的数据驱动表达。'
+    'Data Engineer、Machine Learning Engineer：数据管道、实时数据系统、模型训练/评估/部署，以及可复现的端到端交付。',
+    '也考虑 Data Scientist、Data Analyst、Artificial Intelligence Engineer 岗位，尤其是偏数据链路、建模或面向业务方分析的工作。'
   ]
 };

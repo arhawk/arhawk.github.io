@@ -3,8 +3,7 @@ export const contact = {
   github: 'https://github.com/arhawk',
   linkedin: 'https://www.linkedin.com/in/zehao-liu-4428a7273/',
   openTo: [
-    'Data Engineer and Data Analyst roles focused on pipelines, SQL, dashboards, KPI reporting, and stakeholder-ready analysis.',
-    'Machine Learning Engineer and Artificial Intelligence Engineer roles focused on model training, evaluation, deployment, and reproducible ML systems.',
-    'Data Scientist roles combining exploratory analysis, modeling, experimentation, and clear communication of data-driven insights.'
+    'Data Engineer and Machine Learning Engineer roles spanning pipelines, live data systems, model training, evaluation, deployment, and reproducible delivery.',
+    'Also open to Data Scientist, Data Analyst, and Artificial Intelligence Engineer positions with strong pipeline, modeling, or stakeholder-facing analysis work.'
   ]
 };
