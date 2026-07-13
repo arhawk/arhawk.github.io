@@ -9,8 +9,8 @@ export const ui = {
       contact: 'Contact'
     },
     langSwitch: {
-      en: 'EN',
-      zh: '中文',
+      en: 'Eng',
+      zh: '文',
       label: 'Language'
     },
     home: {
@@ -118,8 +118,8 @@ export const ui = {
       contact: '联系'
     },
     langSwitch: {
-      en: 'EN',
-      zh: '中文',
+      en: 'Eng',
+      zh: '文',
       label: '语言'
     },
     home: {

@@ -78,7 +78,7 @@ function LanguageSwitch() {
         {getUi(locale, 'langSwitch.en')}
       </button>
       <span className="lang-switch-divider" aria-hidden="true">
-        |
+        /
       </span>
       <button
         type="button"
