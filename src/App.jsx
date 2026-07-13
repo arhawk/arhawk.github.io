@@ -110,8 +110,7 @@ function HomePage() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">Portfolio</p>
-          <h1>{about.home.headline}</h1>
+          <h1 className="hero-headline">{about.home.headline}</h1>
           <p className="lead">{about.home.lead}</p>
           <div className="actions">
             <Link className="button primary" to="/projects">
@@ -150,12 +149,7 @@ function HomePage() {
       </section>
 
       <section className="section">
-        <div className="section-head">
-          <div>
-            <p className="eyebrow">Why me</p>
-            <h2>{about.home.whyMe.title}</h2>
-          </div>
-        </div>
+        <h2>{about.home.whyMe.title}</h2>
         <div className="featured-grid">
           {about.home.whyMe.cards.map((card) => (
             <article key={card.title} className="card">
@@ -172,10 +166,7 @@ function HomePage() {
 
       <section className="section">
         <div className="section-head">
-          <div>
-            <p className="eyebrow">Selected work</p>
-            <h2>{about.home.selectedWork.title}</h2>
-          </div>
+          <h2>{about.home.selectedWork.title}</h2>
           <Link to="/projects">Browse projects</Link>
         </div>
         <div className="featured-grid">
@@ -191,8 +182,7 @@ function HomePage() {
 function AboutPage() {
   return (
     <section className="page">
-      <p className="eyebrow">About</p>
-      <h1>{about.aboutPage.title}</h1>
+      <h1>About</h1>
       <p className="lead">{about.about}</p>
 
       <div className="about-sections">
@@ -245,11 +235,7 @@ function ResumePage() {
   return (
     <section className="page">
       <div className="section-head">
-        <div>
-          <p className="eyebrow">Resume</p>
-          <h1>{about.resumePage.title}</h1>
-          {about.resumePage.lead ? <p className="lead">{about.resumePage.lead}</p> : null}
-        </div>
+        <h1>Resume</h1>
         <div className="resume-export-actions">
           <button type="button" className="button primary" onClick={downloadResumePdf}>
             Download PDF
@@ -456,13 +442,7 @@ function ResumePage() {
 function ProjectsPage() {
   return (
     <section className="page">
-      <div className="section-head">
-        <div>
-          <p className="eyebrow">Projects</p>
-          <h1>{about.projectsPage.title}</h1>
-          {about.projectsPage.lead ? <p className="lead">{about.projectsPage.lead}</p> : null}
-        </div>
-      </div>
+      <h1>Projects</h1>
 
       <div className="grid">
         {projectData.map((project) => (
@@ -570,9 +550,7 @@ function SkillsPage() {
 
   return (
     <section className="page">
-      <p className="eyebrow">Skills</p>
-      <h1>{about.skillsPage.title}</h1>
-      {about.skillsPage.lead ? <p className="lead">{about.skillsPage.lead}</p> : null}
+      <h1>Skills</h1>
 
       <div className="skill-grid">
         <SkillSection
@@ -637,9 +615,7 @@ function SkillsPage() {
 function ContactPage() {
   return (
     <section className="page">
-      <p className="eyebrow">Contact</p>
-      <h1>{contact.page.title}</h1>
-      {contact.page.lead ? <p className="lead">{contact.page.lead}</p> : null}
+      <h1>Contact</h1>
 
       <div className="two-col">
         <div className="panel">

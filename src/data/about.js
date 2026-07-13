@@ -81,7 +81,7 @@ export const about = {
       ]
     },
     selectedWork: {
-      title: 'Start here.',
+      title: 'Featured projects',
       featuredSlugs: [
         'nem-monitoring-dashboard',
         'infinite-canvas-studio',
@@ -90,7 +90,6 @@ export const about = {
     }
   },
   aboutPage: {
-    title: 'Structured thinking, deep focus, and work that stays understandable.',
     path: [
       'Computer science and mathematics trained me to respect definitions, uncertainty, and proof. Those habits still guide how I turn ambiguity into structured work.',
       'Graduate study in data science and AI shifted my focus toward delivery that can be reproduced, questioned, and improved rather than shown once.',
@@ -106,16 +105,5 @@ export const about = {
       'Product judgment so technical trade-offs map cleanly to user and business value.',
       'Building systems that stay explainable and reproducible under real-world constraints.'
     ]
-  },
-  resumePage: {
-    title:
-      'Early-career profile focused on Data Engineer roles, with education, projects, and skills in one place.'
-  },
-  projectsPage: {
-    title:
-      'End-to-end work across data pipelines, dashboards, and ML delivery, with reproducibility and clear communication.'
-  },
-  skillsPage: {
-    title: 'Tags are derived from project evidence. Click any tag to see where it appears.'
   }
 };
