@@ -223,6 +223,26 @@ ${entries}
 `;
 };
 
+const buildTechnicalFocus = () => {
+  if (!hasItems(about.technicalFocus)) {
+    return '';
+  }
+
+  const bullets = about.technicalFocus
+    .map((item) => `        \\resumeItem{${escapeLatex(item)}}`)
+    .join('\n');
+
+  return `%----------- TECHNICAL FOCUS -----------
+\\section{Technical Focus}
+\\resumeSubHeadingListStart
+  \\item
+    \\resumeItemListStart
+${bullets}
+    \\resumeItemListEnd
+\\resumeSubHeadingListEnd
+`;
+};
+
 const buildSkills = () => {
   const skills = collectResumeSkillLabels(projectData);
 
@@ -315,11 +335,12 @@ export const generateResumeTex = () =>
     LATEX_PREAMBLE,
     buildHeading(),
     buildSummary(),
-    buildEducation(),
-    buildExperience(),
-    buildProjects(),
-    buildSkills(),
     buildStrengths(),
+    buildEducation(),
+    buildTechnicalFocus(),
+    buildSkills(),
+    buildProjects(),
+    buildExperience(),
     buildCertificates(),
     buildPublications(),
     buildCompetitions(),

@@ -284,7 +284,7 @@ export const projectData = [
     problem:
       'Teachers and presenters needed a browser-native workspace for building non-linear lesson boards that could mix text, media, embeds, and interactions without the friction of a full slide deck editor.',
     whatBuilt:
-      'I built a collaborative authoring system for teaching and presentation use, with editable pages, styled text, sticky notes, images, shapes, iframes, local videos, JavaScript code runners, ranking activities, attachments, connections, and Edit / Present modes.',
+      'The team built a collaborative authoring system for teaching and presentation use, with editable pages, styled text, sticky notes, images, shapes, iframes, local videos, JavaScript code runners, ranking activities, attachments, connections, and Edit / Present modes.',
     dataMethods:
       'The frontend uses a class-based architecture with App, ModeManager, and StageController plus plugin, tool, command, and component base classes. Save / load, undo / redo, room sharing, and export flows are handled through explicit document state and message passing.',
     results:
@@ -297,7 +297,7 @@ export const projectData = [
       'The repository documents the frontend, the Node.js WebSocket relay, the deployment split between Vercel and Render, and the core testing approach with unit and Playwright E2E coverage.',
     projectType: 'Collaborative software engineering project',
     myContribution:
-      'I contributed across product scoping, frontend implementation, collaboration workflow, documentation, and deployment.',
+      'I contributed across product scoping, frontend canvas implementation, Edit/Present mode workflows, WebSocket collaboration, documentation, testing, and deployment.',
     engineeringHighlights:
       'Key engineering work included canvas pan and zoom interactions, component-based editing, mode switching between Edit and Present views, local JSON / HTML / PROJ export workflows, WebSocket room sharing, and a testable architecture for future maintainers.'
   },
