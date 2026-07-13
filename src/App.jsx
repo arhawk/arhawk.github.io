@@ -2,12 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, NavLink, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import {
-  about,
   capabilities,
   capabilityProjectMatches,
   certificates,
   competitions,
-  contact,
   experience,
   foundations,
   foundationProjectMatches,
@@ -18,6 +16,9 @@ import {
   technologies,
   technologyProjectMatches
 } from './data';
+import { getAbout, getContact, getDisplayName, getGroupTitle, getProjectCopy } from './i18n/getLocalized';
+import { useLocale } from './i18n/LanguageContext';
+import { getUi } from './i18n/ui';
 import { downloadResumePdf, downloadResumeTex } from './lib/generateResumeTex';
 import { collectResumeSkillLabels } from './lib/collectResumeSkills';
 import { hasItems } from './lib/hasItems';
@@ -62,27 +63,63 @@ function useTagMatchesModal() {
   };
 }
 
+function LanguageSwitch() {
+  const { locale, setLocale } = useLocale();
+
+  return (
+    <div className="lang-switch" role="group" aria-label={getUi(locale, 'langSwitch.label')}>
+      <button
+        type="button"
+        className={`lang-switch-btn${locale === 'en' ? ' active' : ''}`}
+        onClick={() => setLocale('en')}
+        aria-pressed={locale === 'en'}
+        aria-label={getUi(locale, 'aria.switchToEn')}
+      >
+        {getUi(locale, 'langSwitch.en')}
+      </button>
+      <span className="lang-switch-divider" aria-hidden="true">
+        |
+      </span>
+      <button
+        type="button"
+        className={`lang-switch-btn${locale === 'zh' ? ' active' : ''}`}
+        onClick={() => setLocale('zh')}
+        aria-pressed={locale === 'zh'}
+        aria-label={getUi(locale, 'aria.switchToZh')}
+      >
+        {getUi(locale, 'langSwitch.zh')}
+      </button>
+    </div>
+  );
+}
+
 function App() {
+  const { locale } = useLocale();
+  const localizedAbout = getAbout(locale);
+
   return (
     <div className="shell">
       <header className="topbar">
         <Link to="/" className="brand">
           <span className="brand-mark" />
           <span>
-            <strong>{about.name}</strong>
-            <small>{about.title}</small>
+            <strong>{getDisplayName(locale)}</strong>
+            <small>{localizedAbout.title}</small>
           </span>
         </Link>
-        <nav className="nav">
-          <NavLink to="/" end>
-            Home
-          </NavLink>
-          <NavLink to="/about">About</NavLink>
-          <NavLink to="/resume">Resume</NavLink>
-          <NavLink to="/projects">Projects</NavLink>
-          <NavLink to="/skills">Skills</NavLink>
-          <NavLink to="/contact">Contact</NavLink>
-        </nav>
+        <div className="topbar-actions">
+          <nav className="nav">
+            <NavLink to="/" end>
+              {getUi(locale, 'nav.home')}
+            </NavLink>
+            <NavLink to="/about">{getUi(locale, 'nav.about')}</NavLink>
+            <NavLink to="/resume">{getUi(locale, 'nav.resume')}</NavLink>
+            <NavLink to="/projects">{getUi(locale, 'nav.projects')}</NavLink>
+            <NavLink to="/skills">{getUi(locale, 'nav.skills')}</NavLink>
+            <NavLink to="/contact">{getUi(locale, 'nav.contact')}</NavLink>
+          </nav>
+          <LanguageSwitch />
+        </div>
       </header>
 
       <main className="container">
@@ -102,7 +139,9 @@ function App() {
 }
 
 function HomePage() {
-  const featuredProjects = about.home.selectedWork.featuredSlugs
+  const { locale } = useLocale();
+  const localizedAbout = getAbout(locale);
+  const featuredProjects = localizedAbout.home.selectedWork.featuredSlugs
     .map((slug) => projectData.find((project) => project.slug === slug))
     .filter(Boolean);
 
@@ -110,48 +149,48 @@ function HomePage() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <h1 className="hero-headline">{about.home.headline}</h1>
-          <p className="lead">{about.home.lead}</p>
+          <h1 className="hero-headline">{localizedAbout.home.headline}</h1>
+          <p className="lead">{localizedAbout.home.lead}</p>
           <div className="actions">
             <Link className="button primary" to="/projects">
-              View Projects
+              {getUi(locale, 'home.viewProjects')}
             </Link>
             <Link className="button" to="/resume">
-              Resume
+              {getUi(locale, 'home.resume')}
             </Link>
             <Link className="button" to="/contact">
-              Contact
+              {getUi(locale, 'home.contact')}
             </Link>
           </div>
         </div>
 
         <aside className="panel profile-card">
-          <h2>Quick Profile</h2>
+          <h2>{getUi(locale, 'home.quickProfile')}</h2>
           <ul className="facts">
             <li>
-              <span>Location</span>
-              <strong>{about.location}</strong>
+              <span>{getUi(locale, 'home.location')}</span>
+              <strong>{localizedAbout.location}</strong>
             </li>
             <li>
-              <span>Target roles</span>
-              <strong>{about.targetRoles.join(' · ')}</strong>
+              <span>{getUi(locale, 'home.targetRoles')}</span>
+              <strong>{localizedAbout.targetRoles.join(' · ')}</strong>
             </li>
             <li>
-              <span>Current Focus</span>
-              <strong>{about.home.quickProfile.currentFocus}</strong>
+              <span>{getUi(locale, 'home.currentFocus')}</span>
+              <strong>{localizedAbout.home.quickProfile.currentFocus}</strong>
             </li>
             <li>
-              <span>Working Style</span>
-              <strong>{about.home.quickProfile.workingStyle}</strong>
+              <span>{getUi(locale, 'home.workingStyle')}</span>
+              <strong>{localizedAbout.home.quickProfile.workingStyle}</strong>
             </li>
           </ul>
         </aside>
       </section>
 
       <section className="section">
-        <h2>{about.home.whyMe.title}</h2>
+        <h2>{localizedAbout.home.whyMe.title}</h2>
         <div className="featured-grid">
-          {about.home.whyMe.cards.map((card) => (
+          {localizedAbout.home.whyMe.cards.map((card) => (
             <article key={card.title} className="card">
               <div className="card-head">
                 <span className="chip">{card.chip}</span>
@@ -166,8 +205,8 @@ function HomePage() {
 
       <section className="section">
         <div className="section-head">
-          <h2>{about.home.selectedWork.title}</h2>
-          <Link to="/projects">Browse projects</Link>
+          <h2>{localizedAbout.home.selectedWork.title}</h2>
+          <Link to="/projects">{getUi(locale, 'home.browseProjects')}</Link>
         </div>
         <div className="featured-grid">
           {featuredProjects.map((project) => (
@@ -180,39 +219,42 @@ function HomePage() {
 }
 
 function AboutPage() {
+  const { locale } = useLocale();
+  const localizedAbout = getAbout(locale);
+
   return (
     <section className="page">
-      <h1>About</h1>
-      <p className="lead">{about.about}</p>
+      <h1>{getUi(locale, 'about.title')}</h1>
+      <p className="lead">{localizedAbout.about}</p>
 
       <div className="about-sections">
-        {hasItems(about.aboutPage.path) ? (
+        {hasItems(localizedAbout.aboutPage.path) ? (
           <article className="panel">
-            <h2>Background</h2>
+            <h2>{getUi(locale, 'about.background')}</h2>
             <div className="about-prose">
-              {about.aboutPage.path.map((item) => (
+              {localizedAbout.aboutPage.path.map((item) => (
                 <p key={item}>{item}</p>
               ))}
             </div>
           </article>
         ) : null}
 
-        {hasItems(about.aboutPage.goodAt) ? (
+        {hasItems(localizedAbout.aboutPage.goodAt) ? (
           <article className="panel">
-            <h2>How I work</h2>
+            <h2>{getUi(locale, 'about.howIWork')}</h2>
             <ul className="list">
-              {about.aboutPage.goodAt.map((item) => (
+              {localizedAbout.aboutPage.goodAt.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
           </article>
         ) : null}
 
-        {hasItems(about.aboutPage.buildingToward) ? (
+        {hasItems(localizedAbout.aboutPage.buildingToward) ? (
           <article className="panel">
-            <h2>What I am still learning</h2>
+            <h2>{getUi(locale, 'about.stillLearning')}</h2>
             <ul className="list">
-              {about.aboutPage.buildingToward.map((item) => (
+              {localizedAbout.aboutPage.buildingToward.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -224,38 +266,43 @@ function AboutPage() {
 }
 
 function ResumePage() {
+  const { locale } = useLocale();
+  const localizedAbout = getAbout(locale);
   const resumeSkills = collectResumeSkillLabels(projectData);
   const showProfileProjectsRow =
-    hasItems(about.education) ||
-    hasItems(about.technicalFocus) ||
+    hasItems(localizedAbout.education) ||
+    hasItems(localizedAbout.technicalFocus) ||
     hasItems(resumeSkills) ||
     hasItems(projectData);
-  const showSummaryStrengthsRow = about.summary || hasItems(about.uniqueStrengths);
+  const showSummaryStrengthsRow = localizedAbout.summary || hasItems(localizedAbout.uniqueStrengths);
 
   return (
     <section className="page">
       <div className="section-head">
-        <h1>Resume</h1>
+        <h1>{getUi(locale, 'resume.title')}</h1>
         <div className="resume-export-actions">
-          <button type="button" className="button primary" onClick={downloadResumePdf}>
-            Download PDF
-          </button>
-          <button type="button" className="button" onClick={downloadResumeTex}>
-            Download LaTeX
-          </button>
+          <div className="resume-export-buttons">
+            <button type="button" className="button primary" onClick={downloadResumePdf}>
+              {getUi(locale, 'resume.downloadPdf')}
+            </button>
+            <button type="button" className="button" onClick={downloadResumeTex}>
+              {getUi(locale, 'resume.downloadLatex')}
+            </button>
+          </div>
+          <p className="resume-export-note">{getUi(locale, 'resume.exportNote')}</p>
         </div>
       </div>
 
       <div className="resume-stack">
         {showSummaryStrengthsRow ? (
           <div className="resume-summary-stack">
-            {about.summary ? (
+            {localizedAbout.summary ? (
               <article className="panel resume-paired-panel">
-                <h2>Professional Summary</h2>
-                <p>{about.summary}</p>
-                {hasItems(about.summaryPoints) ? (
+                <h2>{getUi(locale, 'resume.professionalSummary')}</h2>
+                <p>{localizedAbout.summary}</p>
+                {hasItems(localizedAbout.summaryPoints) ? (
                   <ul className="list resume-highlight-list">
-                    {about.summaryPoints.map((item) => (
+                    {localizedAbout.summaryPoints.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
@@ -263,11 +310,11 @@ function ResumePage() {
               </article>
             ) : null}
 
-            {hasItems(about.uniqueStrengths) ? (
+            {hasItems(localizedAbout.uniqueStrengths) ? (
               <article className="panel resume-paired-panel">
-                <h2>Professional Strengths</h2>
+                <h2>{getUi(locale, 'resume.professionalStrengths')}</h2>
                 <ul className="list resume-highlight-list">
-                  {about.uniqueStrengths.map((item) => (
+                  {localizedAbout.uniqueStrengths.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
@@ -279,10 +326,10 @@ function ResumePage() {
         {showProfileProjectsRow ? (
           <div className="resume-profile-grid">
             <div className="resume-sidebar resume-paired-column">
-              {hasItems(about.education) ? (
+              {hasItems(localizedAbout.education) ? (
                 <div className="panel resume-sidebar-panel">
-                  <h2>Education</h2>
-                  {about.education.map((item) => (
+                  <h2>{getUi(locale, 'resume.education')}</h2>
+                  {localizedAbout.education.map((item) => (
                     <article key={`${item.org}-${item.period}`} className="resume-item resume-subheading-item">
                       <div className="resume-subheading">
                         <div className="resume-subheading-row">
@@ -304,11 +351,11 @@ function ResumePage() {
                 </div>
               ) : null}
 
-              {hasItems(about.technicalFocus) ? (
+              {hasItems(localizedAbout.technicalFocus) ? (
                 <article className="panel resume-sidebar-panel">
-                  <h2>Technical Focus</h2>
+                  <h2>{getUi(locale, 'resume.technicalFocus')}</h2>
                   <ul className="list resume-highlight-list">
-                    {about.technicalFocus.map((item) => (
+                    {localizedAbout.technicalFocus.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
@@ -321,19 +368,23 @@ function ResumePage() {
                 <div className="panel resume-paired-panel resume-projects-panel">
                   <h2>
                     <Link className="resume-nav-link" to="/projects">
-                      Project Experience
+                      {getUi(locale, 'resume.projectExperience')}
                     </Link>
                   </h2>
-                  {projectData.map((project) => (
-                    <article key={project.slug} className="resume-item">
-                      <span>{project.category}</span>
-                      <h3>
-                        <Link className="resume-nav-link" to={`/projects/${project.slug}`}>
-                          {project.title}
-                        </Link>
-                      </h3>
-                    </article>
-                  ))}
+                  {projectData.map((project) => {
+                    const localizedProject = getProjectCopy(locale, project);
+
+                    return (
+                      <article key={project.slug} className="resume-item">
+                        <span>{localizedProject.category}</span>
+                        <h3>
+                          <Link className="resume-nav-link" to={`/projects/${project.slug}`}>
+                            {project.title}
+                          </Link>
+                        </h3>
+                      </article>
+                    );
+                  })}
                 </div>
               ) : null}
 
@@ -341,7 +392,7 @@ function ResumePage() {
                 <div className="panel resume-sidebar-panel">
                   <h2>
                     <Link className="resume-nav-link" to="/skills">
-                      Skills
+                      {getUi(locale, 'resume.skills')}
                     </Link>
                   </h2>
                   <p>{resumeSkills.join(', ')}</p>
@@ -353,7 +404,7 @@ function ResumePage() {
 
         {hasItems(experience) ? (
           <div className="panel">
-            <h2>Experience</h2>
+            <h2>{getUi(locale, 'resume.experience')}</h2>
             {experience.map((item) => (
               <article key={`${item.company}-${item.period}`} className="resume-item">
                 <span>{item.period}</span>
@@ -374,7 +425,7 @@ function ResumePage() {
 
         {hasItems(certificates) ? (
           <div className="panel">
-            <h2>Certificates</h2>
+            <h2>{getUi(locale, 'resume.certificates')}</h2>
             <ul className="list">
               {certificates.map((item) => (
                 <li key={`${item.name}-${item.date}`}>
@@ -383,7 +434,7 @@ function ResumePage() {
                     <>
                       {' '}
                       <a href={item.url} target="_blank" rel="noreferrer">
-                        Link
+                        {getUi(locale, 'resume.link')}
                       </a>
                     </>
                   ) : null}
@@ -395,7 +446,7 @@ function ResumePage() {
 
         {hasItems(publications) ? (
           <div className="panel">
-            <h2>Publications</h2>
+            <h2>{getUi(locale, 'resume.publications')}</h2>
             <ul className="list">
               {publications.map((item) => (
                 <li key={`${item.title}-${item.date}`}>
@@ -404,7 +455,7 @@ function ResumePage() {
                     <>
                       {' '}
                       <a href={item.url} target="_blank" rel="noreferrer">
-                        Link
+                        {getUi(locale, 'resume.link')}
                       </a>
                     </>
                   ) : null}
@@ -416,7 +467,7 @@ function ResumePage() {
 
         {hasItems(competitions) ? (
           <div className="panel">
-            <h2>Competitions</h2>
+            <h2>{getUi(locale, 'resume.competitions')}</h2>
             <ul className="list">
               {competitions.map((item) => (
                 <li key={`${item.name}-${item.date}`}>
@@ -425,7 +476,7 @@ function ResumePage() {
                     <>
                       {' '}
                       <a href={item.url} target="_blank" rel="noreferrer">
-                        Link
+                        {getUi(locale, 'resume.link')}
                       </a>
                     </>
                   ) : null}
@@ -440,9 +491,11 @@ function ResumePage() {
 }
 
 function ProjectsPage() {
+  const { locale } = useLocale();
+
   return (
     <section className="page">
-      <h1>Projects</h1>
+      <h1>{getUi(locale, 'projects.title')}</h1>
 
       <div className="grid">
         {projectData.map((project) => (
@@ -454,6 +507,7 @@ function ProjectsPage() {
 }
 
 function ProjectDetailPage() {
+  const { locale } = useLocale();
   const { slug } = useParams();
   const project = projectData.find((item) => item.slug === slug);
   const { activeTag, activeProjects, handleTagClick, closeTag } = useTagMatchesModal();
@@ -461,65 +515,75 @@ function ProjectDetailPage() {
   if (!project) {
     return (
       <section className="page">
-        <h1>Project not found</h1>
-        <p className="lead">That project page does not exist.</p>
+        <h1>{getUi(locale, 'projects.notFound')}</h1>
+        <p className="lead">{getUi(locale, 'projects.notFoundLead')}</p>
         <Link className="button primary" to="/projects">
-          Back to Projects
+          {getUi(locale, 'projects.backToProjects')}
         </Link>
       </section>
     );
   }
 
+  const localizedProject = getProjectCopy(locale, project);
   const links = [
-    { href: project.githubUrl, label: 'GitHub repo' },
-    { href: project.demoUrl, label: 'Live demo' },
-    { href: project.backendHealthUrl, label: 'Backend health' }
+    { href: project.githubUrl, label: getUi(locale, 'projects.githubRepo') },
+    { href: project.demoUrl, label: getUi(locale, 'projects.liveDemo') },
+    { href: project.backendHealthUrl, label: getUi(locale, 'projects.backendHealth') }
   ].filter((link) => Boolean(link.href));
 
   return (
     <section className="page">
-      <p className="eyebrow">{project.category}</p>
+      <p className="eyebrow">{localizedProject.category}</p>
       <h1>{project.title}</h1>
-      <p className="lead">{project.summary}</p>
+      <p className="lead">{localizedProject.summary}</p>
 
       <div className="detail-grid">
         <article className="panel detail-main">
-          <DetailSection title="Project Type" content={project.projectType} />
-          <DetailSection title="My Contribution" content={project.myContribution} />
-          <DetailSection title="Problem" content={project.problem} />
-          <DetailSection title="What I Built" content={project.whatBuilt} />
-          <DetailSection title="Data & Methods" content={project.dataMethods} />
-          <DetailSection title="Engineering Highlights" content={project.engineeringHighlights} />
-          <DetailSection title="Results" content={project.results} />
-          <DetailSection title="Limitations" content={project.limitations} />
-          <DetailSection title="Next Steps" content={project.nextSteps} />
-          <DetailSection title="Reproducibility" content={project.reproducibility} />
+          <DetailSection title={getUi(locale, 'projects.projectType')} content={localizedProject.projectType} />
+          <DetailSection
+            title={getUi(locale, 'projects.myContribution')}
+            content={localizedProject.myContribution}
+          />
+          <DetailSection title={getUi(locale, 'projects.problem')} content={localizedProject.problem} />
+          <DetailSection title={getUi(locale, 'projects.whatBuilt')} content={localizedProject.whatBuilt} />
+          <DetailSection title={getUi(locale, 'projects.dataMethods')} content={localizedProject.dataMethods} />
+          <DetailSection
+            title={getUi(locale, 'projects.engineeringHighlights')}
+            content={localizedProject.engineeringHighlights}
+          />
+          <DetailSection title={getUi(locale, 'projects.results')} content={localizedProject.results} />
+          <DetailSection title={getUi(locale, 'projects.limitations')} content={localizedProject.limitations} />
+          <DetailSection title={getUi(locale, 'projects.nextSteps')} content={localizedProject.nextSteps} />
+          <DetailSection
+            title={getUi(locale, 'projects.reproducibility')}
+            content={localizedProject.reproducibility}
+          />
         </article>
 
         <aside className="panel detail-side">
           <TagSection
-            title="Capabilities"
+            title={getUi(locale, 'projects.capabilities')}
             sectionKey="capabilities"
             items={getProjectTagLabels(project, 'capabilities')}
             onTagClick={handleTagClick}
             activeTag={activeTag}
           />
           <TagSection
-            title="Technologies"
+            title={getUi(locale, 'projects.technologies')}
             sectionKey="technologies"
             items={getProjectTagLabels(project, 'technologies')}
             onTagClick={handleTagClick}
             activeTag={activeTag}
           />
           <TagSection
-            title="Foundations"
+            title={getUi(locale, 'projects.foundations')}
             sectionKey="foundations"
             items={getProjectTagLabels(project, 'foundations')}
             onTagClick={handleTagClick}
             activeTag={activeTag}
           />
 
-          <h2>Links</h2>
+          <h2>{getUi(locale, 'projects.links')}</h2>
           <div className="stack-links">
             {links.map((link) => (
               <a key={link.label} href={link.href} target="_blank" rel="noreferrer">
@@ -528,7 +592,7 @@ function ProjectDetailPage() {
             ))}
           </div>
 
-          <h2>Status</h2>
+          <h2>{getUi(locale, 'projects.status')}</h2>
           <p>{project.status}</p>
         </aside>
       </div>
@@ -546,29 +610,30 @@ function ProjectDetailPage() {
 }
 
 function SkillsPage() {
+  const { locale } = useLocale();
   const { activeTag, activeProjects, handleTagClick, closeTag } = useTagMatchesModal();
 
   return (
     <section className="page">
-      <h1>Skills</h1>
+      <h1>{getUi(locale, 'skills.title')}</h1>
 
       <div className="skill-grid">
         <SkillSection
-          title="Capabilities"
+          title={getUi(locale, 'skills.capabilities')}
           groups={capabilities}
           sectionKey="capabilities"
           onTagClick={handleTagClick}
           activeTag={activeTag}
         />
         <SkillSection
-          title="Technologies"
+          title={getUi(locale, 'skills.technologies')}
           groups={technologies}
           sectionKey="technologies"
           onTagClick={handleTagClick}
           activeTag={activeTag}
         />
         <SkillSection
-          title="Foundations"
+          title={getUi(locale, 'skills.foundations')}
           groups={foundations}
           sectionKey="foundations"
           onTagClick={handleTagClick}
@@ -578,23 +643,19 @@ function SkillsPage() {
 
       <div className="one-col">
         <div className="panel">
-          <h2>Skill taxonomy</h2>
+          <h2>{getUi(locale, 'skills.taxonomy')}</h2>
           <ul className="list skill-taxonomy-list">
             <li>
-              <span className="skill-taxonomy-term">Capabilities</span>
-              <span className="skill-taxonomy-desc">
-                competencies supported by project evidence.
-              </span>
+              <span className="skill-taxonomy-term">{getUi(locale, 'skills.capabilities')}</span>
+              <span className="skill-taxonomy-desc">{getUi(locale, 'skills.capabilitiesDesc')}</span>
             </li>
             <li>
-              <span className="skill-taxonomy-term">Technologies</span>
-              <span className="skill-taxonomy-desc">tools and platforms used in delivery.</span>
+              <span className="skill-taxonomy-term">{getUi(locale, 'skills.technologies')}</span>
+              <span className="skill-taxonomy-desc">{getUi(locale, 'skills.technologiesDesc')}</span>
             </li>
             <li>
-              <span className="skill-taxonomy-term">Foundations</span>
-              <span className="skill-taxonomy-desc">
-                core concepts and theory demonstrated in the work.
-              </span>
+              <span className="skill-taxonomy-term">{getUi(locale, 'skills.foundations')}</span>
+              <span className="skill-taxonomy-desc">{getUi(locale, 'skills.foundationsDesc')}</span>
             </li>
           </ul>
         </div>
@@ -613,36 +674,41 @@ function SkillsPage() {
 }
 
 function ContactPage() {
+  const { locale } = useLocale();
+  const localizedContact = getContact(locale);
+
   return (
     <section className="page">
-      <h1>Contact</h1>
+      <h1>{getUi(locale, 'contact.title')}</h1>
 
       <div className="two-col">
         <div className="panel">
-          <h2>Reach me at</h2>
+          <h2>{getUi(locale, 'contact.reachMe')}</h2>
           <ul className="list">
-            {contact.email ? (
+            {localizedContact.email ? (
               <li>
-                Email: <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                {getUi(locale, 'contact.email')}:{' '}
+                <a href={`mailto:${localizedContact.email}`}>{localizedContact.email}</a>
               </li>
             ) : null}
-            {contact.github ? (
+            {localizedContact.github ? (
               <li>
-                GitHub: <a href={contact.github}>{contact.github}</a>
+                {getUi(locale, 'contact.github')}: <a href={localizedContact.github}>{localizedContact.github}</a>
               </li>
             ) : null}
-            {contact.linkedin ? (
+            {localizedContact.linkedin ? (
               <li>
-                LinkedIn: <a href={contact.linkedin}>{contact.linkedin}</a>
+                {getUi(locale, 'contact.linkedin')}:{' '}
+                <a href={localizedContact.linkedin}>{localizedContact.linkedin}</a>
               </li>
             ) : null}
           </ul>
         </div>
-        {hasItems(contact.openTo) ? (
+        {hasItems(localizedContact.openTo) ? (
           <div className="panel">
-            <h2>What I am open to</h2>
+            <h2>{getUi(locale, 'contact.openTo')}</h2>
             <ul className="list">
-              {contact.openTo.map((item) => (
+              {localizedContact.openTo.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -654,18 +720,22 @@ function ContactPage() {
 }
 
 function NotFoundPage() {
+  const { locale } = useLocale();
+
   return (
     <section className="page">
-      <h1>Page not found</h1>
-      <p className="lead">Use the navigation to return to the portfolio.</p>
+      <h1>{getUi(locale, 'notFound.title')}</h1>
+      <p className="lead">{getUi(locale, 'notFound.lead')}</p>
       <Link className="button primary" to="/">
-        Go Home
+        {getUi(locale, 'notFound.goHome')}
       </Link>
     </section>
   );
 }
 
 function ProjectCard({ project }) {
+  const { locale } = useLocale();
+  const localizedProject = getProjectCopy(locale, project);
   const navigate = useNavigate();
   const { activeTag, activeProjects, handleTagClick, closeTag } = useTagMatchesModal();
 
@@ -694,16 +764,16 @@ function ProjectCard({ project }) {
           openProject();
         }
       }}
-      aria-label={`Open ${project.title} project details`}
+      aria-label={getUi(locale, 'aria.openProject')(project.title)}
     >
       <div className="card-head">
-        <span className="chip">{project.category}</span>
+        <span className="chip">{localizedProject.category}</span>
         <span className="status">{project.status}</span>
       </div>
       <h3>{project.title}</h3>
-      <p>{project.summary}</p>
+      <p>{localizedProject.summary}</p>
       <TagSection
-        title="Technologies"
+        title={getUi(locale, 'projects.technologies')}
         sectionKey="technologies"
         items={getProjectTagLabels(project, 'technologies').slice(0, 4)}
         compact
@@ -712,7 +782,7 @@ function ProjectCard({ project }) {
         stopEventPropagation
       />
       <TagSection
-        title="Capabilities"
+        title={getUi(locale, 'projects.capabilities')}
         sectionKey="capabilities"
         items={getProjectTagLabels(project, 'capabilities').slice(0, 4)}
         compact
@@ -746,6 +816,8 @@ function DetailSection({ title, content }) {
 }
 
 function TagCloud({ items, sectionKey, onTagClick, activeTag, stopEventPropagation = false }) {
+  const { locale } = useLocale();
+
   return (
     <div className="tags">
       {items.map((item) => {
@@ -773,7 +845,7 @@ function TagCloud({ items, sectionKey, onTagClick, activeTag, stopEventPropagati
             }}
             aria-haspopup="dialog"
             aria-pressed={isActive}
-            aria-label={`Show projects with ${item}`}
+            aria-label={getUi(locale, 'aria.showProjectsWith')(item)}
           >
             {item}
           </button>
@@ -811,8 +883,10 @@ function TagSection({
 }
 
 function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
+  const { locale } = useLocale();
   const closeButtonRef = useRef(null);
   const lastFocusedElementRef = useRef(null);
+  const projectCountLabel = getUi(locale, 'modal.projectCount');
 
   useEffect(() => {
     lastFocusedElementRef.current = document.activeElement;
@@ -868,33 +942,37 @@ function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
       >
         <div className="modal-header">
           <div>
-            <p className="eyebrow">Tag matches</p>
+            <p className="eyebrow">{getUi(locale, 'modal.tagMatches')}</p>
             <h2 id="tag-projects-title">{tag}</h2>
             <p id="tag-projects-summary" className="modal-summary">
-              {sectionTitle} · {projects.length} project{projects.length === 1 ? '' : 's'}
+              {sectionTitle} · {projectCountLabel(projects.length)}
             </p>
           </div>
           <button ref={closeButtonRef} type="button" className="modal-close" onClick={handleClose}>
-            Close
+            {getUi(locale, 'modal.close')}
           </button>
         </div>
 
         {projects.length ? (
           <ul className="modal-list">
-            {projects.map((project) => (
-              <li key={project.slug} className="modal-item">
-                <div>
-                  <h3>{project.title}</h3>
-                  <p>{project.category}</p>
-                </div>
-                <Link className="text-link modal-link" to={`/projects/${project.slug}`}>
-                  View projects
-                </Link>
-              </li>
-            ))}
+            {projects.map((project) => {
+              const localizedProject = getProjectCopy(locale, project);
+
+              return (
+                <li key={project.slug} className="modal-item">
+                  <div>
+                    <h3>{project.title}</h3>
+                    <p>{localizedProject.category}</p>
+                  </div>
+                  <Link className="text-link modal-link" to={`/projects/${project.slug}`}>
+                    {getUi(locale, 'modal.viewProject')}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         ) : (
-          <p className="modal-empty">No projects matched this tag.</p>
+          <p className="modal-empty">{getUi(locale, 'modal.noMatches')}</p>
         )}
       </div>
     </div>,
@@ -903,6 +981,8 @@ function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
 }
 
 function SkillSection({ title, groups, sectionKey, onTagClick, activeTag }) {
+  const { locale } = useLocale();
+
   if (!groups.length) {
     return null;
   }
@@ -913,7 +993,7 @@ function SkillSection({ title, groups, sectionKey, onTagClick, activeTag }) {
       <div className="skill-groups">
         {groups.map((group) => (
           <section key={group.group} className="skill-group">
-            <h3>{group.group}</h3>
+            <h3>{getGroupTitle(locale, group.group)}</h3>
             <TagCloud
               items={group.items}
               sectionKey={sectionKey}
