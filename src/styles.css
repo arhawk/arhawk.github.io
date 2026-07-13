@@ -492,6 +492,50 @@ button {
   grid-template-columns: 1fr;
 }
 
+.about-sections,
+.resume-summary-stack {
+  display: grid;
+  gap: 20px;
+}
+
+.about-prose {
+  display: grid;
+  gap: 14px;
+}
+
+.about-prose p,
+.resume-highlight-list li {
+  color: var(--text-soft);
+  line-height: 1.65;
+}
+
+.about-prose p {
+  margin: 0;
+}
+
+.resume-highlight-list li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.resume-highlight-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-50%);
+}
+
+.panel h2 + .about-prose,
+.panel h2 + .list,
+.panel h2 + p {
+  margin-top: 0;
+}
+
 .resume-profile-grid,
 .resume-summary-grid {
   display: grid;

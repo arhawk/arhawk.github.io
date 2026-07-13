@@ -112,7 +112,7 @@ function HomePage() {
         <div className="hero-copy">
           <p className="eyebrow">Portfolio</p>
           <h1>{about.home.headline}</h1>
-          <p className="lead">{about.summary}</p>
+          <p className="lead">{about.home.lead}</p>
           <div className="actions">
             <Link className="button primary" to="/projects">
               View Projects
@@ -195,43 +195,39 @@ function AboutPage() {
       <h1>{about.aboutPage.title}</h1>
       <p className="lead">{about.about}</p>
 
-      <div className="resume-stack">
+      <div className="about-sections">
         {hasItems(about.aboutPage.path) ? (
-          <div className="panel">
-            <h2>My path</h2>
-            <ul className="list">
+          <article className="panel">
+            <h2>Background</h2>
+            <div className="about-prose">
               {about.aboutPage.path.map((item) => (
+                <p key={item}>{item}</p>
+              ))}
+            </div>
+          </article>
+        ) : null}
+
+        {hasItems(about.aboutPage.goodAt) ? (
+          <article className="panel">
+            <h2>How I work</h2>
+            <ul className="list">
+              {about.aboutPage.goodAt.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
-          </div>
+          </article>
         ) : null}
 
-        {hasItems(about.aboutPage.goodAt) || hasItems(about.aboutPage.buildingToward) ? (
-          <div className="two-col">
-            {hasItems(about.aboutPage.goodAt) ? (
-              <div className="panel">
-                <h2>What I am good at</h2>
-                <ul className="list">
-                  {about.aboutPage.goodAt.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-            {hasItems(about.aboutPage.buildingToward) ? (
-              <div className="panel">
-                <h2>What I am building toward</h2>
-                <ul className="list">
-                  {about.aboutPage.buildingToward.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-          </div>
+        {hasItems(about.aboutPage.buildingToward) ? (
+          <article className="panel">
+            <h2>What I am still learning</h2>
+            <ul className="list">
+              {about.aboutPage.buildingToward.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
         ) : null}
-
       </div>
     </section>
   );
@@ -252,7 +248,7 @@ function ResumePage() {
         <div>
           <p className="eyebrow">Resume</p>
           <h1>{about.resumePage.title}</h1>
-          <p className="lead">{about.resumePage.lead}</p>
+          {about.resumePage.lead ? <p className="lead">{about.resumePage.lead}</p> : null}
         </div>
         <div className="resume-export-actions">
           <button type="button" className="button primary" onClick={downloadResumePdf}>
@@ -264,36 +260,32 @@ function ResumePage() {
         </div>
       </div>
 
-      <p className="resume-note">
-        Download a ready-to-share PDF or the LaTeX source compiled from the same resume data.
-      </p>
-
       <div className="resume-stack">
         {showSummaryStrengthsRow ? (
-          <div className="resume-summary-grid">
+          <div className="resume-summary-stack">
             {about.summary ? (
-              <div className="panel resume-paired-panel">
+              <article className="panel resume-paired-panel">
                 <h2>Professional Summary</h2>
                 <p>{about.summary}</p>
                 {hasItems(about.summaryPoints) ? (
-                  <ul className="list">
+                  <ul className="list resume-highlight-list">
                     {about.summaryPoints.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
                 ) : null}
-              </div>
+              </article>
             ) : null}
 
             {hasItems(about.uniqueStrengths) ? (
-              <div className="panel resume-paired-panel">
+              <article className="panel resume-paired-panel">
                 <h2>Professional Strengths</h2>
-                <ul className="list">
+                <ul className="list resume-highlight-list">
                   {about.uniqueStrengths.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-              </div>
+              </article>
             ) : null}
           </div>
         ) : null}
@@ -327,14 +319,14 @@ function ResumePage() {
               ) : null}
 
               {hasItems(about.technicalFocus) ? (
-                <div className="panel resume-sidebar-panel">
+                <article className="panel resume-sidebar-panel">
                   <h2>Technical Focus</h2>
-                  <ul className="list">
+                  <ul className="list resume-highlight-list">
                     {about.technicalFocus.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
-                </div>
+                </article>
               ) : null}
             </div>
 
@@ -468,7 +460,7 @@ function ProjectsPage() {
         <div>
           <p className="eyebrow">Projects</p>
           <h1>{about.projectsPage.title}</h1>
-          <p className="lead">{about.projectsPage.lead}</p>
+          {about.projectsPage.lead ? <p className="lead">{about.projectsPage.lead}</p> : null}
         </div>
       </div>
 
@@ -579,11 +571,8 @@ function SkillsPage() {
   return (
     <section className="page">
       <p className="eyebrow">Skills</p>
-      <h1>Evidence-led skills, grouped by how they show up in the public project.</h1>
-      <p className="lead">
-        Click any tag to see the project that demonstrates it. The lists below are derived only
-        from visible project data.
-      </p>
+      <h1>{about.skillsPage.title}</h1>
+      {about.skillsPage.lead ? <p className="lead">{about.skillsPage.lead}</p> : null}
 
       <div className="skill-grid">
         <SkillSection
@@ -650,7 +639,7 @@ function ContactPage() {
     <section className="page">
       <p className="eyebrow">Contact</p>
       <h1>{contact.page.title}</h1>
-      <p className="lead">{contact.page.lead}</p>
+      {contact.page.lead ? <p className="lead">{contact.page.lead}</p> : null}
 
       <div className="two-col">
         <div className="panel">
