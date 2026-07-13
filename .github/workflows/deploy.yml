@@ -33,6 +33,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install TeX Live
+        run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra
+
       - name: Build
         run: npm run build
 
@@ -41,13 +44,14 @@ jobs:
           rm -rf assets
           cp dist/index.template.html index.html
           cp -r dist/assets assets
+          cp dist/*_Resume.pdf . 2>/dev/null || true
           touch .nojekyll
 
       - name: Commit and push built site
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html assets .nojekyll
+          git add index.html assets .nojekyll *_Resume.pdf
           git diff --staged --quiet && echo "No changes to deploy" && exit 0
           git commit -m "Deploy built site to GitHub Pages"
           git push

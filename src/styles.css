@@ -445,6 +445,13 @@ button {
   font-size: 0.92rem;
 }
 
+.resume-export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
 .grid,
 .skill-grid,
 .two-col,

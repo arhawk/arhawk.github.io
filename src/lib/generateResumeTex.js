@@ -307,6 +307,8 @@ const buildCompetitions = () =>
       }`
   );
 
+export const getResumeBaseName = () => `${about.name.replace(/\s+/g, '_')}_Resume`;
+
 export const generateResumeTex = () =>
   [
     LATEX_PREAMBLE,
@@ -330,10 +332,34 @@ export const downloadResumeTex = () => {
   const blob = new Blob([tex], { type: 'application/x-tex' });
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');
-  const safeName = about.name.replace(/\s+/g, '_');
 
   anchor.href = url;
-  anchor.download = `${safeName}_Resume.tex`;
+  anchor.download = `${getResumeBaseName()}.tex`;
   anchor.click();
   URL.revokeObjectURL(url);
+};
+
+export const downloadResumePdf = async () => {
+  const fileName = `${getResumeBaseName()}.pdf`;
+  const url = `${import.meta.env.BASE_URL}${fileName}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('PDF not found');
+    }
+
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+
+    anchor.href = objectUrl;
+    anchor.download = fileName;
+    anchor.click();
+    URL.revokeObjectURL(objectUrl);
+  } catch {
+    window.alert(
+      'PDF resume is generated during build. Run "npm run build" locally, or download from the deployed site.'
+    );
+  }
 };

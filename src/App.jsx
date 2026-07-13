@@ -18,7 +18,7 @@ import {
   technologies,
   technologyProjectMatches
 } from './data';
-import { downloadResumeTex } from './lib/generateResumeTex';
+import { downloadResumePdf, downloadResumeTex } from './lib/generateResumeTex';
 import { hasItems } from './lib/hasItems';
 
 const projectTagMatches = {
@@ -259,12 +259,19 @@ function ResumePage() {
           <h1>{about.resumePage.title}</h1>
           <p className="lead">{about.resumePage.lead}</p>
         </div>
-        <button type="button" className="button primary" onClick={downloadResumeTex}>
-          Download LaTeX
-        </button>
+        <div className="resume-export-actions">
+          <button type="button" className="button primary" onClick={downloadResumePdf}>
+            Download PDF
+          </button>
+          <button type="button" className="button" onClick={downloadResumeTex}>
+            Download LaTeX
+          </button>
+        </div>
       </div>
 
-      <p className="resume-note">Compile the downloaded .tex file with pdfLaTeX or XeLaTeX.</p>
+      <p className="resume-note">
+        Download a ready-to-share PDF or the LaTeX source compiled from the same resume data.
+      </p>
 
       <div className="resume-stack">
         {showSummaryStrengthsRow ? (
