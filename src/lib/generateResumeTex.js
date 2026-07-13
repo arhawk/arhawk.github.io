@@ -26,6 +26,7 @@ const LATEX_PREAMBLE = `%-------------------------
 \\usepackage{titlesec}
 \\usepackage{enumitem}
 \\usepackage[hidelinks]{hyperref}
+\\usepackage{xcolor}
 \\usepackage{fancyhdr}
 
 \\pagestyle{fancy}
@@ -350,6 +351,13 @@ export const downloadResumePdf = async () => {
     }
 
     const blob = await response.blob();
+    const headerBytes = new Uint8Array(await blob.slice(0, 8).arrayBuffer());
+    const headerText = String.fromCharCode(...headerBytes);
+
+    if (!headerText.startsWith('%PDF-')) {
+      throw new Error('Response is not a valid PDF');
+    }
+
     const objectUrl = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
 
@@ -359,7 +367,7 @@ export const downloadResumePdf = async () => {
     URL.revokeObjectURL(objectUrl);
   } catch {
     window.alert(
-      'PDF resume is generated during build. Run "npm run build" locally, or download from the deployed site.'
+      'PDF resume is not available yet. Run "npm run build" to generate it, then use "npm run preview" or restart "npm run dev" before downloading again.'
     );
   }
 };
