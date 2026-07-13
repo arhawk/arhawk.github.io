@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite index.template.html",
+    "dev": "vite",
     "generate:resume-pdf": "node scripts/generate-resume-pdf.mjs",
     "build": "npm run generate:resume-pdf && vite build",
     "preview": "vite preview"
