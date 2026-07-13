@@ -116,12 +116,12 @@ ${entries}
 `;
 };
 
-const buildExperience = () => {
-  if (!hasItems(experience)) {
+const buildExperience = (entries = experience) => {
+  if (!hasItems(entries)) {
     return '';
   }
 
-  const entries = experience
+  const rendered = entries
     .map((item) => {
       const bullets = (item.bullets ?? [])
         .map((bullet) => `            \\resumeItem{${escapeLatex(bullet)}}`)
@@ -140,7 +140,7 @@ ${bullets}
 \\section{Experience}
 \\resumeSubHeadingListStart
 
-${entries}
+${rendered}
 
 \\resumeSubHeadingListEnd
 `;
@@ -271,7 +271,9 @@ ${bullets.map((item) => `        \\resumeItem{${escapeLatex(item)}}`).join('\n')
           ? `{\\textbf{${escapeLatex(project.title)}} $|$ ${linkParts.join(' $|$ ')}}`
           : `{\\textbf{${escapeLatex(project.title)}}}`;
 
-        const bullets = getProjectResumeBullets(project)
+        const bullets = (
+          resumeConfig.projectBulletOverrides?.[project.slug] ?? getProjectResumeBullets(project)
+        )
           .map((bullet) => `            \\resumeItem{${escapeLatex(bullet)}}`)
           .join('\n');
 
@@ -364,7 +366,7 @@ ${bullets}
     buildTechnicalFocus(),
     buildSkills(),
     buildProjects(),
-    buildExperience(),
+    buildExperience(resumeConfig.experience ?? experience),
     buildCertificates(),
     buildPublications(),
     buildCompetitions(),
