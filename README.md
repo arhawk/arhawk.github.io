@@ -39,13 +39,17 @@ npm run preview
 
 ## Deployment
 
-GitHub Pages is configured to serve the repository root on `main`. The deploy workflow builds the Vite app and commits the production `index.html` and `assets/` folder to `main`.
+GitHub Pages is deployed by GitHub Actions from the built `dist/` output. Built artifacts (`index.html`, `assets/`, resume PDF) are **not** committed back to `main`, so source history stays linear.
 
 1. Push source changes to `main`.
-2. The workflow in `.github/workflows/deploy.yml` runs `npm run build` and commits the built files.
-3. GitHub Pages serves those built files at `https://arhawk.github.io`.
+2. The workflow in `.github/workflows/deploy.yml` runs `npm run build`, uploads the site artifact, and deploys to Pages.
+3. GitHub Pages serves the site at `https://arhawk.github.io`.
 
-Local development uses `index.template.html` so the committed production `index.html` does not affect `npm run dev`.
+### One-time repository setting
+
+In GitHub → **Settings** → **Pages** → **Build and deployment** → **Source**, choose **GitHub Actions** (not “Deploy from a branch”).
+
+Local development uses `index.template.html` so production `index.html` does not affect `npm run dev`.
 
 ## Content Updates
 

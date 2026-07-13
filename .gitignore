@@ -5,3 +5,9 @@ applications
 .DS_Store
 *.log
 .resume-build
+
+# Built site artifacts (deployed by GitHub Actions, not tracked on main)
+/index.html
+/assets/
+/.nojekyll
+/Zehao_Liu_Resume.pdf
