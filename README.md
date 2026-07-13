@@ -7,7 +7,7 @@ Minimal recruiter-friendly portfolio built with React, Vite, and GitHub Pages.
 - Home, Projects, Resume, Skills, About, and Contact pages
 - Project cards and detail pages
 - Resume page assembled from shared content data
-- LaTeX resume download generated from the same source
+- LaTeX and PDF resume downloads generated from the same source
 - Skills derived from project tags
 - Empty resume sections hidden until data is added
 - Responsive layout for mobile and desktop
@@ -60,6 +60,6 @@ Optional extension arrays (empty sections stay hidden on the site and in LaTeX e
 - `src/data/experience.js` — internships and relevant professional roles
 - `src/data/credentials.js` — certificates, publications, and competitions
 
-The Resume page and **Download LaTeX** button both read from this shared data. Compile the downloaded `.tex` file with pdfLaTeX or XeLaTeX.
+The Resume page offers **Download PDF** and **Download LaTeX** from this shared data. PDFs are compiled during `npm run build`; the `.tex` file can also be compiled locally with pdfLaTeX or XeLaTeX.
 
-Layout and routing live in `src/App.jsx`. LaTeX generation lives in `src/lib/generateResumeTex.js`.
+Layout and routing live in `src/App.jsx`. Resume export lives in `src/lib/generateResumeTex.js` and `scripts/generate-resume-pdf.mjs`.

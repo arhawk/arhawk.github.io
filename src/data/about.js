@@ -118,7 +118,7 @@ export const about = {
   },
   resumePage: {
     title: 'Structured summary for recruiter review.',
-    lead: 'The sections below are assembled from project evidence and profile data. Download the LaTeX source to compile a matching one-page resume.'
+    lead: 'The sections below are assembled from project evidence and profile data. Download a PDF or LaTeX resume generated from the same source.'
   },
   projectsPage: {
     title: 'Public project evidence.',
