@@ -1,7 +1,7 @@
 export const about = {
   name: 'Zehao Liu',
   title:
-    'Data Engineer · Machine Learning Engineer · Artificial Intelligence Engineer · Data Scientist · Data Analyst',
+    'Data science and AI graduate',
   location: 'Sydney, Australia',
   summary:
     'An early-career technical professional with a computer science and mathematics foundation, primarily targeting Data Engineer roles and also open to machine learning, AI, and analytics positions with evidence from pipelines, modeling, and delivery work.',

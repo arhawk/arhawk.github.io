@@ -78,8 +78,8 @@ function App() {
             Home
           </NavLink>
           <NavLink to="/about">About</NavLink>
-          <NavLink to="/projects">Projects</NavLink>
           <NavLink to="/resume">Resume</NavLink>
+          <NavLink to="/projects">Projects</NavLink>
           <NavLink to="/skills">Skills</NavLink>
           <NavLink to="/contact">Contact</NavLink>
         </nav>
@@ -692,6 +692,9 @@ function ProjectCard({ project }) {
   const navigate = useNavigate();
   const { activeTag, activeProjects, handleTagClick, closeTag } = useTagMatchesModal();
 
+  const shouldIgnoreCardNavigation = (event) =>
+    Boolean(event.target.closest('button, a, .tags, .mini-section'));
+
   const openProject = () => {
     navigate(`/projects/${project.slug}`);
   };
@@ -701,7 +704,13 @@ function ProjectCard({ project }) {
       className="card card-clickable"
       role="link"
       tabIndex={0}
-      onClick={openProject}
+      onClick={(event) => {
+        if (shouldIgnoreCardNavigation(event)) {
+          return;
+        }
+
+        openProject();
+      }}
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
@@ -780,6 +789,7 @@ function TagCloud({ items, sectionKey, onTagClick, activeTag, stopEventPropagati
             className={`tag tag-button${isActive ? ' active' : ''}`}
             onClick={(event) => {
               if (stopEventPropagation) {
+                event.preventDefault();
                 event.stopPropagation();
               }
               onTagClick(sectionKey, item);
@@ -854,19 +864,30 @@ function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
   }, [onClose]);
 
   const handleBackdropClick = (event) => {
-    if (event.target === event.currentTarget) {
-      onClose();
+    if (event.target !== event.currentTarget) {
+      return;
     }
+
+    event.preventDefault();
+    event.stopPropagation();
+    window.setTimeout(() => onClose(), 0);
+  };
+
+  const handleClose = (event) => {
+    event.stopPropagation();
+    onClose();
   };
 
   return createPortal(
-    <div className="modal-backdrop" onClick={handleBackdropClick}>
+    <div className="modal-backdrop" onClick={handleBackdropClick} onMouseDown={(event) => event.stopPropagation()}>
       <div
         className="modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby="tag-projects-title"
         aria-describedby="tag-projects-summary"
+        onClick={(event) => event.stopPropagation()}
+        onMouseDown={(event) => event.stopPropagation()}
       >
         <div className="modal-header">
           <div>
@@ -876,7 +897,7 @@ function TagProjectsModal({ tag, sectionTitle, projects, onClose }) {
               {sectionTitle} · {projects.length} project{projects.length === 1 ? '' : 's'}
             </p>
           </div>
-          <button ref={closeButtonRef} type="button" className="modal-close" onClick={onClose}>
+          <button ref={closeButtonRef} type="button" className="modal-close" onClick={handleClose}>
             Close
           </button>
         </div>
