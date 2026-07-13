@@ -808,6 +808,20 @@ button {
   margin-bottom: 4px;
 }
 
+.resume-nav-link {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.resume-nav-link:hover,
+.resume-nav-link:focus-visible {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .education-highlight {
   margin: 8px 0 0;
   color: var(--text-soft);

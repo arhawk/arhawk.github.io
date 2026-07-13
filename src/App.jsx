@@ -329,7 +329,11 @@ function ResumePage() {
 
               {hasItems(resumeSkills) ? (
                 <div className="panel resume-sidebar-panel">
-                  <h2>Skills</h2>
+                  <h2>
+                    <Link className="resume-nav-link" to="/skills">
+                      Skills
+                    </Link>
+                  </h2>
                   <p>{resumeSkills.join(', ')}</p>
                 </div>
               ) : null}
@@ -337,14 +341,22 @@ function ResumePage() {
 
             {hasItems(projectData) ? (
               <div className="panel resume-paired-panel resume-projects-panel">
-                <h2>Project Experience</h2>
+                <h2>
+                  <Link className="resume-nav-link" to="/projects">
+                    Project Experience
+                  </Link>
+                </h2>
                 {projectData.map((project) => {
                   const bullets = getProjectResumeBullets(project);
 
                   return (
                     <article key={project.slug} className="resume-item">
                       <span>{project.category}</span>
-                      <h3>{project.title}</h3>
+                      <h3>
+                        <Link className="resume-nav-link" to={`/projects/${project.slug}`}>
+                          {project.title}
+                        </Link>
+                      </h3>
                       <p>{project.projectType}</p>
                       {hasItems(bullets) ? (
                         <ul className="list">
