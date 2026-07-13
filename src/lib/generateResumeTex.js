@@ -84,42 +84,6 @@ const LATEX_POSTAMBLE = `
 \\end{document}
 `;
 
-const buildHeading = () => {
-  const links = [
-    contact.email ? `\\href{mailto:${escapeLatex(contact.email)}}{${escapeLatex(contact.email)}}` : null,
-    contact.github ? latexHref(contact.github, 'GitHub') : null,
-    contact.linkedin ? latexHref(contact.linkedin, 'LinkedIn') : null,
-    about.location ? escapeLatex(about.location) : null
-  ].filter(Boolean);
-
-  return `%---------- HEADING ----------
-\\begin{center}
-    \\textbf{\\Huge ${escapeLatex(about.name)}} \\\\ \\vspace{3pt}
-    \\small ${about.targetRoles.map((role) => escapeLatex(role)).join(' \\textbullet{} ')} \\\\ \\vspace{3pt}
-    \\small ${links.join(' $|$ ')}
-\\end{center}
-`;
-};
-
-const buildSummary = () => {
-  const bullets = [...(about.summaryPoints ?? [])];
-
-  return `%----------- SUMMARY -----------
-\\section{Professional Summary}
-\\resumeSubHeadingListStart
-  \\item
-    \\small{${escapeLatex(about.summary)}}
-    ${
-      hasItems(bullets)
-        ? `\\resumeItemListStart
-${bullets.map((item) => `        \\resumeItem{${escapeLatex(item)}}`).join('\n')}
-      \\resumeItemListEnd`
-        : ''
-    }
-\\resumeSubHeadingListEnd
-`;
-};
-
 const buildEducation = () => {
   if (!hasItems(about.education)) {
     return '';
@@ -182,104 +146,6 @@ ${entries}
 `;
 };
 
-const buildProjects = () => {
-  if (!hasItems(projectData)) {
-    return '';
-  }
-
-  const entries = projectData
-    .map((project) => {
-      const linkParts = [];
-      if (project.githubUrl) {
-        linkParts.push(`\\emph{${latexHref(project.githubUrl, 'GitHub')}}`);
-      }
-      if (project.demoUrl) {
-        linkParts.push(`\\emph{${latexHref(project.demoUrl, 'Demo')}}`);
-      }
-
-      const heading = linkParts.length
-        ? `{\\textbf{${escapeLatex(project.title)}} $|$ ${linkParts.join(' $|$ ')}}`
-        : `{\\textbf{${escapeLatex(project.title)}}}`;
-
-      const bullets = getProjectResumeBullets(project)
-        .map((bullet) => `            \\resumeItem{${escapeLatex(bullet)}}`)
-        .join('\n');
-
-      return `      \\resumeProjectHeading
-        ${heading}{${escapeLatex(project.category)}}
-          \\resumeItemListStart
-${bullets}
-          \\resumeItemListEnd`;
-    })
-    .join('\n\n');
-
-  return `%----------- PROJECTS -----------
-\\section{Projects}
-\\resumeSubHeadingListStart
-
-${entries}
-
-\\resumeSubHeadingListEnd
-`;
-};
-
-const buildTechnicalFocus = () => {
-  if (!hasItems(about.technicalFocus)) {
-    return '';
-  }
-
-  const bullets = about.technicalFocus
-    .map((item) => `        \\resumeItem{${escapeLatex(item)}}`)
-    .join('\n');
-
-  return `%----------- TECHNICAL FOCUS -----------
-\\section{Technical Focus}
-\\resumeSubHeadingListStart
-  \\item
-    \\resumeItemListStart
-${bullets}
-    \\resumeItemListEnd
-\\resumeSubHeadingListEnd
-`;
-};
-
-const buildSkills = () => {
-  const skills = collectResumeSkillLabels(projectData);
-
-  if (!hasItems(skills)) {
-    return '';
-  }
-
-  return `%----------- SKILLS -----------
-\\section{Skills}
-\\resumeSubHeadingListStart
-  \\small{\\item{
-      \\textbf{Technologies:}{ ${skills.map((skill) => escapeLatex(skill)).join(', ')}}
-  }}
-\\resumeSubHeadingListEnd
-`;
-};
-
-const buildStrengths = () => {
-  if (!hasItems(about.uniqueStrengths)) {
-    return '';
-  }
-
-  const bullets = about.uniqueStrengths
-    .map((item) => `        \\resumeItem{${escapeLatex(item)}}`)
-    .join('\n');
-
-  return `%----------- STRENGTHS -----------
-\\section{Professional Strengths}
-\\resumeSubHeadingListStart
-  \\item
-    \\resumeItemListStart
-${bullets}
-    \\resumeItemListEnd
-\\resumeSubHeadingListEnd
-`;
-};
-
 const buildSimpleListSection = (title, entries, formatter) => {
   if (!hasItems(entries)) {
     return '';
@@ -330,8 +196,166 @@ const buildCompetitions = () =>
 
 export const getResumeBaseName = () => `${about.name.replace(/\s+/g, '_')}_Resume`;
 
-export const generateResumeTex = () =>
-  [
+export const generateResumeTex = (resumeOverride = {}) => {
+  const resumeConfig = resumeOverride;
+
+  const getResumeField = (field) => resumeConfig[field] ?? about[field];
+
+  const getResumeProjects = () => {
+    const slugs = resumeConfig.projectSlugs;
+
+    if (!hasItems(slugs)) {
+      return projectData;
+    }
+
+    const projectsBySlug = new Map(projectData.map((project) => [project.slug, project]));
+
+    return slugs.map((slug) => projectsBySlug.get(slug)).filter(Boolean);
+  };
+
+  const buildHeading = () => {
+    const links = [
+      contact.email ? `\\href{mailto:${escapeLatex(contact.email)}}{${escapeLatex(contact.email)}}` : null,
+      contact.github ? latexHref(contact.github, 'GitHub') : null,
+      contact.portfolio ? latexHref(contact.portfolio, 'Portfolio') : null,
+      contact.linkedin ? latexHref(contact.linkedin, 'LinkedIn') : null,
+      about.location ? escapeLatex(about.location) : null
+    ].filter(Boolean);
+
+    return `%---------- HEADING ----------
+\\begin{center}
+    \\textbf{\\Huge ${escapeLatex(about.name)}} \\\\ \\vspace{3pt}
+    \\small ${getResumeField('targetRoles').map((role) => escapeLatex(role)).join(' \\textbullet{} ')} \\\\ \\vspace{3pt}
+    \\small ${links.join(' $|$ ')}
+\\end{center}
+`;
+  };
+
+  const buildSummary = () => {
+    const bullets = [...(getResumeField('summaryPoints') ?? [])];
+
+    return `%----------- SUMMARY -----------
+\\section{Professional Summary}
+\\resumeSubHeadingListStart
+  \\item
+    \\small{${escapeLatex(getResumeField('summary'))}}
+    ${
+      hasItems(bullets)
+        ? `\\resumeItemListStart
+${bullets.map((item) => `        \\resumeItem{${escapeLatex(item)}}`).join('\n')}
+      \\resumeItemListEnd`
+        : ''
+    }
+\\resumeSubHeadingListEnd
+`;
+  };
+
+  const buildProjects = () => {
+    const resumeProjects = getResumeProjects();
+
+    if (!hasItems(resumeProjects)) {
+      return '';
+    }
+
+    const entries = resumeProjects
+      .map((project) => {
+        const linkParts = [];
+        if (project.githubUrl) {
+          linkParts.push(`\\emph{${latexHref(project.githubUrl, 'GitHub')}}`);
+        }
+        if (project.demoUrl) {
+          linkParts.push(`\\emph{${latexHref(project.demoUrl, 'Demo')}}`);
+        }
+
+        const heading = linkParts.length
+          ? `{\\textbf{${escapeLatex(project.title)}} $|$ ${linkParts.join(' $|$ ')}}`
+          : `{\\textbf{${escapeLatex(project.title)}}}`;
+
+        const bullets = getProjectResumeBullets(project)
+          .map((bullet) => `            \\resumeItem{${escapeLatex(bullet)}}`)
+          .join('\n');
+
+        return `      \\resumeProjectHeading
+        ${heading}{${escapeLatex(project.category)}}
+          \\resumeItemListStart
+${bullets}
+          \\resumeItemListEnd`;
+      })
+      .join('\n\n');
+
+    return `%----------- PROJECTS -----------
+\\section{Projects}
+\\resumeSubHeadingListStart
+
+${entries}
+
+\\resumeSubHeadingListEnd
+`;
+  };
+
+  const buildTechnicalFocus = () => {
+    const technicalFocus = getResumeField('technicalFocus');
+
+    if (!hasItems(technicalFocus)) {
+      return '';
+    }
+
+    const bullets = technicalFocus
+      .map((item) => `        \\resumeItem{${escapeLatex(item)}}`)
+      .join('\n');
+
+    return `%----------- TECHNICAL FOCUS -----------
+\\section{Technical Focus}
+\\resumeSubHeadingListStart
+  \\item
+    \\resumeItemListStart
+${bullets}
+    \\resumeItemListEnd
+\\resumeSubHeadingListEnd
+`;
+  };
+
+  const buildSkills = () => {
+    const skills = [
+      ...collectResumeSkillLabels(getResumeProjects()),
+      ...(resumeConfig.skillAdditions ?? [])
+    ].sort((a, b) => a.localeCompare(b));
+
+    if (!hasItems(skills)) {
+      return '';
+    }
+
+    return `%----------- SKILLS -----------
+\\section{Skills}
+\\resumeSubHeadingListStart
+  \\small{\\item{
+      \\textbf{Technologies:}{ ${[...new Set(skills)].map((skill) => escapeLatex(skill)).join(', ')}}
+  }}
+\\resumeSubHeadingListEnd
+`;
+  };
+
+  const buildStrengths = () => {
+    if (resumeConfig.hideStrengths || !hasItems(about.uniqueStrengths)) {
+      return '';
+    }
+
+    const bullets = about.uniqueStrengths
+      .map((item) => `        \\resumeItem{${escapeLatex(item)}}`)
+      .join('\n');
+
+    return `%----------- STRENGTHS -----------
+\\section{Professional Strengths}
+\\resumeSubHeadingListStart
+  \\item
+    \\resumeItemListStart
+${bullets}
+    \\resumeItemListEnd
+\\resumeSubHeadingListEnd
+`;
+  };
+
+  return [
     LATEX_PREAMBLE,
     buildHeading(),
     buildSummary(),
@@ -348,6 +372,7 @@ export const generateResumeTex = () =>
   ]
     .filter(Boolean)
     .join('\n');
+};
 
 export const downloadResumeTex = () => {
   const tex = generateResumeTex();

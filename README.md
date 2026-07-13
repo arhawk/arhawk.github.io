@@ -62,4 +62,16 @@ Optional extension arrays (empty sections stay hidden on the site and in LaTeX e
 
 The Resume page offers **Download PDF** and **Download LaTeX** from this shared data. PDFs are compiled during `npm run build`; the `.tex` file can also be compiled locally with pdfLaTeX or XeLaTeX.
 
+### Job-specific resume variants
+
+`npm run build` always generates the generic resume at `public/Zehao_Liu_Resume.pdf` (used by the site download buttons).
+
+For a tailored application CV, add `applications/<variant-name>/resume.config.js` and run:
+
+```bash
+npm run generate:resume-variant -- hayes-lab-data-analyst
+```
+
+That writes `applications/<variant-name>/Zehao_Liu_Resume.pdf` without changing the public generic PDF.
+
 Layout and routing live in `src/App.jsx`. Resume export lives in `src/lib/generateResumeTex.js` and `scripts/generate-resume-pdf.mjs`.

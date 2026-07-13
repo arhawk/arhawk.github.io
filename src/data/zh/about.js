@@ -13,12 +13,12 @@ export const aboutZh = {
     {
       title: '计算机科学硕士（Data Science and AI 方向）',
       notes: '悉尼，澳大利亚',
-      highlights: '数据管道、数据工程、NLP、机器学习、数据分析与建模。'
+      highlights: '数据工程、统计建模、机器学习、数据库，以及可复现 Python 流程下的大规模数据分析。'
     },
     {
       title: '计算机科学与数学荣誉学士',
       notes: '滑铁卢，加拿大',
-      highlights: '算法、证明、统计、数据库、AI 与网络安全。'
+      highlights: '算法、统计、数据库、AI，以及荣誉学位级别的计算问题求解训练。'
     }
   ],
   uniqueStrengths: [

@@ -253,7 +253,12 @@ export const projectData = [
     myContribution:
       'I designed and implemented the ingestion, publishing, and dashboard layers, then documented the deployment and fallback behavior.',
     engineeringHighlights:
-      'Key engineering work included MQTT topic design, bounded in-memory caching, conditional fallback replay, Streamlit rendering, and a separation between local broker mode and the Render deployment path.'
+      'Key engineering work included MQTT topic design, bounded in-memory caching, conditional fallback replay, Streamlit rendering, and a separation between local broker mode and the Render deployment path.',
+    resumeBullets: [
+      'Maintained a reproducible CSV ingestion and normalization pipeline with separated preparation and publishing stages for data integrity.',
+      'Automated deployment and refresh workflows with Docker, GitHub Actions, and documented fallback behavior for collaborators.',
+      'Performed data cleansing on facility and market inputs, preserving missing values explicitly and keeping each pipeline stage testable.'
+    ]
   },
   {
     slug: 'infinite-canvas-studio',
@@ -347,7 +352,12 @@ export const projectData = [
     myContribution:
       'I designed the end-to-end pipeline, implemented the CLI and model training code, added Grad-CAM and error analysis, and documented reproducible setup for local and Apple Silicon runs.',
     engineeringHighlights:
-      'Key engineering work included packaging the notebook into `src/medical_image_ml`, caching RF GridSearch results, runtime tuning for TensorFlow Metal, and automated figure export for portfolio presentation.'
+      'Key engineering work included packaging the notebook into `src/medical_image_ml`, caching RF GridSearch results, runtime tuning for TensorFlow Metal, and automated figure export for portfolio presentation.',
+    resumeBullets: [
+      'Performed large-scale processing of 32,000 training and 8,000 test histopathology tiles with normalization, held-out evaluation, and reproducible CLI workflows.',
+      'Ensured data quality through confusion-matrix review, Grad-CAM interpretability checks, and structured error analysis across nine tissue classes.',
+      'Maintained a documented Python package with cached GridSearch artifacts and command-line training entry points for repeatable analysis.'
+    ]
   },
   {
     slug: 'eduattain-prediction',
@@ -384,7 +394,12 @@ export const projectData = [
     myContribution:
       'I contributed to data ingestion and cleaning against ABS metadata, exploratory analysis, model benchmarking, and the Python automation for XGBoost, LightGBM, and CatBoost tuning.',
     engineeringHighlights:
-      'Key engineering work included parsing semi-structured ABS metadata, reconciling encoding mismatches across 146 variables, and building a reusable Python script with auto-detected target columns and stratified cross-validation.'
+      'Key engineering work included parsing semi-structured ABS metadata, reconciling encoding mismatches across 146 variables, and building a reusable Python script with auto-detected target columns and stratified cross-validation.',
+    resumeBullets: [
+      'Cleansed and verified 40,976 ABS microdata records by cross-checking metadata against 146 coded survey fields and resolving encoding mismatches.',
+      'Handled missingness, class imbalance, and unknown survey codes before producing a cleaned modeling dataset for downstream analysis.',
+      'Built reproducible R and Python benchmarking workflows with stratified evaluation and stakeholder-ready exploratory reports.'
+    ]
   }
 ];
 

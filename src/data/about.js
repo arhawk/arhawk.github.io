@@ -14,7 +14,7 @@ export const about = {
       title: 'Master of Computer Science specialized in Data Science and AI',
       notes: 'Sydney, Australia',
       highlights:
-        'Data pipelines, data engineering, NLP, machine learning, and data analysis / modeling.'
+        'Data engineering, statistical modeling, machine learning, databases, and large-scale data analysis with reproducible Python workflows.'
     },
     {
       period: 'Sep 2019 - Jun 2024',
@@ -22,7 +22,7 @@ export const about = {
       title: 'Honours Bachelor of Computer Science and Mathematics',
       notes: 'Waterloo, Canada',
       highlights:
-        'Algorithms, proofs, statistics, databases, AI, and network security.'
+        'Algorithms, statistics, databases, AI, and computational problem-solving with honours-level coursework.'
     }
   ],
   uniqueStrengths: [
