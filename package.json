@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",
+    "node-latex-compiler": "^1.0.5",
     "vite": "^7.3.6"
   }
 }
