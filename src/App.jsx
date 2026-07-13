@@ -19,7 +19,7 @@ import {
   technologyProjectMatches
 } from './data';
 import { downloadResumePdf, downloadResumeTex } from './lib/generateResumeTex';
-import { collectResumeSkillLabels, getProjectResumeBullets } from './lib/collectResumeSkills';
+import { collectResumeSkillLabels } from './lib/collectResumeSkills';
 import { hasItems } from './lib/hasItems';
 
 const projectTagMatches = {
@@ -305,12 +305,22 @@ function ResumePage() {
                 <div className="panel resume-sidebar-panel">
                   <h2>Education</h2>
                   {about.education.map((item) => (
-                    <article key={`${item.org}-${item.period}`} className="resume-item">
-                      <span>{item.period}</span>
-                      <h3>{item.title}</h3>
-                      <p>{item.org}</p>
-                      <small>{item.notes}</small>
-                      {item.highlights ? <p className="education-highlight">{item.highlights}</p> : null}
+                    <article key={`${item.org}-${item.period}`} className="resume-item resume-subheading-item">
+                      <div className="resume-subheading">
+                        <div className="resume-subheading-row">
+                          <strong className="resume-subheading-primary">{item.org}</strong>
+                          {item.notes ? <span className="resume-subheading-meta">{item.notes}</span> : null}
+                        </div>
+                        <div className="resume-subheading-row resume-subheading-row-secondary">
+                          <em className="resume-subheading-secondary">{item.title}</em>
+                          <span className="resume-subheading-meta">{item.period}</span>
+                        </div>
+                      </div>
+                      {item.highlights ? (
+                        <ul className="list resume-subheading-details">
+                          <li>{item.highlights}</li>
+                        </ul>
+                      ) : null}
                     </article>
                   ))}
                 </div>
@@ -326,6 +336,28 @@ function ResumePage() {
                   </ul>
                 </div>
               ) : null}
+            </div>
+
+            <div className="resume-main-column resume-paired-column">
+              {hasItems(projectData) ? (
+                <div className="panel resume-paired-panel resume-projects-panel">
+                  <h2>
+                    <Link className="resume-nav-link" to="/projects">
+                      Project Experience
+                    </Link>
+                  </h2>
+                  {projectData.map((project) => (
+                    <article key={project.slug} className="resume-item">
+                      <span>{project.category}</span>
+                      <h3>
+                        <Link className="resume-nav-link" to={`/projects/${project.slug}`}>
+                          {project.title}
+                        </Link>
+                      </h3>
+                    </article>
+                  ))}
+                </div>
+              ) : null}
 
               {hasItems(resumeSkills) ? (
                 <div className="panel resume-sidebar-panel">
@@ -338,38 +370,6 @@ function ResumePage() {
                 </div>
               ) : null}
             </div>
-
-            {hasItems(projectData) ? (
-              <div className="panel resume-paired-panel resume-projects-panel">
-                <h2>
-                  <Link className="resume-nav-link" to="/projects">
-                    Project Experience
-                  </Link>
-                </h2>
-                {projectData.map((project) => {
-                  const bullets = getProjectResumeBullets(project);
-
-                  return (
-                    <article key={project.slug} className="resume-item">
-                      <span>{project.category}</span>
-                      <h3>
-                        <Link className="resume-nav-link" to={`/projects/${project.slug}`}>
-                          {project.title}
-                        </Link>
-                      </h3>
-                      <p>{project.projectType}</p>
-                      {hasItems(bullets) ? (
-                        <ul className="list">
-                          {bullets.map((bullet) => (
-                            <li key={bullet}>{bullet}</li>
-                          ))}
-                        </ul>
-                      ) : null}
-                    </article>
-                  );
-                })}
-              </div>
-            ) : null}
           </div>
         ) : null}
 
