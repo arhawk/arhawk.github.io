@@ -84,9 +84,9 @@ Write **natural technical Chinese**, not literal translation.
 - Runtime: `LanguageProvider` in `src/i18n/LanguageContext.jsx`
 - Helpers: `src/i18n/getLocalized.js`
 
-## Job applications
+## Public resume export
 
-Tailored resume/CV packs live under `applications/` (gitignored). Follow **`applications/AGENTS.md`** for the three-document standard and conversational workflow.
+The generic portfolio resume is generated from `src/data/*` via `npm run generate:resume-pdf` and published with the site (`public/Zehao_Liu_Resume.pdf`). Job-specific tailored materials are kept locally under gitignored `applications/` and are not part of the public repository or site.
 
 ## Files agents must not break
 

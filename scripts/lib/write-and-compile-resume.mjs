@@ -2,7 +2,13 @@ import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node
 import { join } from 'node:path';
 import { compileResumePdf } from './compile-resume-pdf.mjs';
 
-export const writeAndCompileResume = async ({ tex, buildDir, pdfFileName, copyTo }) => {
+export const writeAndCompileResume = async ({
+  tex,
+  buildDir,
+  pdfFileName,
+  copyTo,
+  copyTexTo
+}) => {
   const texPath = join(buildDir, pdfFileName.replace(/\.pdf$/i, '.tex'));
   const pdfPath = join(buildDir, pdfFileName);
 
@@ -15,6 +21,10 @@ export const writeAndCompileResume = async ({ tex, buildDir, pdfFileName, copyTo
 
   if (!compiled) {
     return false;
+  }
+
+  if (copyTexTo) {
+    writeFileSync(copyTexTo, tex, 'utf8');
   }
 
   if (copyTo) {
