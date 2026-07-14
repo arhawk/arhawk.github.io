@@ -84,6 +84,10 @@ Write **natural technical Chinese**, not literal translation.
 - Runtime: `LanguageProvider` in `src/i18n/LanguageContext.jsx`
 - Helpers: `src/i18n/getLocalized.js`
 
+## Job applications
+
+Tailored resume/CV packs live under `applications/` (gitignored). Follow **`applications/AGENTS.md`** for the three-document standard and conversational workflow.
+
 ## Files agents must not break
 
 - `src/data/projects.js` — tag lookups and English canonical labels
