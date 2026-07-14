@@ -53,7 +53,7 @@ Local development uses `index.template.html` so production `index.html` does not
 
 ## Content Updates
 
-Maintain three content files:
+English source files (primary):
 
 - `src/data/projects.js` — project evidence, tags, and taxonomies
 - `src/data/about.js` — profile, narrative, education, and page copy for Home / About / Resume
@@ -64,16 +64,23 @@ Optional extension arrays (empty sections stay hidden on the site and in LaTeX e
 - `src/data/experience.js` — internships and relevant professional roles
 - `src/data/credentials.js` — certificates, publications, and competitions
 
+Chinese overlays and UI strings (sync when English narrative changes):
+
+- `src/data/zh/about.js`, `src/data/zh/contact.js`, `src/data/zh/projects.js`
+- `src/i18n/ui.js`, `src/i18n/groupTitles.zh.js`
+
+See **`AGENTS.md`** for the full i18n whitelist, sync checklist, and agent constraints. PDF/LaTeX resume export stays English only.
+
 The Resume page offers **Download PDF** and **Download LaTeX** from this shared data. PDFs are compiled during `npm run build`; the `.tex` file can also be compiled locally with pdfLaTeX or XeLaTeX.
 
 ### Job-specific resume variants
 
 `npm run build` always generates the generic resume at `public/Zehao_Liu_Resume.pdf` (used by the site download buttons).
 
-For a tailored application CV, add `applications/<variant-name>/resume.config.js` and run:
+For a tailored application CV, add `applications/<variant-name>/resume.config.js` and `Cover_Letter_Zehao_Liu.md`, then run:
 
 ```bash
-npm run generate:resume-variant -- hayes-lab-data-analyst
+npm run generate:application -- hayes-lab-data-analyst
 ```
 
 That writes `applications/<variant-name>/Zehao_Liu_Resume.pdf` without changing the public generic PDF.

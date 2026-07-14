@@ -15,6 +15,15 @@ When English content changes, sync the matching Chinese overlay and UI strings u
 
 Do **not** edit tag lookup keys, `slug`, or resume PDF generators for Chinese work.
 
+### No Chinese overlay yet
+
+These English-only arrays have **no** `src/data/zh/*` counterpart today. In Chinese mode they render as written in English:
+
+- `src/data/experience.js` — role titles, company names, bullet text
+- `src/data/credentials.js` — certificates, publications, competitions
+
+When adding entries, update the English source first. If the on-screen Chinese resume or credential sections need localized copy, add matching overlay files and wire them through `src/i18n/getLocalized.js` before translating field-by-field.
+
 ## Do-not-translate whitelist
 
 Keep these in **English** in Chinese mode:
@@ -25,7 +34,22 @@ Keep these in **English** in Chinese mode:
 - `status` values (e.g. `Complete`)
 
 ### Job and org names
-- Target roles: `Data Engineer`, `Machine Learning Engineer`, `Artificial Intelligence Engineer`, `Data Scientist`, `Data Analyst`
+
+Role **names** stay English everywhere (including Chinese UI):
+
+- `Data Engineer`, `Machine Learning Engineer`, `Artificial Intelligence Engineer`, `Data Scientist`, `Data Analyst`
+
+Where they appear:
+
+| Field | File | Used on |
+|---|---|---|
+| `targetRoles` | `src/data/about.js` | Home quick profile, PDF/LaTeX resume heading |
+| `openTo` | `src/data/contact.js` | Contact page narrative (primary targets plus secondary roles) |
+
+`targetRoles` is the short list (currently two roles). `openTo` may mention additional roles in prose — sync both English sources and `src/data/zh/contact.js` when job-search messaging changes.
+
+Other org rules:
+
 - University / company official names: `The University of Sydney`, `Wilfrid Laurier University`
 - Degree names may be summarized in Chinese, but keep official program names in English where they are credentials (e.g. `Data Science and AI`)
 
@@ -49,7 +73,12 @@ Keep these in **English** in Chinese mode:
 - Navigation, buttons, page headings, modal copy, aria-labels → `src/i18n/ui.js`
 - About/contact narrative, resume on-screen content, project body fields → `src/data/zh/*.js`
 - Taxonomy **group titles** (not tag labels) → `src/i18n/groupTitles.zh.js`
-- Skill taxonomy **descriptions** (the explanatory sentences on the Skills page) → `src/i18n/ui.js`
+- Skills page **section blurbs** only — the three explanatory sentences under “Skill taxonomy” in `src/i18n/ui.js`:
+  - `skills.capabilitiesDesc`
+  - `skills.technologiesDesc`
+  - `skills.foundationsDesc`
+
+There are no per-group or per-tag description fields in the data layer; do not add taxonomy copy elsewhere unless the UI gains new fields.
 
 ## Chinese writing style
 
@@ -71,7 +100,7 @@ Write **natural technical Chinese**, not literal translation.
 ## Sync checklist (when English changes)
 
 1. Update the English source file.
-2. Update the matching `src/data/zh/*` entry (or add a new `slug` block in `projects.js` zh overlay).
+2. Update the matching `src/data/zh/*` entry (or add a new `slug` block in `src/data/zh/projects.js`).
 3. Update `src/i18n/ui.js` if any UI label changed.
 4. Update `src/i18n/groupTitles.zh.js` only if a taxonomy group name changed in English.
 5. Do **not** change `generateResumeTex.js` or `scripts/generate-resume-pdf.mjs` for Chinese copy.
@@ -87,6 +116,16 @@ Write **natural technical Chinese**, not literal translation.
 ## Public resume export
 
 The generic portfolio resume is generated from `src/data/*` via `npm run generate:resume-pdf` and published with the site (`public/Zehao_Liu_Resume.pdf`). Job-specific tailored materials are kept locally under gitignored `applications/` and are not part of the public repository or site.
+
+### Job-specific resume variants
+
+```bash
+npm run generate:application -- <variant-name>
+```
+
+Example: `npm run generate:application -- hayes-lab-data-analyst`
+
+Expects `applications/<variant-name>/resume.config.js` and `applications/<variant-name>/Cover_Letter_Zehao_Liu.md`. Writes PDFs under that variant folder without changing the public generic resume.
 
 ## Files agents must not break
 

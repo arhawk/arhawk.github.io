@@ -7,7 +7,6 @@
     "dev": "vite",
     "generate:resume-pdf": "node scripts/generate-resume-pdf.mjs",
     "generate:application": "node scripts/generate-application-variant.mjs",
-    "generate:resume-variant": "node scripts/generate-application-variant.mjs",
     "build": "npm run generate:resume-pdf && vite build",
     "preview": "vite preview"
   },
