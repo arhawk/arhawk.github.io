@@ -214,7 +214,7 @@ export const projectData = [
     title: 'NEM Monitoring Dashboard',
     category: 'Data Engineering',
     summary:
-      'A near-real-time electricity monitoring dashboard that prepares CSV data, publishes updates over MQTT, and renders live facility metrics in Streamlit.',
+      'A maintained NEM data pipeline with Bash CLI orchestration, 14-rule QC gates, CI-enforced mart validation, MQTT publishing, and a Streamlit dashboard as the live consumer.',
     technologies: ['Python', 'Pandas', 'MQTT', 'Streamlit', 'Docker', 'GitHub Actions', 'Render'],
     capabilities: [
       'Data Cleaning',
@@ -236,28 +236,28 @@ export const projectData = [
     githubUrl: 'https://github.com/arhawk/NEM-Monitoring-Dashboard',
     status: 'Complete',
     problem:
-      'The project needed a reliable way to take raw NEM electricity data, clean it, publish it as a live stream, and keep the dashboard responsive without depending on a durable database.',
+      'The project needed an auditable way to ingest multi-source NEM electricity data, validate publish-ready artifacts, stream updates live, and keep a responsive dashboard without a durable database.',
     whatBuilt:
-      'I built a full local-to-cloud pipeline with CSV preparation, MQTT publishing, an in-memory dashboard cache, and a Streamlit interface for summary cards, trend lines, maps, and tables.',
+      'I built a multi-stage pipeline (raw → staging → mart → validate) with Bash CLI entry points, structured pass/fail QC reports and run manifests, MQTT publishing, and a Streamlit interface with summary cards, trends, maps, and tables as the downstream consumer.',
     dataMethods:
-      'The pipeline fetches and normalizes facility and market data, preserves missing optional values as missing, and separates data preparation from live dashboard rendering so each stage stays testable.',
+      'Deterministic cleaning and metadata alignment produce layered CSV artifacts; QC checks cover schema, uniqueness, null rates, staging/mart consistency, and publish payload fields. Ruff, pytest, and GitHub Actions gate releases—tracked mart data must pass validate before CI goes green.',
     results:
-      'The dashboard presents live facility updates with stable local and Render deployment paths, plus a fallback replay mode when the stream is stale or unavailable.',
+      'Pipeline runs produce QC reports and manifest metadata; validated data publishes over MQTT with stable local and Render deployment paths, plus fallback replay when the stream is stale or unavailable.',
     limitations:
       'The live cache is in-memory rather than persistent, so it is designed for monitoring and demo use instead of long-term historical storage.',
     nextSteps:
       'Add durable storage, richer alerting, and stronger operational monitoring for longer-running deployments.',
     reproducibility:
-      'The repository includes the publisher, dashboard, broker configuration, deployment notes, and the data-processing documentation needed to reproduce the flow.',
+      'The repository includes the pipeline CLI, QC rules and thresholds, publisher, dashboard, broker configuration, RUNBOOK, and data-processing documentation needed to reproduce the full flow.',
     projectType: 'Applied data systems project',
     myContribution:
-      'I designed and implemented the ingestion, publishing, and dashboard layers, then documented the deployment and fallback behavior.',
+      'I designed and implemented ingestion, QC validation, publishing, and dashboard layers, then documented runbook, deployment, and fallback behavior for collaborators.',
     engineeringHighlights:
-      'Key engineering work included MQTT topic design, bounded in-memory caching, conditional fallback replay, Streamlit rendering, and a separation between local broker mode and the Render deployment path.',
+      'Bash pipeline CLI with fail-fast validate gate; 14-rule QC layer with baseline thresholds and JSON/Markdown/HTML reports; run-level manifest metadata; CI-integrated mart validation; MQTT topic design; bounded StreamCache; Streamlit rendering with a custom Leaflet map component.',
     resumeBullets: [
-      'Maintained a reproducible CSV ingestion and normalization pipeline with separated preparation and publishing stages for data integrity.',
-      'Automated deployment and refresh workflows with Docker, GitHub Actions, and documented fallback behavior for collaborators.',
-      'Performed data cleansing on facility and market inputs, preserving missing values explicitly and keeping each pipeline stage testable.'
+      'Built a maintained Python NEM data pipeline with Bash CLI orchestration, layered CSV artifacts, structured pass/fail QC reports, and run-level manifest metadata before MQTT publish.',
+      'Implemented automated data cleansing verification (row counts, duplicate keys, null-rate thresholds, per-state coordinate bounds, staging/mart consistency) with fixture and tracked-data test coverage in CI.',
+      'Delivered a Streamlit real-time dashboard with a custom Leaflet map component, bounded in-memory stream cache, reconnect monitoring, and optional disk snapshot persistence as the pipeline consumer.'
     ]
   },
   {

@@ -5,25 +5,25 @@ export const projectCopyZh = {
   'nem-monitoring-dashboard': {
     category: '数据工程',
     summary:
-      '近实时电力监控看板：处理 CSV，经 MQTT 推送更新，用 Streamlit 展示设施实时指标。',
+      '可维护的 NEM 数据 pipeline：Bash CLI 编排、14 条 QC 规则门禁、CI 强制 mart 校验、MQTT 发布，Streamlit dashboard 作为实时消费端。',
     problem:
-      '需要一条可靠链路，把原始 NEM 电力数据清洗后实时发布出去，同时让 dashboard 保持响应——还不能依赖持久化数据库。',
+      '需要一条可审计的链路：导入多源 NEM 电力数据、校验可发布 artifact、实时推送更新，同时让 dashboard 保持响应——还不能依赖持久化数据库。',
     whatBuilt:
-      '从本地到云端做了完整链路：CSV 预处理 → MQTT 发布 → 内存 dashboard 缓存 → Streamlit 界面（摘要卡片、趋势线、地图、表格）。',
+      '做了多阶段 pipeline（raw → staging → mart → validate）：Bash CLI 入口、结构化 pass/fail QC 报告与 run manifest、MQTT 发布，下游用 Streamlit 展示摘要卡片、趋势线、地图和表格。',
     dataMethods:
-      '链路会拉取并规范化设施与市场数据，可选字段缺失就保留为缺失值；数据准备和实时渲染分开，方便分阶段测试。',
+      '确定性清洗与 metadata 对齐产出分层 CSV；QC 覆盖 schema、唯一性、空值率、staging/mart 一致性和 publish payload 字段。Ruff、pytest 与 GitHub Actions 门禁 release——tracked mart 必须通过 validate，CI 才能绿。',
     results:
-      'dashboard 能展示实时设施更新，本地和 Render 部署都跑得稳；流数据过期或中断时，有 fallback replay 兜底。',
+      '每次 pipeline run 产出 QC 报告与 manifest metadata；校验通过的数据经 MQTT 发布，本地与 Render 部署路径稳定；流过期或中断时有 fallback replay 兜底。',
     limitations:
       '实时缓存只在内存里，不落库，所以更适合监控和 demo，不适合长期存历史数据。',
     nextSteps: '加持久化存储、更完善的告警，以及面向长期运行的运维监控。',
     reproducibility:
-      '仓库里有 publisher、dashboard、broker 配置、部署说明，还有数据处理文档，可以复现整条链路。',
+      '仓库里有 pipeline CLI、QC 规则与阈值、publisher、dashboard、broker 配置、RUNBOOK 和数据处理文档，可复现整条链路。',
     projectType: '应用型数据系统项目',
     myContribution:
-      '负责 ingestion、publishing 和 dashboard 三层的设计与实现，并写了部署和 fallback 行为说明。',
+      '负责 ingestion、QC validation、publishing 和 dashboard 四层的设计与实现，并写了 runbook、部署和 fallback 行为说明。',
     engineeringHighlights:
-      '主要工程点：MQTT topic 设计、有界内存缓存、条件 fallback replay、Streamlit 渲染，以及本地 broker 和 Render 部署路径的拆分。'
+      '主要工程点：带 fail-fast validate gate 的 Bash pipeline CLI；14 条 QC 规则层（baseline 阈值 + JSON/Markdown/HTML 报告）；run-level manifest；CI 集成 mart validation；MQTT topic 设计；有界 StreamCache；Streamlit + 自定义 Leaflet 地图组件。'
   },
   'infinite-canvas-studio': {
     category: '软件工程',
